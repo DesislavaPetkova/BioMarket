@@ -1,9 +1,7 @@
 package com.desislava.market;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,8 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.desislava.market.dummy.DummyContent;
-import com.desislava.market.fragments.CartFragment;
 import com.desislava.market.fragments.MenuListProductFragment;
+import com.desislava.market.server.communication.JSONResponse;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener {
@@ -32,12 +30,21 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity
+                try {
+                    System.out.println("JNIJSJ:KJB:KDJB : ");
+                    /*InetAddress IP=InetAddress.getLocalHost();
+                    System.out.println("IP of my system is := "+IP.getHostAddress());*/
+                            JSONResponse json=new JSONResponse();
+                   json.execute();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+               /* Intent intent = new Intent(MainActivity
                         .this, ShoppingCartActivity.class);
                 startActivity(intent);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                // setContentView(R.layout.activity_shopping_cart);
+                        .setAction("Action", null).show();*/
             }
         });
 
@@ -89,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        /*if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -97,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else*/ if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 

@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.desislava.market.ProductMenuRecyclerViewAdapter;
+import com.desislava.market.adapters.ProductMenuRecyclerViewAdapter;
 import com.desislava.market.R;
 import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.dummy.DummyContent.DummyItem;
