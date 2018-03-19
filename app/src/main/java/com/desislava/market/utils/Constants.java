@@ -13,4 +13,8 @@ public static final String INFO="info";
 public static final String ORIGIN="origin";
 
 
+// Set store in intent
+
+    public static final String STORE="store";
+
 }

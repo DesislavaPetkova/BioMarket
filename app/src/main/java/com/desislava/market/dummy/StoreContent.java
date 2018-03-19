@@ -16,4 +16,6 @@ public class StoreContent {
         this.serverResponse = serverResponse;
         stores = serverResponse.getStoreList();
     }
+
+
 }

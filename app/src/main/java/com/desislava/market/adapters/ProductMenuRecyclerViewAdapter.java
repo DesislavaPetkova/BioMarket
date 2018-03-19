@@ -4,10 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.desislava.market.R;
+import com.desislava.market.beans.Product;
+import com.desislava.market.beans.Store;
 import com.desislava.market.fragments.MenuListProductFragment.OnListFragmentInteractionListener;
 import com.desislava.market.dummy.DummyContent.DummyItem;
+import com.desislava.market.server.communication.ParseServerResponse;
 
 import java.util.List;
 
@@ -18,26 +22,33 @@ import java.util.List;
  */
 public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<ProductMenuRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Store> storeContent;
     private final OnListFragmentInteractionListener mListener;
+    private int categoryId;
 
-    public ProductMenuRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public ProductMenuRecyclerViewAdapter(int categoryId, OnListFragmentInteractionListener listener) {
+        System.out.println("ProductMenuRecyclerViewAdapter - init");
+        this.categoryId = categoryId-1;
+        storeContent = ParseServerResponse.storeList;
         mListener = listener;
+        System.out.println("ProductMenuRecyclerViewAdapter - init - exit  !!!!");
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_main_menu, parent, false);
+        System.out.println("new ViewHolder(view)");
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-      /*  holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);*/
+        System.out.println("Position " + position);
+        holder.mItem = storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().get(position);
+        holder.price.setText(holder.mItem.getPrice());
+        /* holder.mContentView.setText(storeContent.get(position).content);*/
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +57,7 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
+                    System.out.println("onClick %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                 }
             }
         });
@@ -53,25 +65,30 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if (storeContent.size() > 0) {
+            return storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().size();
+        }
+        return storeContent.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        /*public final TextView mIdView;
-        public final TextView mContentView;*/
-        public DummyItem mItem;
+        public final TextView price;
+
+        public Product mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            this.price = (TextView) view.findViewById(R.id.price_view);
+            System.out.println("PRICEEEEEEEEEEEEEEE" + this.price);
            /* mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);*/
         }
 
-        /*@Override
+        @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }*/
+            return mItem.toString();
+        }
     }
 }

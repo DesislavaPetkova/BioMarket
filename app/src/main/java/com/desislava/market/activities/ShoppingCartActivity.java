@@ -1,4 +1,4 @@
-package com.desislava.market;
+package com.desislava.market.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.desislava.market.R;
 import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.fragments.CartFragment;
 import com.desislava.market.fragments.PriceCartFragment;

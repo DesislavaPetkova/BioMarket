@@ -30,7 +30,7 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.price_cart_fragment, parent, false);
+                .inflate(R.layout.cart_price_fragment, parent, false);
         return new ViewHolder(view);
     }
 

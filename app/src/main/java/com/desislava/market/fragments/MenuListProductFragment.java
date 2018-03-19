@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 
 import com.desislava.market.adapters.ProductMenuRecyclerViewAdapter;
 import com.desislava.market.R;
-import com.desislava.market.dummy.DummyContent;
-import com.desislava.market.dummy.DummyContent.DummyItem;
+import com.desislava.market.beans.Product;
 
 /**
  * A fragment representing a list of Items.
@@ -25,9 +24,12 @@ public class MenuListProductFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String PRODUCT_ID = "single_product_info-id";
     // TODO: Customize parameters
     private int mColumnCount = 2;
+    private int categoryId =1;
     private OnListFragmentInteractionListener mListener;
+    ProductMenuRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,10 +40,10 @@ public class MenuListProductFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MenuListProductFragment newInstance(int columnCount) {
+    public static MenuListProductFragment newInstance(int productID) {
         MenuListProductFragment fragment = new MenuListProductFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putInt(PRODUCT_ID, productID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +53,8 @@ public class MenuListProductFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            System.out.println("OnCreate MenuListProductFragment categoryId: " + categoryId);
+            categoryId = getArguments().getInt(PRODUCT_ID);
         }
     }
 
@@ -59,7 +62,7 @@ public class MenuListProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_menu_list, container, false);
-
+        System.out.println("createView MenuList Product Fragment");
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -69,7 +72,9 @@ public class MenuListProductFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProductMenuRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            adapter = new ProductMenuRecyclerViewAdapter(categoryId, mListener);
+            System.out.println("Set adapter");
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
@@ -104,6 +109,12 @@ public class MenuListProductFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Product product);
+    }
+
+    public void dataChange() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

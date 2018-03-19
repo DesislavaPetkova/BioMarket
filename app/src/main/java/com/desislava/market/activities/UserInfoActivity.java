@@ -1,4 +1,4 @@
-package com.desislava.market;
+package com.desislava.market.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.anton46.stepsview.StepsView;
+import com.desislava.market.R;
 import com.desislava.market.fragments.AddressUserFragment;
 import com.desislava.market.fragments.ShopperInfoFragment;
 

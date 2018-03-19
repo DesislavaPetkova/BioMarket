@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.desislava.market.fragments.PriceCartFragment"
-    tools:listitem="@layout/price_cart_fragment" />
+    tools:listitem="@layout/cart_price_fragment" />

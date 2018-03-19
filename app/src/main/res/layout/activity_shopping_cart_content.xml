@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.desislava.market.ShoppingCartActivity">
+    tools:context="com.desislava.market.activities.ShoppingCartActivity">
 
     <fragment
         android:id="@+id/cart_item_fragment"
@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        tools:layout="@layout/fragment_cart_price" />
+        tools:layout="@layout/cart_price_fragment_list" />
 
 
     <android.support.design.widget.AppBarLayout

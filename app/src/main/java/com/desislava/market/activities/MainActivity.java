@@ -1,7 +1,9 @@
-package com.desislava.market;
+package com.desislava.market.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,43 +14,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.desislava.market.dummy.DummyContent;
+import com.desislava.market.R;
+import com.desislava.market.beans.Product;
 import com.desislava.market.fragments.MenuListProductFragment;
 import com.desislava.market.server.communication.JSONResponse;
+import com.desislava.market.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String store = getIntent().getStringExtra(Constants.STORE);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        initStore(store);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    System.out.println("JNIJSJ:KJB:KDJB : ");
-                    /*InetAddress IP=InetAddress.getLocalHost();
-                    System.out.println("IP of my system is := "+IP.getHostAddress());*/
-                            JSONResponse json=new JSONResponse();
-                   json.execute();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-               /* Intent intent = new Intent(MainActivity
+                Intent intent = new Intent(MainActivity
                         .this, ShoppingCartActivity.class);
                 startActivity(intent);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -94,29 +92,50 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int categoryId = 0;
         int id = item.getItemId();
-
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else*/ if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.allProducts:
+                categoryId = 5;
+                break;
+            case R.id.drinks:
+                categoryId = 4;
+                break;
+            case R.id.freshMeat:
+                categoryId = 3;
+                break;
+            case R.id.vegetables:
+                categoryId = 2;
+                break;
+            case R.id.fruits:
+                categoryId = 1;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        MenuListProductFragment fragment = MenuListProductFragment.newInstance(categoryId);
+
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction().replace(R.id.updateFragment, fragment).commit();
+        }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Product product) {
 
+
+
+    }
+
+    private void initStore(String store) {
+        try {
+            JSONResponse json = new JSONResponse(this, store);
+            json.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

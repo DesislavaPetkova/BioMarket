@@ -9,6 +9,14 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="All products" />
         <item
+            android:id="@+id/drinks"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Drinks" />
+        <item
+            android:id="@+id/freshMeat"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Fresh Meats" />
+        <item
             android:id="@+id/vegetables"
             android:icon="@drawable/ic_menu_camera"
             android:title="Vegetables" />
