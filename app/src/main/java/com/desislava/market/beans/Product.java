@@ -1,12 +1,13 @@
 package com.desislava.market.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Desislava on 08-Mar-18.
  */
 
-public class Product {
+public class Product implements Serializable {
 
     String name;
     String price;

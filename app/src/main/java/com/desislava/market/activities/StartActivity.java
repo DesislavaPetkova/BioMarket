@@ -9,9 +9,12 @@ import android.widget.Toast;
 
 import com.desislava.market.R;
 
+import static com.desislava.market.utils.Constants.KAUFLAND;
+import static com.desislava.market.utils.Constants.LIDL;
 import static com.desislava.market.utils.Constants.STORE;
 
 public class StartActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +28,10 @@ public class StartActivity extends AppCompatActivity {
 
 
     public void onClick(View view) {
-        String store = "lidl";
+        String store = LIDL;
 //TODO might add all stores products show
         if (view.getId() == R.id.kauflandImgBnt) {
-            store = "kaufland";
+            store = KAUFLAND;
             Toast.makeText(this, "Kaufland store", Toast.LENGTH_SHORT).show();
 
         } else {

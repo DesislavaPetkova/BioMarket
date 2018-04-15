@@ -2,8 +2,10 @@ package com.desislava.market.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,19 +15,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.Product;
 import com.desislava.market.fragments.MenuListProductFragment;
+import com.desislava.market.fragments.ProductInfoFragment;
 import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.utils.Constants;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener {
+import java.util.logging.Logger;
 
+import static android.view.View.INVISIBLE;
+
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener {
+
+    FrameLayout frameLayout;
+    CoordinatorLayout.LayoutParams params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(getLocalClassName() + " onCreate", "ENTER ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String store = getIntent().getStringExtra(Constants.STORE);
@@ -34,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initStore(store);
+        frameLayout = (FrameLayout) findViewById(R.id.menuListInfoProduct);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,12 +53,15 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity
                         .this, ShoppingCartActivity.class);
                 startActivity(intent);
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
             }
         });
 
-
+        MenuListProductFragment menuFragment = new MenuListProductFragment();
+        getSupportFragmentManager().
+                beginTransaction().add(R.id.menuListInfoProduct, menuFragment, "menu list").commit();
+        params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
+        params.setMargins(0, 300, 0, 0);
+        frameLayout.setLayoutParams(params);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -62,6 +77,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            params.setMargins(0, 300, 0, 0);
+            frameLayout.setLayoutParams(params);
             super.onBackPressed();
         }
     }
@@ -124,8 +141,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Product product) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ProductInfoFragment productInfoFragment = ProductInfoFragment.newInstance(product);
 
-
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, productInfoFragment).addToBackStack(null).commit();
+            params.setMargins(0, 50, 0, 0);
+            frameLayout.setLayoutParams(params);
+        }
 
     }
 
@@ -137,5 +160,10 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Product product) {
+        Log.i(getLocalClassName() + "onFragmentInteraction", "ENTER");
     }
 }

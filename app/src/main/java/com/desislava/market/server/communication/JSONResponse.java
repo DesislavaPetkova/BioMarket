@@ -1,6 +1,7 @@
 package com.desislava.market.server.communication;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.desislava.market.activities.MainActivity;
 import com.desislava.market.R;
@@ -16,14 +17,12 @@ import java.net.URL;
 
 public class JSONResponse extends AsyncTask<String, Integer, String> {
 
-    private MainActivity activity;
     private MenuListProductFragment fragment;
     private String store;
 
     public JSONResponse(MainActivity mainActivity, String store) {
-        this.activity = mainActivity;
         this.store = store;
-        fragment = (MenuListProductFragment) mainActivity.getSupportFragmentManager().findFragmentById(R.id.menu_list_fragment);
+        fragment = (MenuListProductFragment) mainActivity.getSupportFragmentManager().findFragmentById(R.id.fragment_main_menu_list);
     }
 
     @Override
@@ -37,8 +36,8 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
+            Log.i("doInBackground", "Sending GET request to URL: " + url);
+            Log.i("doInBackground", "Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(con.getInputStream()));
@@ -55,15 +54,15 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String object) {
-        System.out.println("onPostExecute - enter with response");
+        Log.i("onPostExecute", "Enter with response");
         ParseServerResponse parseServerResponse = new ParseServerResponse();
         try {
             parseServerResponse.allStoresParseResponse(object);
         } catch (JSONException e) {
-
+            Log.e("onPostExecute", e.getCause().toString());
         }
         if (fragment != null) {
-            System.out.println("Data changed");
+            Log.i("onPostExecute", "Data changed");
             fragment.dataChange();
         }
 

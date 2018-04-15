@@ -5,6 +5,10 @@ package com.desislava.market.utils;
 public class Constants {
 
 
+public static final String LIDL="lidl";
+public static final String KAUFLAND="kaufland";
+
+
 public static final String FRIUTS="fruits";
 public static final String VEGETABLES="vegetables";
 public static final String NAME="name";

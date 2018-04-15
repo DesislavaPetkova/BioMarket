@@ -1,6 +1,7 @@
 package com.desislava.market.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,11 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
     private int categoryId;
 
     public ProductMenuRecyclerViewAdapter(int categoryId, OnListFragmentInteractionListener listener) {
-        System.out.println("ProductMenuRecyclerViewAdapter - init");
-        this.categoryId = categoryId-1;
+        Log.d("ProductMenuRecyclerAdap", "ENTER");
+        this.categoryId = categoryId - 1;
         storeContent = ParseServerResponse.storeList;
         mListener = listener;
-        System.out.println("ProductMenuRecyclerViewAdapter - init - exit  !!!!");
+        Log.d("ProductMenuRecyclerAdap", "LEAVE");
     }
 
 
@@ -39,13 +40,12 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_main_menu, parent, false);
-        System.out.println("new ViewHolder(view)");
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        System.out.println("Position " + position);
+        Log.i("onBindViewHolder", "" + position);
         holder.mItem = storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().get(position);
         holder.price.setText(holder.mItem.getPrice());
         /* holder.mContentView.setText(storeContent.get(position).content);*/
@@ -81,7 +81,6 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
             super(view);
             mView = view;
             this.price = (TextView) view.findViewById(R.id.price_view);
-            System.out.println("PRICEEEEEEEEEEEEEEE" + this.price);
            /* mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);*/
         }

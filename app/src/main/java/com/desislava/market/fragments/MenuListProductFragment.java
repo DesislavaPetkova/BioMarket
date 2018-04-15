@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import com.desislava.market.adapters.ProductMenuRecyclerViewAdapter;
 import com.desislava.market.R;
 import com.desislava.market.beans.Product;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 /**
  * A fragment representing a list of Items.
@@ -22,12 +25,10 @@ import com.desislava.market.beans.Product;
  */
 public class MenuListProductFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String PRODUCT_ID = "single_product_info-id";
-    // TODO: Customize parameters
     private int mColumnCount = 2;
-    private int categoryId =1;
+    private int categoryId = 1;
     private OnListFragmentInteractionListener mListener;
     ProductMenuRecyclerViewAdapter adapter;
 
@@ -53,7 +54,7 @@ public class MenuListProductFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            System.out.println("OnCreate MenuListProductFragment categoryId: " + categoryId);
+            Log.i(getClass() + "onCreate", "categoryId: " + categoryId);
             categoryId = getArguments().getInt(PRODUCT_ID);
         }
     }
@@ -62,7 +63,6 @@ public class MenuListProductFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_menu_list, container, false);
-        System.out.println("createView MenuList Product Fragment");
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -73,7 +73,7 @@ public class MenuListProductFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             adapter = new ProductMenuRecyclerViewAdapter(categoryId, mListener);
-            System.out.println("Set adapter");
+            Log.i("onCreateView ", "Set ADAPTER");
             recyclerView.setAdapter(adapter);
         }
         return view;
@@ -115,6 +115,7 @@ public class MenuListProductFragment extends Fragment {
     public void dataChange() {
         if (adapter != null) {
             adapter.notifyDataSetChanged();
+            Log.i("dataChange", "notifyDataSetChanged");
         }
     }
 }
