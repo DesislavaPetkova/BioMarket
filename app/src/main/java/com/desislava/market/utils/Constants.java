@@ -7,6 +7,7 @@ public class Constants {
 
 public static final String LIDL="lidl";
 public static final String KAUFLAND="kaufland";
+public static final String hell="kaufland";
 
 
 public static final String FRIUTS="fruits";
