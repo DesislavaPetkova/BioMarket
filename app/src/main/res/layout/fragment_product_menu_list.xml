@@ -6,6 +6,7 @@
     android:name="com.desislava.market.fragments.MenuListProductFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="?attr/actionBarSize"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:animateLayoutChanges="false"

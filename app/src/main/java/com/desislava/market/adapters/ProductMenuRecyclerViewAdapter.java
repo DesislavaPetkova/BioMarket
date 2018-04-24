@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.desislava.market.R;
@@ -12,6 +13,7 @@ import com.desislava.market.beans.Product;
 import com.desislava.market.beans.Store;
 import com.desislava.market.fragments.MenuListProductFragment.OnListFragmentInteractionListener;
 import com.desislava.market.dummy.DummyContent.DummyItem;
+import com.desislava.market.server.communication.ImageASynchTask;
 import com.desislava.market.server.communication.ParseServerResponse;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
     private final List<Store> storeContent;
     private final OnListFragmentInteractionListener mListener;
     private int categoryId;
+    private ImageASynchTask aSynchTask=null;
 
     public ProductMenuRecyclerViewAdapter(int categoryId, OnListFragmentInteractionListener listener) {
         Log.d("ProductMenuRecyclerAdap", "ENTER");
@@ -46,8 +49,16 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Log.i("onBindViewHolder", "" + position);
-        holder.mItem = storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().get(position);
-        holder.price.setText(holder.mItem.getPrice());
+        holder.product = storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().get(position);
+
+        if(aSynchTask==null /*&& holder.mItem.getImage()==null*/) {  //TODO think of a way when activity is back to start (choosing store) to be able to download images again !!!!
+            ImageASynchTask aSynchTask = new ImageASynchTask(holder);
+            Log.i("before call aSynchImage", "");
+            aSynchTask.execute(holder.product.getImageURL());
+        }
+        holder.price.setText(holder.product.getPrice());
+        holder.imageView.setImageBitmap(holder.product.getImage());
+        Log.e("onBindViewHolder","IS WORKINGGGGGGGGGGGGGGGGGGGGG***************************");
         /* holder.mContentView.setText(storeContent.get(position).content);*/
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -56,12 +67,13 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                    System.out.println("onClick %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                    mListener.onListFragmentInteraction(holder.product);
                 }
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -72,22 +84,24 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView price;
+        private final View mView;
+        private final TextView price;
+        private final ImageView imageView;
 
-        public Product mItem;
+        private Product product;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             this.price = (TextView) view.findViewById(R.id.price_view);
-           /* mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);*/
+            this.imageView = (ImageView) view.findViewById(R.id.product_image);
+           /* mContentView = (TextView) view.findViewById(R.id.content);*/
         }
 
         @Override
         public String toString() {
-            return mItem.toString();
+            return product.toString();
         }
     }
+
 }

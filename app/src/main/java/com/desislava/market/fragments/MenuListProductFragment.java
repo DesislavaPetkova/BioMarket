@@ -25,7 +25,7 @@ import static android.webkit.ConsoleMessage.MessageLevel.LOG;
  */
 public class MenuListProductFragment extends Fragment {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    //private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String PRODUCT_ID = "single_product_info-id";
     private int mColumnCount = 2;
     private int categoryId = 1;
@@ -39,8 +39,6 @@ public class MenuListProductFragment extends Fragment {
     public MenuListProductFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static MenuListProductFragment newInstance(int productID) {
         MenuListProductFragment fragment = new MenuListProductFragment();
         Bundle args = new Bundle();
@@ -54,14 +52,15 @@ public class MenuListProductFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            Log.i(getClass() + "onCreate", "categoryId: " + categoryId);
             categoryId = getArguments().getInt(PRODUCT_ID);
+            Log.i(getClass() + "onCreate", "categoryId: " + categoryId);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("ON CREATE Fragment","FRAGMENT");
         View view = inflater.inflate(R.layout.fragment_product_menu_list, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -72,8 +71,10 @@ public class MenuListProductFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = new ProductMenuRecyclerViewAdapter(categoryId, mListener);
-            Log.i("onCreateView ", "Set ADAPTER");
+            if(adapter==null) {
+                adapter = new ProductMenuRecyclerViewAdapter(categoryId, mListener);
+                Log.i("onCreateView ", "Set NEW ADAPTER since it is NULLLLLLLLLL *******");
+            }
             recyclerView.setAdapter(adapter);
         }
         return view;
@@ -89,6 +90,13 @@ public class MenuListProductFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -109,7 +117,7 @@ public class MenuListProductFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Product product);
+        void onListFragmentInteraction(Product product); //,int category
     }
 
     public void dataChange() {

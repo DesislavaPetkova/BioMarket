@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.desislava.market.R;
+import com.desislava.market.activities.ShoppingCartActivity;
 import com.desislava.market.adapters.MyCartRecyclerViewAdapter;
+import com.desislava.market.beans.Cart;
+import com.desislava.market.beans.Product;
 import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.dummy.DummyContent.DummyItem;
 
@@ -69,7 +72,7 @@ public class CartFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyCartRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyCartRecyclerViewAdapter(ShoppingCartActivity.shoppingList, mListener));
         }
         return view;
     }
@@ -103,7 +106,6 @@ public class CartFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Cart product);
     }
 }

@@ -1,5 +1,10 @@
 package com.desislava.market.beans;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,12 +18,16 @@ public class Product implements Serializable {
     String price;
     String info;
     String origin;
+    String imageURL;
+    Bitmap image;
+    public byte[] imageByteArray;
 
-    public Product(String name, String price, String info, String origin) {
+    public Product(String name, String price, String info, String origin, String imageURL) {
         this.name = name;
         this.price = price;
         this.info = info;
         this.origin = origin;
+        this.imageURL=imageURL;
     }
 
     public String getName() {
@@ -53,6 +62,18 @@ public class Product implements Serializable {
          this.origin = origin;
      }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -60,8 +81,51 @@ public class Product implements Serializable {
                 ", price='" + price + '\'' +
                 ", info='" + info + '\'' +
                 ", origin='" + origin + '\'' +
+                ", imageURL='" + imageURL + '\'' +
                 '}';
     }
+
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(name);
+        out.writeObject(price);
+        out.writeObject(info);
+        out.writeObject(origin);
+        out.writeObject(imageURL);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        this.image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        this.imageByteArray = stream.toByteArray();
+        out.writeInt(imageByteArray.length);
+        out.write(imageByteArray);
+
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        this.name = (String) in.readObject();
+        this.price = (String) in.readObject();
+        this.info = (String) in.readObject();
+        this.origin = (String) in.readObject();
+        this.imageURL = (String) in.readObject();
+
+        int imageLength = in.readInt();
+        byte[] byteArray = new byte[imageLength];
+        int pos = 0;
+        do {
+            int read = in.read(byteArray, pos, imageLength - pos);
+
+            if (read != -1) {
+                pos += read;
+            } else {
+                break;
+            }
+
+        } while (pos < imageLength);
+
+        this.image = BitmapFactory.decodeByteArray(byteArray, 0, imageLength);
+
+    }
+
 }
 
 

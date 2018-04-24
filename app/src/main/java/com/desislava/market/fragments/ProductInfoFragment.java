@@ -1,15 +1,21 @@
 package com.desislava.market.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.desislava.market.R;
+import com.desislava.market.activities.ShoppingCartActivity;
+import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
 
 /**
@@ -29,9 +35,19 @@ public class ProductInfoFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-     private TextView  productName;
+    private ImageView single_img;
 
-     private TextView prInfo;
+    private TextView  productName;
+
+    private TextView prInfo;
+
+    private ElegantNumberButton quantity;
+
+    private Spinner product_weight;
+
+    private Button add_cart;
+
+
 
 
     public ProductInfoFragment() {
@@ -64,10 +80,33 @@ public class ProductInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_product_info, container, false);
-        productName=view.findViewById(R.id.lbl_product);
+        View view = inflater.inflate(R.layout.fragment_product_info, container, false);
+        //init fields
+        single_img = view.findViewById(R.id.single_product_info_img);
+        productName = view.findViewById(R.id.lbl_product);
+        prInfo = view.findViewById(R.id.txt_info);
+        quantity = view.findViewById(R.id.incdec);
+        product_weight = view.findViewById(R.id.productWeight);
+        add_cart = view.findViewById(R.id.add_cart);
+        add_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Cart newItem = new Cart(infoProduct,quantity.getNumber());
+                ShoppingCartActivity.shoppingList.add(newItem);
+                Log.i("Cart product object:", newItem.toString());
+
+            }
+        });
+
+
+        //set fields with values
+        single_img.setImageBitmap(infoProduct.getImage());
         productName.setText(infoProduct.getName());
-        System.out.println("GOT ITTTTTTTTTTTTTT" + infoProduct.getName());
+        quantity.setRange(0,100);
+        prInfo.setText(infoProduct.getInfo());
+
+        //System.out.println("GOT ITTTTTTTTTTTTTT" + infoProduct.getName());
 
         return view ;
     }

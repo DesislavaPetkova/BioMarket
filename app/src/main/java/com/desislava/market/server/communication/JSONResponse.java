@@ -28,7 +28,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... strings) {
 //TODO Update service response depending on store request
-        String url = "http://192.168.0.101:8080/" + store;  //"vegetables"  home:192.168.0.103  work:172.22.173.184
+        String url = "http://172.22.173.184:8080/" + store;  //  home:192.168.0.103  work:172.22.173.184
         StringBuffer response = new StringBuffer();
         URL obj = null;
         try {
@@ -59,7 +59,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
         try {
             parseServerResponse.allStoresParseResponse(object);
         } catch (JSONException e) {
-            Log.e("onPostExecute", e.getCause().toString());
+            e.printStackTrace();
         }
         if (fragment != null) {
             Log.i("onPostExecute", "Data changed");

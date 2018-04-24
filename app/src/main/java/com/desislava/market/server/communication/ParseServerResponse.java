@@ -1,5 +1,7 @@
 package com.desislava.market.server.communication;
 
+import android.util.Log;
+
 import com.desislava.market.beans.Category;
 import com.desislava.market.beans.Product;
 import com.desislava.market.beans.Store;
@@ -10,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,14 +40,15 @@ public class ParseServerResponse {
                 JSONObject obj = productsArray.getJSONObject(i);
                 Iterator<String> iterator = obj.keys(); //while (hasNExt() )-> check !!!!!!!!!!
                 String name = iterator.next();//fruits name..vegetables name..
-
                 JSONArray product = obj.getJSONArray(name);
                 for (int pr = 0; pr < product.length(); pr++) {
-                    String namepr = product.getJSONObject(pr).getString(Constants.NAME);
-                    String price = product.getJSONObject(pr).getString(Constants.PRICE);
-                    String info = product.getJSONObject(pr).getString(Constants.INFO);
-                    String origin = product.getJSONObject(pr).getString(Constants.ORIGIN);
-                    Product productObject = new Product(namepr, price, info, origin);
+                    JSONObject jsonObject = product.getJSONObject(pr);
+                    String namepr = jsonObject.getString(Constants.NAME);
+                    String price = jsonObject.getString(Constants.PRICE);
+                    String info = jsonObject.getString(Constants.INFO);
+                    String origin = jsonObject.getString(Constants.ORIGIN);
+                    String imageUrl = jsonObject.getString(Constants.IMAGE_URL);
+                    Product productObject = new Product(namepr, price, info, origin, imageUrl);
                     products.add(productObject);
                 }
                 Category category = new Category(name, products);
@@ -53,42 +57,10 @@ public class ParseServerResponse {
             Store store = new Store(storeName, categories);
             storeList.add(store);
         }
-        System.out.println(storeList);
+        Log.i("List after parsing info", storeList.toString());
     }
-
-
-/*    public void singleStoreParseResponse(String object) throws JSONException{
-        JSONObject stores = new JSONObject(object);
-        Iterator<String> itrStoreName = stores.keys();
-        while (itrStoreName.hasNext()) {
-            categories = new ArrayList<>();
-            String storeName = itrStoreName.next(); //Name  of the Store
-            JSONArray productsArray = stores.getJSONArray(storeName);
-            for (int i = 0; i < productsArray.length(); i++) {   // 2 categories
-                products = new ArrayList<>();
-                JSONObject obj = productsArray.getJSONObject(i);
-                Iterator<String> iterator = obj.keys(); //while (hasNExt() )-> check !!!!!!!!!!
-                String name = iterator.next();//fruits name..vegetables name..
-
-                JSONArray single_product_info = obj.getJSONArray(name);
-                for (int pr = 0; pr < single_product_info.length(); pr++) {
-                    String namepr = single_product_info.getJSONObject(pr).getString(Constants.NAME);
-                    String price = single_product_info.getJSONObject(pr).getString(Constants.PRICE);
-                    String info = single_product_info.getJSONObject(pr).getString(Constants.INFO);
-                    String origin = single_product_info.getJSONObject(pr).getString(Constants.ORIGIN);
-                    Product productObject = new Product(namepr, price, info, origin);
-                    products.add(productObject);
-                }
-                Category category = new Category(name, products);
-                categories.add(category);
-            }
-            Store store = new Store(storeName, categories);
-            storeList.add(store);
-        }
-        System.out.println(storeList);
-    } */
 
     public List<Store> getStoreList() {
         return storeList;
-    }
+    } //TODO useless !!!!!!!!!!!! remove
 }
