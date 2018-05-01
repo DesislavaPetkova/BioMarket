@@ -1,9 +1,11 @@
 package com.desislava.market.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import com.desislava.market.R;
@@ -24,27 +27,29 @@ import com.desislava.market.fragments.ProductInfoFragment;
 import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.utils.Constants;
 
-import java.util.logging.Logger;
-
-import static android.view.View.INVISIBLE;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener {
 
-    FrameLayout frameLayout;
-    CoordinatorLayout.LayoutParams params;
+    private FrameLayout frameLayout;
+    private CoordinatorLayout.LayoutParams params;
+    public static int categoryId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(getLocalClassName() + " onCreate", "ENTER ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Window w=getWindow();
+        w.setStatusBarColor(Color.parseColor("#689B00"));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Market");
+        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
+        setSupportActionBar(toolbar);
+
         String store = getIntent().getStringExtra(Constants.STORE);
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        initStore(store);
+
         frameLayout = (FrameLayout) findViewById(R.id.menuListInfoProduct);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +61,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        MenuListProductFragment menuFragment = new MenuListProductFragment();
-        getSupportFragmentManager().
-                beginTransaction().add(R.id.menuListInfoProduct, menuFragment, "menu list").commit();
+        MenuListProductFragment menuFragment = MenuListProductFragment.newInstance(1);
+        getSupportFragmentManager().beginTransaction().replace(R.id.menuListInfoProduct, menuFragment, "menulist").commit();
+        initStore(store);
+
         params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
         params.setMargins(0, 300, 0, 0);
         frameLayout.setLayoutParams(params);
@@ -110,11 +116,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        int categoryId = 0;
+
         int id = item.getItemId();
         switch (id) {
-            case R.id.allProducts:
+            case R.id.allProducts: //TODO no category  might not need it !!
                 categoryId = 5;
                 break;
             case R.id.drinks:
@@ -128,21 +133,18 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.fruits:
                 categoryId = 1;
+                break;
         }
 
-        MenuListProductFragment fragment = MenuListProductFragment.newInstance(categoryId);
-
-        if (fragmentManager != null) {
-            fragmentManager.beginTransaction().replace(R.id.updateFragment, fragment).commit();
-        }
+        updateFragment(categoryId);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
-    public void onListFragmentInteraction(Product product) {
+    public void onListFragmentInteraction(Product product, int categoryId) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ProductInfoFragment productInfoFragment = ProductInfoFragment.newInstance(product);
+        ProductInfoFragment productInfoFragment = ProductInfoFragment.newInstance(product,categoryId); //else productid from this instance
 
         if (fragmentManager != null) {
             fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, productInfoFragment).addToBackStack(null).commit();
@@ -166,4 +168,14 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Product product) {
         Log.i(getLocalClassName() + "onFragmentInteraction", "ENTER");
     }
-}
+
+    public void updateFragment(int categoryId){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        MenuListProductFragment fragment = MenuListProductFragment.newInstance(categoryId);
+
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, fragment).commit(); //updateFragment
+        }
+    }
+
+  }

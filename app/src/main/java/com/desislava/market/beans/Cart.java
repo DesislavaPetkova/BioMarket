@@ -11,7 +11,7 @@ public class Cart {
     private String price;
     private String category;
 
-    public Cart(Product product, String quantity) {
+    public Cart(Product product, String quantity,String category) {
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice();
@@ -30,6 +30,14 @@ public class Cart {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override

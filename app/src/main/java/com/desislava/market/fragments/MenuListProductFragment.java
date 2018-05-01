@@ -39,10 +39,10 @@ public class MenuListProductFragment extends Fragment {
     public MenuListProductFragment() {
     }
 
-    public static MenuListProductFragment newInstance(int productID) {
+    public static MenuListProductFragment newInstance(int categoryId) {
         MenuListProductFragment fragment = new MenuListProductFragment();
         Bundle args = new Bundle();
-        args.putInt(PRODUCT_ID, productID);
+        args.putInt(PRODUCT_ID, categoryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,10 +71,10 @@ public class MenuListProductFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            if(adapter==null) {
+            //if(adapter==null) {
                 adapter = new ProductMenuRecyclerViewAdapter(categoryId, mListener);
-                Log.i("onCreateView ", "Set NEW ADAPTER since it is NULLLLLLLLLL *******");
-            }
+               // Log.i("onCreateView ", "Set NEW ADAPTER since it is NULLLLLLLLLL *******");
+            //}
             recyclerView.setAdapter(adapter);
         }
         return view;
@@ -95,7 +95,6 @@ public class MenuListProductFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
         super.onSaveInstanceState(outState);
     }
 
@@ -117,7 +116,7 @@ public class MenuListProductFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Product product); //,int category
+        void onListFragmentInteraction(Product product,int categoryId); //,int category
     }
 
     public void dataChange() {

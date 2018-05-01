@@ -1,10 +1,12 @@
 package com.desislava.market.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.desislava.market.R;
@@ -20,7 +22,11 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        Window w=getWindow();
+        w.setStatusBarColor(Color.parseColor("#689B00"));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
+        toolbar.setTitle("Choose market");
         setSupportActionBar(toolbar);
 /*
         ImageButton img = findViewById(R.id.kauflandImgBnt);*/

@@ -11,12 +11,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.desislava.market.R;
 import com.desislava.market.activities.ShoppingCartActivity;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
+import com.desislava.market.utils.Util;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +32,7 @@ public class ProductInfoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PRODUCT = "product";
+    private static final String CATEGORY = "category";
 
     private Product infoProduct;
 
@@ -47,6 +50,8 @@ public class ProductInfoFragment extends Fragment {
 
     private Button add_cart;
 
+    private int categoryId=0;
+
 
 
 
@@ -60,10 +65,11 @@ public class ProductInfoFragment extends Fragment {
      *
      * @return A new instance of fragment ProductInfoFragment.
      */
-    public static ProductInfoFragment newInstance(Product product) {
+    public static ProductInfoFragment newInstance(Product product,int category) {
         ProductInfoFragment fragment = new ProductInfoFragment();
         Bundle args = new Bundle();
         args.putSerializable(PRODUCT, product);
+        args.putInt(CATEGORY,category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,6 +79,7 @@ public class ProductInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             infoProduct = (Product) getArguments().getSerializable(PRODUCT);
+            categoryId = getArguments().getInt(CATEGORY) + 1;
         }
     }
 
@@ -91,22 +98,19 @@ public class ProductInfoFragment extends Fragment {
         add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Cart newItem = new Cart(infoProduct,quantity.getNumber());
+                Cart newItem = new Cart(infoProduct,quantity.getNumber(), Util.getCategoryById(categoryId));
                 ShoppingCartActivity.shoppingList.add(newItem);
+                Toast.makeText(v.getContext(), "Added to cart. "+categoryId, Toast.LENGTH_SHORT).show();
                 Log.i("Cart product object:", newItem.toString());
 
             }
         });
 
-
         //set fields with values
         single_img.setImageBitmap(infoProduct.getImage());
         productName.setText(infoProduct.getName());
-        quantity.setRange(0,100);
+        quantity.setRange(0,1000);
         prInfo.setText(infoProduct.getInfo());
-
-        //System.out.println("GOT ITTTTTTTTTTTTTT" + infoProduct.getName());
 
         return view ;
     }

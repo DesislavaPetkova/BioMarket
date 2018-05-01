@@ -94,7 +94,7 @@ public class Product implements Serializable {
         out.writeObject(imageURL);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        this.image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        this.image.compress(Bitmap.CompressFormat.JPEG, 100, stream); //TODO if image is null (NPE occurs) might handle it with a check !!!
         this.imageByteArray = stream.toByteArray();
         out.writeInt(imageByteArray.length);
         out.write(imageByteArray);
@@ -108,7 +108,7 @@ public class Product implements Serializable {
         this.origin = (String) in.readObject();
         this.imageURL = (String) in.readObject();
 
-        int imageLength = in.readInt();
+        int imageLength = in.readInt(); //TODO if image is null length will be '0' -> no image stored
         byte[] byteArray = new byte[imageLength];
         int pos = 0;
         do {

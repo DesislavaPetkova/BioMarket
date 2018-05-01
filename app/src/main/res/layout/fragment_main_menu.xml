@@ -38,15 +38,19 @@
                 <TextView
                     android:id="@+id/price_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1" />
 
                 <Button
-                    android:layout_width="53dp"
+                    android:id="@+id/bnt_add_cart"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_weight="1"
-                    android:text="To cart" />
+                    android:text="@string/addToCart" />
             </LinearLayout>
 
         </LinearLayout>

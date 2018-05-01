@@ -1,6 +1,7 @@
 package com.desislava.market.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,14 +41,16 @@ public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-      //  holder.mItem = mValues.get(position);
-        /*holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);*/
 
+        Cart cart=shoppingList.get(position);//TODO DO I NEED IT ?
+        holder.pr_cart= cart;
+        holder.imageView.setImageBitmap(cart.getProduct().getImage());
+        Log.e("F UUUUUU","**********************************************"+cart.getCategory());
+        holder.cartCategory.setText(cart.getCategory());
+        holder.productName.setText(cart.getProduct().getName());
+        holder.quantity.setText(cart.getQuantity());
 
-        holder.pr_cart=shoppingList.get(position); //TODO DO I NEED IT ?
-
-        holder.cartCategory
+        //holder.cartCategory;
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

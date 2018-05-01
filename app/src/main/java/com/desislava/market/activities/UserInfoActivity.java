@@ -1,10 +1,12 @@
 package com.desislava.market.activities;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import com.anton46.stepsview.StepsView;
@@ -19,10 +21,13 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        Window w=getWindow();
+        w.setStatusBarColor(Color.parseColor("#689B00"));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        Button bntContinue = findViewById(R.id.bntContinue);
+        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
+        toolbar.setTitle("User info");
         setSupportActionBar(toolbar);
-
+        Button bntContinue = findViewById(R.id.bntContinue);
         final StepsView stepsView = (StepsView) findViewById(R.id.stepsView);
         String[] steps = new String[]{"1", "2", "3"};
         stepsView.setLabels(steps)

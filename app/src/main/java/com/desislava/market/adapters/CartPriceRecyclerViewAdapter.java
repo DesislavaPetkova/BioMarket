@@ -16,13 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a Cart items and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPriceRecyclerViewAdapter.ViewHolder> {
 
-   private  ArrayList<Cart> shopList;
+    private  ArrayList<Cart> shopList;
     private final OnListFragmentInteractionListener mListener;
 
     public CartPriceRecyclerViewAdapter(ArrayList<Cart> shopList, OnListFragmentInteractionListener listener) {
@@ -39,9 +38,10 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-      /*  holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);*/
+        Cart current = shopList.get(position);
+        holder.pr_name.setText(current.getProduct().getName());
+        float productPrice = Float.parseFloat(current.getPrice());
+        holder.pr_price.setText(String.valueOf(productPrice * (Float.parseFloat(current.getQuantity()))));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,21 +61,18 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private  final View mView;
-       /* private  final TextView mIdView;
-        private  final TextView mContentView;*/
+        private final View mView;
+        private TextView pr_name;
+        private TextView pr_price;
         private Product product;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-           /* mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);*/
+            this.pr_name = view.findViewById(R.id.pr_name);
+            this.pr_price = view.findViewById(R.id.pr_price);
+
         }
 
-       /* @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }*/
     }
 }
