@@ -27,9 +27,16 @@ public class Cart {
     public String getQuantity() {
         return quantity;
     }
+    public int getQuantityInt(){
+
+        return Integer.parseInt(quantity);
+    }
 
     public String getPrice() {
         return price;
+    }
+    public float getPriceAsInt(){
+        return Float.parseFloat(price);
     }
 
     public String getCategory() {

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
@@ -42,16 +43,20 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
         initToolbar();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_cart);
         navigationView.setNavigationItemSelectedListener(this);
-        Button placeOrder=(Button)findViewById(R.id.place_order);
+        Button placeOrder = (Button) findViewById(R.id.place_order);
         placeOrder.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent placeOrder=new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
+                        Intent placeOrder = new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
                         startActivity(placeOrder);
                     }
                 }
         );
+
+        TextView total = findViewById(R.id.total);
+        Log.i("TOTAL", "       " + getTotalPrice());
+        total.setText(("" + getTotalPrice()));
     }
 
     private void initToolbar() {
@@ -80,10 +85,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected( MenuItem item){ //TODO use same switch from main activity same result expected
+    public boolean onNavigationItemSelected(MenuItem item) { //TODO use same switch from main activity same result expected
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.shopping_layout);
         int id = item.getItemId();
         switch (id) {
             case R.id.allProducts: //TODO no category  might not need it !!
@@ -103,10 +107,8 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
                 break;
         }
 
-        MenuListProductFragment fragment = MenuListProductFragment.newInstance(MainActivity.categoryId);
-
-
-
+        drawer.closeDrawer(GravityCompat.START);
+        finish();
         return true;
     }
 
@@ -119,7 +121,14 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     @Override
     public void onListFragmentInteraction(Cart cart) {
-
         Log.i("ShoppingCartActivity","onListFragmentInteraction====  clicked PRICE product");
+    }
+
+    public static float getTotalPrice() {
+        float total = 0;
+        for (Cart pr : shoppingList) {
+            total += pr.getQuantityInt() * pr.getPriceAsInt();
+        }
+        return total;
     }
 }

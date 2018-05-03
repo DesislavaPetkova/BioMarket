@@ -17,7 +17,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="addToCart">Add</string>
+    <string name="addToCart">Add to cart</string>
+    <string name="estimated_total">ESTIMATED TOTAL</string>
 
 
     <!--Spinner value weight-->

@@ -119,10 +119,10 @@ public class MenuListProductFragment extends Fragment {
         void onListFragmentInteraction(Product product,int categoryId); //,int category
     }
 
-    public void dataChange() {
+/*    public void dataChange() {
         if (adapter != null) {
             adapter.notifyDataSetChanged();
             Log.i("dataChange", "notifyDataSetChanged");
         }
-    }
+    }*/
 }

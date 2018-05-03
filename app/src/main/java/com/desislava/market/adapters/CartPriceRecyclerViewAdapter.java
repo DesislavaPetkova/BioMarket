@@ -24,7 +24,9 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
     private  ArrayList<Cart> shopList;
     private final OnListFragmentInteractionListener mListener;
 
-    public CartPriceRecyclerViewAdapter(ArrayList<Cart> shopList, OnListFragmentInteractionListener listener) {
+    //Todo handle ItemTouchHelper swipe to remove items from cart
+
+    public CartPriceRecyclerViewAdapter(ArrayList<Cart> shopList, OnListFragmentInteractionListener listener) { //TODO shopList is static no initialization
        this.shopList = shopList;
        this.mListener = listener;
     }

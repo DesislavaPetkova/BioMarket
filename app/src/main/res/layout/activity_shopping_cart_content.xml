@@ -11,7 +11,7 @@
         android:id="@+id/cart_item_fragment"
         android:name="com.desislava.market.fragments.CartFragment"
         android:layout_width="370dp"
-        android:layout_height="296dp"
+        android:layout_height="230dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,11 +24,14 @@
         android:name="com.desislava.market.fragments.PriceCartFragment"
         android:layout_width="370dp"
         android:layout_height="144dp"
-        android:layout_marginTop="304dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintTop_toBottomOf="@+id/cart_item_fragment"
         tools:layout="@layout/cart_price_fragment_list" />
+
+
+
 
 
     <android.support.design.widget.AppBarLayout
@@ -54,10 +57,45 @@
         android:layout_marginEnd="135dp"
         android:layout_marginStart="135dp"
         android:layout_weight="1"
+        android:background="@drawable/round_corners"
         android:text="Place Order"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/totalLayout"
+        android:layout_width="369dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/price_list_cart_fragment">
+
+        <TextView
+            android:id="@+id/txt_total"
+            android:layout_width="207dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/yellowCustom"
+            android:text="@string/estimated_total"
+            android:textColor="@color/greenCustom"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/yellowCustom"
+            android:textColor="@color/greenCustom"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -30,7 +30,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... strings) {
 //TODO Update service response depending on store request
-        String url = "http://192.168.0.106:8080/" + store;  //  home:192.168.0.103  work:172.22.173.184
+        String url = "http://172.22.173.184:8080/" + store;  //  home:192.168.0.103  work:172.22.173.184
         StringBuffer response = new StringBuffer();
         URL obj = null;
         try {

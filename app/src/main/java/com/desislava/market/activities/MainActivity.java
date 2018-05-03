@@ -1,6 +1,7 @@
 package com.desislava.market.activities;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.Product;
@@ -74,6 +76,10 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        ImageView navImage= hView.findViewById(R.id.imageView);
+        navImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kaufland)); //TODO might set the chosen  store or category as a image!!!
+
         navigationView.setNavigationItemSelectedListener(this);
     }
 

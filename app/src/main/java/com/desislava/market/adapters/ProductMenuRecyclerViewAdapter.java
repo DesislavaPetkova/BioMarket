@@ -53,21 +53,21 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.i(getClass()+" onBindViewHolder", "" + position);
+        Log.i(getClass() + " onBindViewHolder", "" + position);
         holder.product = storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().get(position);
-       // Log.e("F UUUUUUUUUUUUUUUUUUU ",holder.toString());
-        if(aSynchTask==null /*&& holder.mItem.getImage()==null*/) {  //TODO think of a way when activity is back to start (choosing store) to be able to download images again !!!!
+        if (aSynchTask == null /*&& holder.mItem.getImage()==null*/) {  //TODO think of a way when activity is back to start (choosing store) to be able to download images again !!!!
             ImageASynchTask aSynchTask = new ImageASynchTask(holder);
             aSynchTask.execute(holder.product.getImageURL());
-            Log.i(getClass()+" onBindViewHolder","ImageASynchTask is null.. Downloading..");
+            Log.i(getClass() + " onBindViewHolder", "ImageASynchTask is null.. Downloading..");
         }
-        holder.price.setText(holder.product.getPrice());
+        holder.price.setText((holder.product.getPrice() + " lv"));
+        holder.pr_name.setText(holder.product.getName());
         holder.imageView.setImageBitmap(holder.product.getImage());
 
         holder.cart_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cart singleProduct = new Cart(holder.product, "1", Util.getCategoryById(categoryId+1));
+                Cart singleProduct = new Cart(holder.product, "1", Util.getCategoryById(categoryId + 1));
                 ShoppingCartActivity.shoppingList.add(singleProduct);
                 Toast.makeText(v.getContext(), "Added to cart.Default quantity: 1", Toast.LENGTH_LONG).show();
             }
@@ -79,7 +79,7 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.product,categoryId);
+                    mListener.onListFragmentInteraction(holder.product, categoryId);
                 }
             }
         });
@@ -100,6 +100,7 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
         public final TextView price;
         public final ImageView imageView;
         public final Button cart_button;
+        public final TextView pr_name;
         public Product product;
 
         public ViewHolder(View view) {
@@ -108,6 +109,7 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
             this.price = view.findViewById(R.id.price_view);
             this.imageView = view.findViewById(R.id.product_image);
             this.cart_button = view.findViewById(R.id.bnt_add_cart);
+            this.pr_name=view.findViewById(R.id.productName);
         }
 
         /*@Override
