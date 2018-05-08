@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.desislava.market.activities.ShoppingCartActivity;
 import com.desislava.market.adapters.CartPriceRecyclerViewAdapter;
 import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
+import com.desislava.market.cart.helper.ShoppingCartHelper;
 import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.dummy.DummyContent.DummyItem;
 
@@ -23,13 +25,14 @@ import com.desislava.market.dummy.DummyContent.DummyItem;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class PriceCartFragment extends Fragment {
+public class PriceCartFragment extends Fragment /*implements ShoppingCartHelper.RecyclerItemTouchHelperListener*/ {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private CartPriceRecyclerViewAdapter adapter = null;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,7 +74,12 @@ public class PriceCartFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new CartPriceRecyclerViewAdapter(ShoppingCartActivity.shoppingList, mListener));
+            adapter = new CartPriceRecyclerViewAdapter(ShoppingCartActivity.shoppingList, mListener);
+            recyclerView.setAdapter(adapter);
+
+            //price swipe to remote product
+           /* ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ShoppingCartHelper(0,ItemTouchHelper.LEFT,this);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);*/
         }
         return view;
     }
@@ -92,6 +100,17 @@ public class PriceCartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+ /*   @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        System.out.println("HEREEEEEEEEEEEEEEEEEEEEE ###################################################");
+    }*/
+
+    public void adapterPriceRemove() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     /**

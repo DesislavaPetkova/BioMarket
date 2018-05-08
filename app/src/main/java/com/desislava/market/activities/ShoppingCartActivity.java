@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
+import com.desislava.market.cart.helper.ShoppingCartHelper;
 import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.fragments.CartFragment;
 import com.desislava.market.fragments.MenuListProductFragment;
@@ -27,12 +30,16 @@ import com.desislava.market.fragments.PriceCartFragment;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingCartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
                                                                        CartFragment.OnListFragmentInteractionListener,
-                                                                        PriceCartFragment.OnListFragmentInteractionListener {
+                                                                        PriceCartFragment.OnListFragmentInteractionListener ,
+                                                                         ShoppingCartHelper.RecyclerItemTouchHelperListener {
 
     public static ArrayList<Cart> shoppingList=new ArrayList<>();
+    private CartFragment cartFragment;
+    private PriceCartFragment priceCartFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +61,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
                 }
         );
 
+        //initFragmentManagers();
+
         TextView total = findViewById(R.id.total);
-        Log.i("TOTAL", "       " + getTotalPrice());
         total.setText(("" + getTotalPrice()));
     }
 
@@ -112,23 +120,38 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
         return true;
     }
 
-//    @Override
-//    public void onListFragmentInteraction(Product product) {
-//
-//        Log.i("ShoppingCartActivity","onListFragmentInteraction==== clicked product");
-//
-//    }
-
     @Override
     public void onListFragmentInteraction(Cart cart) {
         Log.i("ShoppingCartActivity","onListFragmentInteraction====  clicked PRICE product");
     }
 
-    public static float getTotalPrice() {
+    private float getTotalPrice() {
         float total = 0;
         for (Cart pr : shoppingList) {
             total += pr.getQuantityInt() * pr.getPriceAsInt();
         }
         return total;
+    }
+
+
+    private void initFragmentManagers() {
+        List<Fragment> mng = getSupportFragmentManager().getFragments();
+        Log.i("Fragments size :  ", ""+mng.size());
+        cartFragment = (CartFragment) mng.get(0);
+        priceCartFragment = (PriceCartFragment) mng.get(1);
+        if (cartFragment == null || priceCartFragment == null) {
+            throw new ExceptionInInitializerError("Could not get fragment managers");
+        }
+    }
+
+
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        initFragmentManagers();
+        cartFragment.adapterRemove(viewHolder);
+        priceCartFragment.adapterPriceRemove();
+        System.out.println("WORKING CART ACTIVITY &&&&&&&&&&&&&&&&&&&&&&&&&&");
+
     }
 }

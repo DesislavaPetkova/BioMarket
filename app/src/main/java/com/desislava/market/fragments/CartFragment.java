@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.desislava.market.activities.ShoppingCartActivity;
 import com.desislava.market.adapters.MyCartRecyclerViewAdapter;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
+import com.desislava.market.cart.helper.ShoppingCartHelper;
 import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.dummy.DummyContent.DummyItem;
 
@@ -31,7 +33,8 @@ public class CartFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    private ShoppingCartHelper.RecyclerItemTouchHelperListener swiperListener;
+    private MyCartRecyclerViewAdapter adapter =null;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -72,7 +75,11 @@ public class CartFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyCartRecyclerViewAdapter(ShoppingCartActivity.shoppingList, mListener));
+            adapter = new MyCartRecyclerViewAdapter(ShoppingCartActivity.shoppingList, mListener);
+            recyclerView.setAdapter(adapter);
+            // be able to remote items with swipe
+            ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ShoppingCartHelper(0,ItemTouchHelper.LEFT,swiperListener);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         }
         return view;
     }
@@ -81,8 +88,9 @@ public class CartFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
+        if (context instanceof OnListFragmentInteractionListener && context instanceof ShoppingCartHelper.RecyclerItemTouchHelperListener) {
             mListener = (OnListFragmentInteractionListener) context;
+            swiperListener= (ShoppingCartHelper.RecyclerItemTouchHelperListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -93,6 +101,21 @@ public class CartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        swiperListener=null;
+    }
+
+/*    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (adapter != null) {
+            adapter.removeItem(viewHolder.getAdapterPosition());
+        }
+        System.out.println("HEREEEEEEEE WE ARE ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    }*/
+
+    public void adapterRemove(RecyclerView.ViewHolder viewHolder) {
+        if (adapter != null) {
+            adapter.removeItem(viewHolder.getAdapterPosition());
+        }
     }
 
     /**

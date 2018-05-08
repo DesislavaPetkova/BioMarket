@@ -8,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.desislava.market.activities.ShoppingCartActivity;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
+import com.desislava.market.cart.helper.ShoppingCartHelper;
 import com.desislava.market.fragments.CartFragment.OnListFragmentInteractionListener;
 import com.desislava.market.R;
 import com.desislava.market.dummy.DummyContent.DummyItem;
@@ -20,7 +22,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a list with items and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecyclerViewAdapter.ViewHolder> {
 
@@ -45,7 +46,6 @@ public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecycl
         Cart cart=shoppingList.get(position);//TODO DO I NEED IT ?
         holder.pr_cart= cart;
         holder.imageView.setImageBitmap(cart.getProduct().getImage());
-        Log.e("F UUUUUU","**********************************************"+cart.getCategory());
         holder.cartCategory.setText(cart.getCategory());
         holder.productName.setText(cart.getProduct().getName());
         holder.quantity.setText(cart.getQuantity());
@@ -69,6 +69,12 @@ public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecycl
         return shoppingList.size();
     }
 
+    public void removeItem(int position){
+        ShoppingCartActivity.shoppingList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final View mView;
@@ -90,4 +96,5 @@ public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecycl
         }
 
     }
+
 }

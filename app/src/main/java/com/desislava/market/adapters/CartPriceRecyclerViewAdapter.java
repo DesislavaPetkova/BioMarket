@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.desislava.market.R;
+import com.desislava.market.activities.ShoppingCartActivity;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
 import com.desislava.market.fragments.PriceCartFragment.OnListFragmentInteractionListener;
@@ -23,8 +24,6 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
 
     private  ArrayList<Cart> shopList;
     private final OnListFragmentInteractionListener mListener;
-
-    //Todo handle ItemTouchHelper swipe to remove items from cart
 
     public CartPriceRecyclerViewAdapter(ArrayList<Cart> shopList, OnListFragmentInteractionListener listener) { //TODO shopList is static no initialization
        this.shopList = shopList;
@@ -62,6 +61,11 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
         return shopList.size();
     }
 
+    public void removeItem(int position){
+        ShoppingCartActivity.shoppingList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final View mView;
         private TextView pr_name;
@@ -77,4 +81,5 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
         }
 
     }
+
 }
