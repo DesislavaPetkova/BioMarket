@@ -63,7 +63,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
             }
             in.close();
         } catch (Exception e) {
-            Log.e("FUCK","Exception");
+            Log.e("PORBLEMMMMMM ","Exception");
             ex=e;
         }
         return response.toString();
