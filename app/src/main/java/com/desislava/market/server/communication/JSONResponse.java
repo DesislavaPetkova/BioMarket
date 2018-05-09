@@ -33,6 +33,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
         String url = "http://172.22.173.184:8080/" + store;  //  home:192.168.0.103  work:172.22.173.184
         StringBuffer response = new StringBuffer();
         URL obj = null;
+
         try {
             obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -49,7 +50,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
             }
             in.close();
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new RuntimeException("Server is not available for store " + store + ".Please try again later! ");
         }
         return response.toString();
     }

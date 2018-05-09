@@ -50,6 +50,8 @@ public class ProductInfoFragment extends Fragment {
 
     private Button add_cart;
 
+    private Button bnt_price;
+
     private int categoryId=0;
 
 
@@ -94,6 +96,7 @@ public class ProductInfoFragment extends Fragment {
         prInfo = view.findViewById(R.id.txt_info);
         quantity = view.findViewById(R.id.incdec);
         product_weight = view.findViewById(R.id.productWeight);
+        bnt_price = view.findViewById(R.id.bnt_price);
         add_cart = view.findViewById(R.id.add_cart);
         add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +114,7 @@ public class ProductInfoFragment extends Fragment {
         productName.setText(infoProduct.getName());
         quantity.setRange(0,1000);
         prInfo.setText(infoProduct.getInfo());
+        bnt_price.setText((infoProduct.getPrice()+" lv"));
 
         return view ;
     }
