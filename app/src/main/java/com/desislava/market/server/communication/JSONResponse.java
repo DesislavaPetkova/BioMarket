@@ -1,10 +1,12 @@
 package com.desislava.market.server.communication;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.desislava.market.activities.MainActivity;
-import com.desislava.market.R;
 import com.desislava.market.fragments.MenuListProductFragment;
 
 import org.json.JSONException;
@@ -19,12 +21,24 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
 
     private MenuListProductFragment fragment;
     private String store;
-   // private MainActivity activity;
+    //private MainActivity activity;
+   private ProgressDialog dialog;
+   private  AlertDialog.Builder alertDialogBuilder ;
+   private Exception ex=null;
 
-    public JSONResponse(MainActivity mainActivity, String store) {
+
+    public JSONResponse(final MainActivity mainActivity, String store) {
         this.store = store;
-       // this.activity=mainActivity;
-       // fragment = (MenuListProductFragment) mainActivity.getSupportFragmentManager().findFragmentById(R.id.fragment_main_menu_list);
+        dialog = new ProgressDialog(mainActivity);
+        alertDialogBuilder = new AlertDialog.Builder(mainActivity);
+        alertDialogBuilder.setMessage("FUCKED UP server !")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mainActivity.finish();
+                    }
+                });
+
     }
 
     @Override
@@ -33,7 +47,6 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
         String url = "http://169.24.35.30:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
         StringBuffer response = new StringBuffer();
         URL obj = null;
-
         try {
             obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -50,7 +63,8 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
             }
             in.close();
         } catch (Exception e) {
-           throw new RuntimeException("Server is not available for store " + store + ".Please try again later! ");
+            Log.e("FUCK","Exception");
+            ex=e;
         }
         return response.toString();
     }
@@ -58,21 +72,27 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String object) {
         Log.i("onPostExecute", "Enter with response");
-        ParseServerResponse parseServerResponse = new ParseServerResponse();
-        try {
-            parseServerResponse.allStoresParseResponse(object);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-       /* if(fragment==null){
-            fragment = (MenuListProductFragment) activity.getSupportFragmentManager().findFragmentById(R.id.fragment_main_menu_list);
-        }
-        if (fragment != null) {
-            Log.i("onPostExecute", "Data changed");
-            fragment.dataChange();
+        if(dialog.isShowing() && ex==null) {
+            ParseServerResponse parseServerResponse = new ParseServerResponse();
+            try {
+                parseServerResponse.allStoresParseResponse(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            dialog.dismiss();
         }else{
-            Log.e("HUGE PROBLEM ","WITH FRAGMENT INFO CHANGE");
-        }*/
+            dialog.cancel();
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+        }
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+        dialog.setMessage("Loading... please wait.");
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
 
     }
 }
