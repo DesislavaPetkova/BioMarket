@@ -15,12 +15,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ship Address"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_gravity="center_horizontal"/>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
+        <Switch
+            android:id="@+id/location"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:text="Take current location"
+            android:textSize="14sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
         <EditText
             android:id="@+id/shipUser"
@@ -33,39 +45,52 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="10dp" />
+            android:layout_height="20dp" />
 
         <EditText
             android:id="@+id/txtAddress"
-            android:layout_gravity="center_horizontal"
             android:layout_width="300dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:text="Address"/>
+            android:text="Address" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-
-        <Spinner
-            android:id="@+id/spinnerDistrict"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="District"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
 
         <Spinner
             android:id="@+id/spinnerCity"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="District"/>
+            android:entries="@array/city"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <Spinner
+            android:id="@+id/spinnerDistrict"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:entries="@array/district" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="64dp" />
+
+        <Button
+            android:id="@+id/bnt_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Place Order"
+            android:background="@drawable/round_corners"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

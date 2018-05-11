@@ -20,6 +20,10 @@ public class UserInfo  {
     String district;
     String city;
 
+    public UserInfo(){
+
+    }
+
     public UserInfo(String email, String name, String username, String password, String phone, String address, String district, String city) {
         this.email = email;
         this.name = name;

@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.desislava.market.R;
 
@@ -30,6 +33,8 @@ public class AddressUserFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private Button next;
 
     public AddressUserFragment() {
         // Required empty public constructor
@@ -66,16 +71,30 @@ public class AddressUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_address_user, container, false);
+        final View view=inflater.inflate(R.layout.fragment_address_user, container, false);
+        next=view.findViewById(R.id.bnt_address);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView name=view.findViewById(R.id.shipUser);
+                TextView addressShip=view.findViewById(R.id.txtAddress);
+                Spinner districtv=view.findViewById(R.id.spinnerDistrict);
+                Spinner city=view.findViewById(R.id.spinnerCity);
+                if (mListener != null) {
+                    mListener.onFragmentInteraction(name.getText(),addressShip.getText(),districtv.getSelectedItem(),city.getSelectedItem());// TODO handle on city change -> district change also relocate them
+                }
+            }
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+   /* // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String view) {
         if (mListener != null) {
             mListener.onFragmentInteraction(view);
         }
     }
-
+*/
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -104,7 +123,7 @@ public class AddressUserFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(String view);
+
+        void onFragmentInteraction(CharSequence text, CharSequence text1, Object selectedItem, Object selectedItem1);
     }
 }

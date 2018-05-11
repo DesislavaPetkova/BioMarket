@@ -82,5 +82,19 @@
             android:inputType="textPersonName"
             android:text="Phone" />
 
+        <Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/bnt_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:background="@drawable/round_corners"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"/>
+
     </LinearLayout>
 </FrameLayout>

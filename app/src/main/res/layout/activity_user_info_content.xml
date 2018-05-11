@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="454dp"
+        android:layout_height="509dp"
         android:orientation="vertical">
 
         <com.anton46.stepsview.StepsView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,14 +23,14 @@
         <FrameLayout
             android:id="@+id/fragment_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="420dp">
 
         </FrameLayout>
 
 
     </LinearLayout>
 
-    <Button
+  <!--  <Button
         android:id="@+id/bntContinue"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         android:text="Continue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />-->
 
 
 </android.support.constraint.ConstraintLayout>

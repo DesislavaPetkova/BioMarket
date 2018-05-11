@@ -20,6 +20,19 @@
     <string name="addToCart">Add to cart</string>
     <string name="estimated_total">ESTIMATED TOTAL</string>
     <string name="add_to_cart">Add to Cart</string>
+    <string-array name="district">
+        <item>District</item>
+        <item>Studentski grad</item>
+        <item>Geo Milev</item>
+        <item>Hladilnika</item>
+        <item>Dianabat</item>
+    </string-array>
+
+    <string-array name="city">
+        <item>City</item>
+        <item>Sofia</item>
+        <item>Plovdiv</item>
+    </string-array>
 
 
     <!--Spinner value weight-->

@@ -4,11 +4,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.desislava.market.R;
+import com.desislava.market.beans.UserInfo;
 
 
 /**
@@ -20,25 +24,57 @@ import com.desislava.market.R;
 public class ShopperInfoFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private Button next;
 
     public ShopperInfoFragment() {
         // Required empty public constructor
     }
 
+    public static ShopperInfoFragment newInstance(String param1, String param2) {
+        ShopperInfoFragment fragment = new ShopperInfoFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            //TODO get argument from bundle
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopper_info, container, false);
+        final View view = inflater.inflate(R.layout.fragment_shopper_info, container, false);
+        next = view.findViewById(R.id.bnt_next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView email=view.findViewById(R.id.txtMail);
+                TextView full=view.findViewById(R.id.shopperName);
+                TextView username=view.findViewById(R.id.txtUsername);
+                TextView pass=view.findViewById(R.id.txtPassword);
+                TextView phone=view.findViewById(R.id.txtPhone);
+                //TODO check if null !!!!!!!
+
+                if (mListener != null) {
+                    mListener.onFragmentInteraction(email.getText(),full.getText(),username.getText(),pass.getText(),phone.getText());  //TODO can pass the entire bean ot fields to the activity
+                }
+            }
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+   /* // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -68,7 +104,7 @@ public class ShopperInfoFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+        void onFragmentInteraction(CharSequence text, CharSequence text1, CharSequence text2, CharSequence text3, CharSequence text4);
     }
 }
