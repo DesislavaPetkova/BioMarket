@@ -8,29 +8,33 @@
     tools:context="com.desislava.market.activities.StartActivity"
     tools:showIn="@layout/activity_start">
 
-    <LinearLayout
-        android:id="@+id/layoutStart"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/lidlImgBnt"
+        <LinearLayout
+            android:id="@+id/layoutStart"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/lidl"
-            android:onClick="onClick"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/lidlImgBnt"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/lidl"
+                android:onClick="onClick" />
 
 
-        <ImageButton
-            android:id="@+id/kauflandImgBnt"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/kaufland"
-            android:onClick="onClick"/>
+            <ImageButton
+                android:id="@+id/kauflandImgBnt"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/kaufland"
+                android:onClick="onClick" />
 
 
-    </LinearLayout>
-
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -14,70 +14,80 @@ import com.anton46.stepsview.StepsView;
 import com.desislava.market.R;
 import com.desislava.market.beans.UserInfo;
 import com.desislava.market.fragments.AddressUserFragment;
+import com.desislava.market.fragments.LocationFragment;
 import com.desislava.market.fragments.ShopperInfoFragment;
 
 public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFragment.OnFragmentInteractionListener,
-                                                                    AddressUserFragment.OnFragmentInteractionListener {
+        AddressUserFragment.OnFragmentInteractionListener, LocationFragment.OnFragmentInteractionListener {
 
-
-    StepsView stepsView;
-
+    //private static final String STATE = "state";
+    private StepsView stepsView;
     UserInfo info = new UserInfo();
+    private boolean isLocaionChecked;
+    //private int mState;
+    private static  int position = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initToolbar();
         //Button bntContinue = findViewById(R.id.bntContinue);
+
         stepsView = (StepsView) findViewById(R.id.stepsView);
-        String[] steps = new String[]{"1", "2", "3"};
+        String[] steps = new String[]{"User info", "Address", "Place order"};
+
         stepsView.setLabels(steps)
                 .setBarColorIndicator(getResources().getColor(R.color.material_blue_grey_800))
                 .setProgressColorIndicator(getResources().getColor(R.color.orange))
                 .setLabelColorIndicator(getResources().getColor(R.color.orange))
-                .setCompletedPosition(0)
+                .setCompletedPosition(position)
                 .drawView();
-
-
-        ShopperInfoFragment shopperInfoFragment = ShopperInfoFragment.newInstance("","");
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_info,shopperInfoFragment,"shopper Info").commit();
-
-       /* bntContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddressUserFragment addressUserFragment = AddressUserFragment.newInstance("","");
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_info,addressUserFragment,"address info").commit();
-                stepsView.setCompletedPosition(1).drawView();
-                addressUserFragment.onButtonPressed("Button");
-            }
-        });*/
+        if (savedInstanceState == null) {
+            ShopperInfoFragment shopperInfoFragment = ShopperInfoFragment.newInstance("", "");
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_info, shopperInfoFragment, "shopper Info").commit();
+        }
     }
 
-
-
-
     @Override
-    public void onFragmentInteraction(CharSequence email, CharSequence name, CharSequence user, CharSequence pass, CharSequence phone) { //TODOmight create a bean for this
-        info.setEmail(""+ email);
-        info.setName(""+ name);
-        info.setUsername(""+user);
-        info.setPassword(""+pass);
-        info.setPassword(""+phone);
-
-        AddressUserFragment addressUserFragment = AddressUserFragment.newInstance("","");
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_info,addressUserFragment,"address info").commit();
-        stepsView.setCompletedPosition(1).drawView();
+    public void userInfoInteraction(CharSequence email, CharSequence name, CharSequence user, CharSequence pass, CharSequence phone) {
+        //TODO might create a bean for this  option not to enter this every time
+        info.setEmail("" + email);
+        info.setName("" + name);
+        info.setUsername("" + user);
+        info.setPassword("" + pass);
+        info.setPassword("" + phone);
+        position = 1;
+        AddressUserFragment addressUserFragment = AddressUserFragment.newInstance("", "");
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_info, addressUserFragment, "address info").commit();
+        stepsView.setCompletedPosition(position).drawView();
 
     }
 
     @Override
-    public void onFragmentInteraction(CharSequence user, CharSequence address, Object dist, Object city) {
+    public void addressInteraction(CharSequence user, CharSequence address, Object dist, Object city) {
+        if (!isLocaionChecked) {
+            info.setAddress("" + address);
+            info.setDistrict("" + dist);
+            info.setCity("" + city);
+        }
+        position = 2;
+        LocationFragment location = LocationFragment.newInstance(isLocaionChecked, info);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_info, location, "location").commit();
+        stepsView.setCompletedPosition(position).drawView();
+        Log.e("FINALY .........", info.toString());
 
-        info.setAddress(""+address);
-        info.setDistrict(""+dist);
-        info.setCity(""+city);
-        Log.e("FINALY .........",info.toString());
+    }
 
+
+    @Override
+    public void locationInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void isChecked(boolean checked) {
+        this.isLocaionChecked = checked;
     }
 
 

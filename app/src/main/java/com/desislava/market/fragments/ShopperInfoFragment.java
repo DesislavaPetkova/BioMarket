@@ -62,7 +62,7 @@ public class ShopperInfoFragment extends Fragment {
                 //TODO check if null !!!!!!!
 
                 if (mListener != null) {
-                    mListener.onFragmentInteraction(email.getText(),full.getText(),username.getText(),pass.getText(),phone.getText());  //TODO can pass the entire bean ot fields to the activity
+                    mListener.userInfoInteraction(email.getText(),full.getText(),username.getText(),pass.getText(),phone.getText());  //TODO can pass the entire bean ot fields to the activity
                 }
             }
         });
@@ -105,6 +105,6 @@ public class ShopperInfoFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
 
-        void onFragmentInteraction(CharSequence text, CharSequence text1, CharSequence text2, CharSequence text3, CharSequence text4);
+        void userInfoInteraction(CharSequence text, CharSequence text1, CharSequence text2, CharSequence text3, CharSequence text4);
     }
 }

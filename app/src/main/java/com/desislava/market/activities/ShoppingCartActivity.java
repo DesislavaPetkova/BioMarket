@@ -53,6 +53,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //TODO check if cart is empty and if os return back to store !!
                         Intent placeOrder = new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
                         startActivity(placeOrder);
                     }

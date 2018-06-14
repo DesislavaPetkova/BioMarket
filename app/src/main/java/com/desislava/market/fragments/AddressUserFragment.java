@@ -4,11 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.desislava.market.R;
@@ -35,6 +40,8 @@ public class AddressUserFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private Button next;
+
+    private Switch current;
 
     public AddressUserFragment() {
         // Required empty public constructor
@@ -71,22 +78,51 @@ public class AddressUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view=inflater.inflate(R.layout.fragment_address_user, container, false);
-        next=view.findViewById(R.id.bnt_address);
+        final View view = inflater.inflate(R.layout.fragment_address_user, container, false);
+        next = view.findViewById(R.id.bnt_place_order);
+        final EditText name = view.findViewById(R.id.shipUser);
+        final EditText addressShip = view.findViewById(R.id.txtAddress);
+        final Spinner district = view.findViewById(R.id.spinnerDistrict);
+        final Spinner city = view.findViewById(R.id.spinnerCity);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView name=view.findViewById(R.id.shipUser);
-                TextView addressShip=view.findViewById(R.id.txtAddress);
-                Spinner districtv=view.findViewById(R.id.spinnerDistrict);
-                Spinner city=view.findViewById(R.id.spinnerCity);
                 if (mListener != null) {
-                    mListener.onFragmentInteraction(name.getText(),addressShip.getText(),districtv.getSelectedItem(),city.getSelectedItem());// TODO handle on city change -> district change also relocate them
+                    mListener.addressInteraction(name.getText(), addressShip.getText(), district.getSelectedItem(), city.getSelectedItem());// TODO handle on city change -> district change also relocate them
                 }
             }
         });
+
+        current = view.findViewById(R.id.isCurrent);
+        current.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.i("onCheckedChanged  ", "" + isChecked);
+                disableField(!isChecked);
+                if (mListener != null) {
+                    mListener.isChecked(isChecked);
+                }
+            }
+
+            private void disableField(boolean isEnabled) {
+                name.setEnabled(isEnabled);
+                name.setFocusable(isEnabled);
+                addressShip.setEnabled(isEnabled);
+                addressShip.setFocusable(isEnabled);
+                district.setEnabled(isEnabled);
+                district.setFocusable(isEnabled);
+                city.setEnabled(isEnabled);
+                city.setFocusable(isEnabled);
+
+            }
+
+        });
         return view;
     }
+
+
 
    /* // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String view) {
@@ -124,6 +160,8 @@ public class AddressUserFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
 
-        void onFragmentInteraction(CharSequence text, CharSequence text1, Object selectedItem, Object selectedItem1);
+        void addressInteraction(CharSequence text, CharSequence text1, Object selectedItem, Object selectedItem1);
+
+        void isChecked(boolean checked);
     }
 }

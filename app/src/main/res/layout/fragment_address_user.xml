@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     tools:context="com.desislava.market.fragments.AddressUserFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,7 +22,7 @@
             android:layout_height="10dp" />
 
         <Switch
-            android:id="@+id/location"
+            android:id="@+id/isCurrent"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -84,7 +83,7 @@
             android:layout_height="64dp" />
 
         <Button
-            android:id="@+id/bnt_address"
+            android:id="@+id/bnt_place_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Place Order"

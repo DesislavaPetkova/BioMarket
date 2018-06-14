@@ -70,7 +70,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
                 }
                 in.close();
             }else{
-                ex=new IOException();
+                ex = new IOException();
             }
         } catch (Exception e) {
             Log.e("doInBackground ", "" +e);
