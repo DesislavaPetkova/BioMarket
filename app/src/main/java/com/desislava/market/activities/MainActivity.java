@@ -30,7 +30,7 @@ import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener,JSONResponse.Response {
 
     private FrameLayout frameLayout;
     private CoordinatorLayout.LayoutParams params;
@@ -184,4 +184,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-  }
+    @Override
+    public void updateAdapter() {
+        Log.e("FINALLLLY HEREEE ","AND UPDATEDD &&&&&&&&&&&&&&&&&&&&&&& "+categoryId);
+        updateFragment(1);
+    }
+}
