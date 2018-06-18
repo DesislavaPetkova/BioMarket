@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateAdapter() {
-        Log.e("FINALLLLY HEREEE ","AND UPDATEDD &&&&&&&&&&&&&&&&&&&&&&& "+categoryId);
+        Log.e("updateAdapter ","Info updated   "+categoryId);
         updateFragment(1);
     }
 }
