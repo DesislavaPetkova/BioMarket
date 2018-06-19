@@ -27,13 +27,7 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_info);
-        Window w=getWindow();
-        w.setStatusBarColor(Color.parseColor("#689B00"));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
-        toolbar.setTitle("User info");
-        setSupportActionBar(toolbar);
+        initToolbar();
         //Button bntContinue = findViewById(R.id.bntContinue);
         stepsView = (StepsView) findViewById(R.id.stepsView);
         String[] steps = new String[]{"1", "2", "3"};
@@ -83,6 +77,20 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
         info.setDistrict(""+dist);
         info.setCity(""+city);
         Log.e("FINALY .........",info.toString());
+
+    }
+
+
+    private void initToolbar(){
+        setContentView(R.layout.activity_user_info);
+        Window w=getWindow();
+        w.setStatusBarColor(Color.parseColor("#689B00"));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
+        toolbar.setTitle("User info");
+        setSupportActionBar(toolbar);
+
+
 
     }
 }

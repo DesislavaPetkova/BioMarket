@@ -4,10 +4,10 @@ package com.desislava.market.utils;
 
 public class Constants {
 
-
+public static final String COLOR="#689B00";
+public static final String MARKET="Market";
 public static final String LIDL="lidl";
 public static final String KAUFLAND="kaufland";
-public static final String hell="kaufland";
 
 
 public static final String FRIUTS="fruits";

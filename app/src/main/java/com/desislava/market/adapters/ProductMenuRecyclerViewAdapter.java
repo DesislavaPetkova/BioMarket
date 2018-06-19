@@ -17,17 +17,13 @@ import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
 import com.desislava.market.beans.Store;
 import com.desislava.market.fragments.MenuListProductFragment.OnListFragmentInteractionListener;
-import com.desislava.market.dummy.DummyContent.DummyItem;
 import com.desislava.market.server.communication.ImageASynchTask;
 import com.desislava.market.server.communication.ParseServerResponse;
 import com.desislava.market.utils.Util;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- */
+
 public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<ProductMenuRecyclerViewAdapter.ViewHolder> {
 
     private final List<Store> storeContent;
@@ -37,7 +33,7 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
 
     @SuppressLint("LongLogTag")
     public ProductMenuRecyclerViewAdapter(int categoryId, OnListFragmentInteractionListener listener) {
-        Log.d(getClass()+" CONSTRUCTOR", "ENTER");
+        Log.d(""+getClass(), "Constructor - ENTER");
         this.categoryId = categoryId - 1;
         storeContent = ParseServerResponse.storeList;
         mListener = listener;

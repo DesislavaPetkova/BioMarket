@@ -16,8 +16,6 @@ import com.desislava.market.adapters.CartPriceRecyclerViewAdapter;
 import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.cart.helper.ShoppingCartHelper;
-import com.desislava.market.dummy.DummyContent;
-import com.desislava.market.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
