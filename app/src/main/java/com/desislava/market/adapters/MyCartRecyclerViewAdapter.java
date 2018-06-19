@@ -14,7 +14,6 @@ import com.desislava.market.beans.Product;
 import com.desislava.market.cart.helper.ShoppingCartHelper;
 import com.desislava.market.fragments.CartFragment.OnListFragmentInteractionListener;
 import com.desislava.market.R;
-import com.desislava.market.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,10 +22,10 @@ import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
 import com.desislava.market.beans.Product;
 import com.desislava.market.cart.helper.ShoppingCartHelper;
-import com.desislava.market.dummy.DummyContent;
 import com.desislava.market.fragments.CartFragment;
 import com.desislava.market.fragments.MenuListProductFragment;
 import com.desislava.market.fragments.PriceCartFragment;
+import com.desislava.market.utils.Constants;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -40,13 +39,12 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
     public static ArrayList<Cart> shoppingList=new ArrayList<>();
     private CartFragment cartFragment;
     private PriceCartFragment priceCartFragment;
+    private  TextView total ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-        Window w = getWindow();
-        w.setStatusBarColor(Color.parseColor("#689B00")); //Todo might be a constant(the color)
         initToolbar();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_cart);
         navigationView.setNavigationItemSelectedListener(this);
@@ -62,14 +60,15 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
         );
 
         //initFragmentManagers();
-
-        TextView total = findViewById(R.id.total);
-        total.setText(("" + getTotalPrice()));
+       total = findViewById(R.id.total);
+       total.setText(("" + getTotalPrice()));
     }
 
     private void initToolbar() {
+        Window w = getWindow();
+        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCart);
-        toolbar.setBackgroundColor(Color.parseColor("#689B00"));//Todo might be a constant(the color)
+        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
         toolbar.setTitle("Shopping cart"); //TODo constant
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -122,7 +121,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     @Override
     public void onListFragmentInteraction(Cart cart) {
-        Log.i("ShoppingCartActivity","onListFragmentInteraction====  clicked PRICE product");
+        Log.i("ShoppingCartActivity","onListFragmentInteraction====  clicked PRICE product"); //TOdo check if 1 it should be only 1 interface handling 2 actions
     }
 
     private float getTotalPrice() {
@@ -136,7 +135,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     private void initFragmentManagers() {
         List<Fragment> mng = getSupportFragmentManager().getFragments();
-        Log.i("Fragments size :  ", ""+mng.size());
+        //Log.i("Fragments size :  ", ""+mng.size());
         cartFragment = (CartFragment) mng.get(0);
         priceCartFragment = (PriceCartFragment) mng.get(1);
         if (cartFragment == null || priceCartFragment == null) {
@@ -148,10 +147,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        Log.i("On Swipe - UPDATE","Item removed  update adapters total price updated");
         initFragmentManagers();
         cartFragment.adapterRemove(viewHolder);
         priceCartFragment.adapterPriceRemove();
-        System.out.println("WORKING CART ACTIVITY &&&&&&&&&&&&&&&&&&&&&&&&&&");
+        total.setText(("" + getTotalPrice()));
 
     }
 }

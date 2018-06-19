@@ -39,19 +39,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Window w=getWindow();
-        w.setStatusBarColor(Color.parseColor("#689B00"));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Market");
-        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
-        setSupportActionBar(toolbar);
-
+        initToolbar();
         String store = getIntent().getStringExtra(Constants.STORE);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        initStore(store);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         frameLayout = (FrameLayout) findViewById(R.id.menuListInfoProduct);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,15 +56,10 @@ public class MainActivity extends AppCompatActivity
 
         MenuListProductFragment menuFragment = MenuListProductFragment.newInstance(1);
         getSupportFragmentManager().beginTransaction().replace(R.id.menuListInfoProduct, menuFragment, "menulist").commit();
-        initStore(store);
 
         params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
         params.setMargins(0, 300, 0, 0);
         frameLayout.setLayoutParams(params);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -154,13 +140,14 @@ public class MainActivity extends AppCompatActivity
 
         if (fragmentManager != null) {
             fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, productInfoFragment).addToBackStack(null).commit();
-            params.setMargins(0, 50, 0, 0);
+            params.setMargins(0, 80, 0, 0);
             frameLayout.setLayoutParams(params);
         }
 
     }
 
     private void initStore(String store) {
+        Log.d("MainActivity initStore ","Enter");
         try {
             JSONResponse json = new JSONResponse(this, store);
             json.execute();
@@ -186,7 +173,25 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateAdapter() {
-        Log.e("updateAdapter ","Info updated   "+categoryId);
+        Log.e("MainActivity","updateAdapter - Enter categoryId: " + categoryId);
         updateFragment(1);
     }
+
+
+    private void initToolbar() {
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setContentView(R.layout.activity_main);
+        Window w = getWindow();
+        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(Constants.MARKET);
+        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+    }
+
 }

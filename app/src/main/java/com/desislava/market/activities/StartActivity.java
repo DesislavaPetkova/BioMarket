@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.desislava.market.R;
+import com.desislava.market.utils.Constants;
 
 import static com.desislava.market.utils.Constants.KAUFLAND;
 import static com.desislava.market.utils.Constants.LIDL;
@@ -23,9 +24,9 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         Window w=getWindow();
-        w.setStatusBarColor(Color.parseColor("#689B00"));
+        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
+        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
         toolbar.setTitle("Choose market");
         setSupportActionBar(toolbar);
 /*
@@ -35,13 +36,13 @@ public class StartActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         String store = LIDL;
-//TODO might add all stores products show
+        //TODO might add all stores products show
         if (view.getId() == R.id.kauflandImgBnt) {
             store = KAUFLAND;
-            Toast.makeText(this, "Kaufland store", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Kaufland store", Toast.LENGTH_SHORT).show(); //Todo rename stores
 
         } else {
-            Toast.makeText(this, "Lidl store", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Lidl store", Toast.LENGTH_SHORT).show(); //Todo rename stores
         }
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         intent.putExtra(STORE, store);
