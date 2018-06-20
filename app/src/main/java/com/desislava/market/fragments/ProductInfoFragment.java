@@ -54,6 +54,8 @@ public class ProductInfoFragment extends Fragment {
 
     private int categoryId=0;
 
+    private ImageView coverImage;
+
 
 
 
@@ -91,7 +93,9 @@ public class ProductInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_info, container, false);
         //init fields
-        single_img = view.findViewById(R.id.single_product_info_img);
+        coverImage=getActivity().findViewById(R.id.coverImage);
+
+        //ingle_img = view.findViewById(R.id.single_product_info_img);
         productName = view.findViewById(R.id.lbl_product);
         prInfo = view.findViewById(R.id.txt_info);
         quantity = view.findViewById(R.id.incdec);
@@ -110,9 +114,9 @@ public class ProductInfoFragment extends Fragment {
         });
 
         //set fields with values
-        single_img.setImageBitmap(infoProduct.getImage());
+        coverImage.setImageBitmap(infoProduct.getImage());
         productName.setText(infoProduct.getName());
-        quantity.setRange(0,1000);
+        quantity.setRange(1,1000);
         prInfo.setText(infoProduct.getInfo());
         bnt_price.setText((infoProduct.getPrice()+" lv"));
 
