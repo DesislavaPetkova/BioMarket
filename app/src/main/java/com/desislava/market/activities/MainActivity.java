@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity
         MenuListProductFragment menuFragment = MenuListProductFragment.newInstance(1);
         getSupportFragmentManager().beginTransaction().replace(R.id.menuListInfoProduct, menuFragment, "menulist").commit();
 
-        params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
-        params.setMargins(0, 300, 0, 0);
-        frameLayout.setLayoutParams(params);
+       /* params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
+        params.setMargins(0, 300, 0, 0);*/
+        //frameLayout.setLayoutParams(params);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            params.setMargins(0, 300, 0, 0);
-            frameLayout.setLayoutParams(params);
+          /*  params.setMargins(0, 300, 0, 0);
+            frameLayout.setLayoutParams(params);*/
             super.onBackPressed();
         }
     }
@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity
 
         if (fragmentManager != null) {
             fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, productInfoFragment).addToBackStack(null).commit();
-            params.setMargins(0, 80, 0, 0);
-            frameLayout.setLayoutParams(params);
+           /* params.setMargins(0, 200, 0, 0);
+            frameLayout.setLayoutParams(params);*/
         }
 
     }
@@ -179,8 +179,9 @@ public class MainActivity extends AppCompatActivity
 
 
     private void initToolbar() {
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setContentView(R.layout.activity_main);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         Window w = getWindow();
         w.setStatusBarColor(Color.parseColor(Constants.COLOR));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -6,17 +6,19 @@
     tools:context="com.desislava.market.fragments.ProductInfoFragment"
     android:id="@+id/product_info_update">
 
-    <RelativeLayout
+ <!--   <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="384dp"
-        android:layout_height="172dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
+        &lt;!&ndash;android:layout_marginStart="8dp"&ndash;&gt;
 
         <ImageView
             android:id="@+id/single_product_info_img"
@@ -28,19 +30,18 @@
             android:contentDescription="@string/product"
             android:scaleType="fitXY" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <LinearLayout
         android:id="@+id/product_info"
-        android:layout_width="368dp"
-        android:layout_height="345dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <TextView
             android:id="@+id/lbl_product"
@@ -82,7 +83,7 @@
                 android:id="@+id/incdec"
                 android:layout_width="155dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp"></com.cepheuen.elegantnumberbutton.view.ElegantNumberButton>
+                android:layout_marginRight="20dp"/>
 
             <Spinner
                 android:id="@+id/productWeight"
