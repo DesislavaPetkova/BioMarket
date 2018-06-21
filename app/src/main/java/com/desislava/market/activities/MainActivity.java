@@ -1,6 +1,8 @@
 package com.desislava.market.activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,17 +25,27 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.desislava.market.R;
+import com.desislava.market.beans.Category;
 import com.desislava.market.beans.Product;
+import com.desislava.market.database.helper.DBHelper;
 import com.desislava.market.fragments.MenuListProductFragment;
 import com.desislava.market.fragments.ProductInfoFragment;
 import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.utils.Constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import static com.desislava.market.server.communication.ParseServerResponse.storeList;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener,JSONResponse.Response {
+        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener,JSONResponse.UpdateAndInsert {
 
     private FrameLayout frameLayout;
     private CoordinatorLayout.LayoutParams params;
+    private DBHelper dbHelper;
     public static int categoryId = 0;
 
     @Override
@@ -175,6 +187,36 @@ public class MainActivity extends AppCompatActivity
     public void updateAdapter() {
         Log.e("MainActivity","updateAdapter - Enter categoryId: " + categoryId);
         updateFragment(1);
+    }
+
+    @Override
+    public boolean insertUpdateDB() {
+
+        dbHelper = new DBHelper(getApplicationContext());
+        if(dbHelper.isUpdateIsNeeded()){
+        Date now=new Date();
+        int size = storeList.get(0).getAllCategory().size();
+        List<Category> allCategories = storeList.get(0).getAllCategory();
+        List<Product> allProducts;
+        if (size > 0) {
+            for (Category cat : allCategories) {
+                allProducts = cat.getAllProducts();
+                for (Product pr : allProducts) {
+                    dbHelper.insertValue(pr.getName(), pr.getPrice(), new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(now));
+                   /* ContentValues values = new ContentValues();
+                    values.put(DBHelper.PRICE_COLUMN_NAME, pr.getName());
+                    values.put(DBHelper.PRICE_COLUMN_PRICE, pr.getPrice());
+                    values.put(DBHelper.PRICE_COLUMN_DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(now));
+                    long newRowId=db.insert(DBHelper.PRICE_TABLE,null,values);*/
+                    //Log.e("insertUpdateDB",newRowId +" insertedddddddddddddddddddddd ******************************  "+values.toString());
+                }
+
+            }
+        }
+        }else{
+            Log.e("NO NEeeeDDDDD","to UpDATEEEEEEEEEEEEE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        }
+        return true;
     }
 
 
