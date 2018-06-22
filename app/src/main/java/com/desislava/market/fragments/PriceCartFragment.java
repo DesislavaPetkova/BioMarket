@@ -39,8 +39,6 @@ public class PriceCartFragment extends Fragment /*implements ShoppingCartHelper.
     public PriceCartFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static PriceCartFragment newInstance(int columnCount) {
         PriceCartFragment fragment = new PriceCartFragment();
         Bundle args = new Bundle();

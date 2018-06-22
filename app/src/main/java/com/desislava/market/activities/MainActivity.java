@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,7 @@ import com.desislava.market.beans.Category;
 import com.desislava.market.beans.Product;
 import com.desislava.market.database.helper.DBHelper;
 import com.desislava.market.fragments.MenuListProductFragment;
+import com.desislava.market.fragments.PriceChartFragment;
 import com.desislava.market.fragments.ProductInfoFragment;
 import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.utils.Constants;
@@ -41,7 +43,7 @@ import java.util.Locale;
 import static com.desislava.market.server.communication.ParseServerResponse.storeList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener,JSONResponse.UpdateAndInsert {
+        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.ProductInfoListener,JSONResponse.UpdateAndInsert ,PriceChartFragment.OnFragmentInteractionListener{
 
     private FrameLayout frameLayout;
     private CoordinatorLayout.LayoutParams params;
@@ -169,10 +171,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
+/*    @Override
     public void onFragmentInteraction(Product product) {
         Log.i(getLocalClassName() + "onFragmentInteraction", "ENTER");
-    }
+    }*/
 
     public void updateFragment(int categoryId){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -185,7 +187,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateAdapter() {
-        Log.e("MainActivity","updateAdapter - Enter categoryId: " + categoryId);
         updateFragment(1);
     }
 
@@ -231,4 +232,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void bntPriceClicked(String name) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        PriceChartFragment chart = PriceChartFragment.newInstance(name);
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, chart).addToBackStack(null).commit();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

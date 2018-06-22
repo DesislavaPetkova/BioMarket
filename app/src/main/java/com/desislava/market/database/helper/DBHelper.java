@@ -2,9 +2,18 @@ package com.desislava.market.database.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static com.desislava.market.server.communication.ParseServerResponse.jsonVersion;
 
@@ -57,11 +66,36 @@ public class DBHelper extends SQLiteOpenHelper {
         int oldVersion = this.getReadableDatabase().getVersion();
 
         if (jsonVersion > this.getReadableDatabase().getVersion()) {
+            Log.i("TRYING TO UPGRADE TABLE","+++++++++++++++++++++++++++++++++++++++++++");
             this.onUpgrade(this.getWritableDatabase(), oldVersion, jsonVersion);
             return true;
         }
         return false;
 
+
+    }
+
+    public Map<Date, Float> getAllPrices(String productName) {
+        Log.i("DB getAllPrices", "*** Enter ***");
+        String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='" + productName + "'";
+        Map<Date, Float> datePrices = new HashMap<>();
+        Cursor c = this.getReadableDatabase().rawQuery(query, null);
+        if (c.moveToFirst()) {
+            do {
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).parse(c.getString(1));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                datePrices.put(date, c.getFloat(0));
+
+            } while (c.moveToNext());
+        }
+
+        c.close();
+        Log.i("getAllPrices ", "*** LEAVE *** " + datePrices.size());
+        return datePrices;
 
     }
 
