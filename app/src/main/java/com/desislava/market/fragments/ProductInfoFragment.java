@@ -93,7 +93,7 @@ public class ProductInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_info, container, false);
         //init fields
-        coverImage=getActivity().findViewById(R.id.coverImage);
+        coverImage = getActivity().findViewById(R.id.coverImage);
 
         //ingle_img = view.findViewById(R.id.single_product_info_img);
         productName = view.findViewById(R.id.lbl_product);
@@ -101,6 +101,12 @@ public class ProductInfoFragment extends Fragment {
         quantity = view.findViewById(R.id.incdec);
         product_weight = view.findViewById(R.id.productWeight);
         bnt_price = view.findViewById(R.id.bnt_price);
+        bnt_price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         add_cart = view.findViewById(R.id.add_cart);
         add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +163,7 @@ public class ProductInfoFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnFragmentInteractionListener { //Todo might be removed
         void onFragmentInteraction(Product product);
     }
 }

@@ -10,12 +10,12 @@ import static com.desislava.market.server.communication.ParseServerResponse.json
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static String DB_NAME="price.db";
-    public static String PRICE_TABLE="price_chart";
-    public static String PRICE_COLUMN_ID="id";
-    public static String PRICE_COLUMN_NAME="name";
-    public static String PRICE_COLUMN_PRICE="price";
-    public static String PRICE_COLUMN_DATE="date";
+    private static String DB_NAME="price.db";
+    private static String PRICE_TABLE="price_chart";
+    private static String PRICE_COLUMN_ID="id";
+    private static String PRICE_COLUMN_NAME="name";
+    private static String PRICE_COLUMN_PRICE="price";
+    private static String PRICE_COLUMN_DATE="date";
 
     private static String QUERY_ENTRIES="CREATE TABLE "+PRICE_TABLE+" ("+ PRICE_COLUMN_ID + " INTEGER PRIMARY KEY,"+
                                                                           PRICE_COLUMN_NAME + " TEXT," +
@@ -27,7 +27,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i("DB CREATINGGGGGG","++++++++++++++++++++++++++++++++++0");
         db.execSQL(QUERY_ENTRIES);
     }
 
@@ -49,7 +48,7 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put(PRICE_COLUMN_PRICE, price);
             contentValues.put(PRICE_COLUMN_DATE, date.toString());
             long newRowId = db.insert(PRICE_TABLE, null, contentValues);
-            Log.i("insertUpdateDB", newRowId + " insertedddddddddddddddddddddd ******************************  " + contentValues.toString());
+            Log.i("insertUpdateDB", newRowId + " inserted ******************************  " + contentValues.toString());
 
     }
 
@@ -57,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean isUpdateIsNeeded() {
         int oldVersion = this.getReadableDatabase().getVersion();
 
-        if (jsonVersion >= this.getReadableDatabase().getVersion()) {
+        if (jsonVersion > this.getReadableDatabase().getVersion()) {
             this.onUpgrade(this.getWritableDatabase(), oldVersion, jsonVersion);
             return true;
         }

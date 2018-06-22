@@ -203,12 +203,6 @@ public class MainActivity extends AppCompatActivity
                 allProducts = cat.getAllProducts();
                 for (Product pr : allProducts) {
                     dbHelper.insertValue(pr.getName(), pr.getPrice(), new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(now));
-                   /* ContentValues values = new ContentValues();
-                    values.put(DBHelper.PRICE_COLUMN_NAME, pr.getName());
-                    values.put(DBHelper.PRICE_COLUMN_PRICE, pr.getPrice());
-                    values.put(DBHelper.PRICE_COLUMN_DATE, new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(now));
-                    long newRowId=db.insert(DBHelper.PRICE_TABLE,null,values);*/
-                    //Log.e("insertUpdateDB",newRowId +" insertedddddddddddddddddddddd ******************************  "+values.toString());
                 }
 
             }
