@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static com.desislava.market.server.communication.ParseServerResponse.jsonVersion;
 
-public class DBHelper extends SQLiteOpenHelper {
+public  class DBHelper extends SQLiteOpenHelper {
 
     private static String DB_NAME="price.db";
     private static String PRICE_TABLE="price_chart";
@@ -30,8 +30,14 @@ public class DBHelper extends SQLiteOpenHelper {
                                                                           PRICE_COLUMN_NAME + " TEXT," +
                                                                           PRICE_COLUMN_PRICE + " TEXT,"+
                                                                           PRICE_COLUMN_DATE + " DATE)";
-    public DBHelper(Context context) {
-        super(context,DB_NAME,null,1);
+
+    private SQLiteDatabase readable;
+    private SQLiteDatabase writeable;
+    public DBHelper(Context context,int version) {
+        super(context,DB_NAME,null,version);
+        readable=this.getReadableDatabase();
+        writeable=this.getWritableDatabase();
+        Log.i("DBHelper","********************************************************* with "+readable.getVersion());
     }
 
     @Override
@@ -41,33 +47,41 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (db != null/* && oldVersion < newVersion*/) {
-            db.setVersion(newVersion);
-            Log.i("onUpgrade", "**********UPDATED table version**************");
+        if (db != null && oldVersion < newVersion) {
+            //db.setVersion(newVersion);
+            Log.i("onUpgrade", "**********UPDATED DB version**************");
         }
 
      // onCreate(db);
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+       // db.setVersion(oldVersion);
+        Log.i("onDowngrade", "**********DOWNGRADE DB version nothing is DONE HERE**************"+db.getVersion());
+    }
 
     public void insertValue (String name, String price, String date) {
-            SQLiteDatabase db = this.getWritableDatabase();
+            //SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(PRICE_COLUMN_NAME, name);
             contentValues.put(PRICE_COLUMN_PRICE, price);
             contentValues.put(PRICE_COLUMN_DATE, date.toString());
-            long newRowId = db.insert(PRICE_TABLE, null, contentValues);
-            Log.i("insertUpdateDB", newRowId + " inserted ******************************  " + contentValues.toString());
+            long newRowId = writeable.insert(PRICE_TABLE, null, contentValues);
+            Log.i("insertUpdateDB", newRowId + "**** value: " + contentValues.toString());
 
     }
 
 
     public boolean isUpdateIsNeeded() {
-        int oldVersion = this.getReadableDatabase().getVersion();
-
-        if (jsonVersion > this.getReadableDatabase().getVersion()) {
-            Log.i("TRYING TO UPGRADE TABLE","+++++++++++++++++++++++++++++++++++++++++++");
-            this.onUpgrade(this.getWritableDatabase(), oldVersion, jsonVersion);
+        //int oldVersion = this.getReadableDatabase().getVersion();
+        int oldVersion = readable.getVersion();
+        Log.i("isUpdateIsNeeded" ,"old: "+oldVersion+"  ,"+"json: "+jsonVersion);
+        if (4 > oldVersion) {
+            Log.i("isUpdateIsNeeded if" ,"++++++++++ YES ++++++++");
+            writeable.setVersion(4);
+            /*this.onUpgrade(this.getWritableDatabase(), oldVersion, jsonVersion);*/
+            Log.i("hehehhehe","after update : " + readable.getVersion());
             return true;
         }
         return false;
@@ -75,16 +89,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public Map<Date, Float> getAllPrices(String productName) {
+    public  Map<Date, Float> getAllPrices(String productName) {
         Log.i("DB getAllPrices", "*** Enter ***");
-        String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='" + productName + "'";
+        String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='"+productName+"'" ;
         Map<Date, Float> datePrices = new HashMap<>();
-        Cursor c = this.getReadableDatabase().rawQuery(query, null);
+        Cursor c = readable.rawQuery(query, null);
+        Log.i("NOE IT IS DONWGRADED:","--------------" + readable.getVersion());//this.getReadableDatabase().getVersion()
         if (c.moveToFirst()) {
             do {
                 Date date = null;
                 try {
-                    date = new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).parse(c.getString(1));
+                    date = new SimpleDateFormat("dd-MM", Locale.ITALY).parse(c.getString(1));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -94,10 +109,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         c.close();
-        Log.i("getAllPrices ", "*** LEAVE *** " + datePrices.size());
+        Log.i("getAllPrices ", "*** LEAVE with map size : *** " + datePrices.size());
         return datePrices;
 
     }
-
 
 }

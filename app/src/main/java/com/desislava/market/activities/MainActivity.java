@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.desislava.market.server.communication.ParseServerResponse.jsonVersion;
 import static com.desislava.market.server.communication.ParseServerResponse.storeList;
 
 public class MainActivity extends AppCompatActivity
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity
 
     private FrameLayout frameLayout;
     private CoordinatorLayout.LayoutParams params;
-    private DBHelper dbHelper;
+    public static DBHelper dbHelper;
     public static int categoryId = 0;
 
     @Override
@@ -193,24 +194,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean insertUpdateDB() {
 
-        dbHelper = new DBHelper(getApplicationContext());
-        if(dbHelper.isUpdateIsNeeded()){
-        Date now=new Date();
-        int size = storeList.get(0).getAllCategory().size();
-        List<Category> allCategories = storeList.get(0).getAllCategory();
-        List<Product> allProducts;
-        if (size > 0) {
-            for (Category cat : allCategories) {
-                allProducts = cat.getAllProducts();
-                for (Product pr : allProducts) {
-                    dbHelper.insertValue(pr.getName(), pr.getPrice(), new SimpleDateFormat("yyyy-MM-dd", Locale.ITALY).format(now));
-                }
+        dbHelper = new DBHelper(getBaseContext(),4);
+        if (dbHelper.isUpdateIsNeeded()) {
+            Log.i("insertUpdateDB","***DB is updated ***");
+            Date now = new Date();
+            int size = storeList.get(0).getAllCategory().size();
+            List<Category> allCategories = storeList.get(0).getAllCategory();
+            List<Product> allProducts;
+            if (size > 0) {
+                for (Category cat : allCategories) {
+                    allProducts = cat.getAllProducts();
+                    for (Product pr : allProducts) {
+                        dbHelper.insertValue(pr.getName().toLowerCase(), pr.getPrice(), new SimpleDateFormat("dd-MM", Locale.ITALY).format(now));
+                    }
 
+                }
             }
+        } else {
+            Log.e("insertUpdateDB", "DB is **NOT** updated");
         }
-        }else{
-            Log.e("NO NEeeeDDDDD","to UpDATEEEEEEEEEEEEE &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-        }
+       // dbHelper.close();
         return true;
     }
 
