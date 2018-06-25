@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,35 +82,68 @@ public class PriceChartFragment extends Fragment /*implements IAxisValueFormatte
         View view = inflater.inflate(R.layout.fragment_price_chart, container, false);
         chart = view.findViewById(R.id.chart);
         //DBHelper dbHelper = new DBHelper(getActivity());
-        Log.i("DATA BASE OPEN", "NOW SELECT EXECUTED *********************");
         Map values = MainActivity.dbHelper.getAllPrices(prName.toLowerCase());
-
         List<Entry> wrap = new ArrayList<>();
 
-        values.forEach((key,tab)->wrap.add(new Entry(Long.valueOf(((Date)key).getTime()).floatValue(),(Float)tab))); //java 8
-        Log.i("WRAP>ZISEEEE","sizeee; "+wrap.size());
+        values.forEach((key,tab)->wrap.add(new Entry(Long.valueOf(((Date)key).getTime()).floatValue(),(Float)tab)));
+        Log.i("WRAP > ZISEEEE","size; "+wrap.size());
+        for (Entry e:wrap) {
+          Log.e("f u",""+e.toString());
+        }
 
         LineDataSet dataSet = new LineDataSet(wrap, "Price chart");
-        dataSet.setColor(0xFFF449);
-        dataSet.setValueTextColor(0x70db70);
-        LineData lineData = new LineData(dataSet);
-        XAxis xAxis = chart.getXAxis();
+        initChartView(dataSet);
+
+        return view;
+    }
+
+
+    private void initChartView(@NonNull LineDataSet set) {
+        set.setColor(Color.RED);
+
+
+        set.setColor(Color.RED);
+        set.setDrawCircles(true);
+        set.setDrawValues(false);
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        chart.getLegend().setEnabled(false);
+
+
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        rightAxis.setAxisMinimum(0f);
+        rightAxis.setLabelCount(4);
+        rightAxis.setAxisMaximum(30f);
+
         YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setAxisMaximum(4);
-        Log.i("SIZEEEEEEEEE","yaxis; "+chart.getYChartMax());
-        chart.setVisibleXRangeMaximum(10);
-        chart.setVisibleYRangeMaximum(5, YAxis.AxisDependency.LEFT);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setTextColor(Color.GREEN);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setLabelCount(4);
+        leftAxis.setAxisMaximum(30f);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.mEntries=new float[]{0,1};
+        xAxis.setPosition(XAxis.XAxisPosition.TOP);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setLabelCount(5);
+        xAxis.setAxisMaximum(400f);
+        xAxis.setGranularity(1f);
+        //xAxis.setGranularityEnabled(true);
+
         xAxis.setValueFormatter((float value, AxisBase axis) -> {
             Date d = new Date(Float.valueOf(value).longValue());
             String correct = new SimpleDateFormat("dd-MM", Locale.ITALY).format(d);
+            Log.e("Correect","    ");
+           // new Exception().printStackTrace();
             return correct;
         });
+        LineData lineData = new LineData(set);
         chart.setData(lineData);
         chart.invalidate();
 
-        return view;
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -135,16 +170,6 @@ public class PriceChartFragment extends Fragment /*implements IAxisValueFormatte
         mListener = null;
     }
 
- /*   @Override
-    public String getFormattedValue(float value, AxisBase axis) {
-
-        Date d = new Date(Float.valueOf(value).longValue());
-
-        String correct = new SimpleDateFormat("dd-MM", Locale.ITALY).format(d);
-        Log.e("DATE TO BE SHOWNNNNNNNNNNNNNN: ", "" + correct);
-        return correct;
-    }*/
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -159,4 +184,5 @@ public class PriceChartFragment extends Fragment /*implements IAxisValueFormatte
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

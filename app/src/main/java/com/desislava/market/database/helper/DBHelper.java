@@ -2,16 +2,18 @@ package com.desislava.market.database.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.desislava.market.activities.MainActivity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,12 +34,14 @@ public  class DBHelper extends SQLiteOpenHelper {
                                                                           PRICE_COLUMN_DATE + " DATE)";
 
     private SQLiteDatabase readable;
-    private SQLiteDatabase writeable;
-    public DBHelper(Context context,int version) {
-        super(context,DB_NAME,null,version);
-        readable=this.getReadableDatabase();
-        writeable=this.getWritableDatabase();
-        Log.i("DBHelper","********************************************************* with "+readable.getVersion());
+    private SQLiteDatabase writable;
+    static SharedPreferences.Editor editor;
+
+    public DBHelper(Context context, int version) {
+        super(context, DB_NAME, null, version);
+        readable = this.getReadableDatabase();
+        writable = this.getWritableDatabase();
+        Log.i("DBHelper", "*************************** with " + readable.getVersion());
     }
 
     @Override
@@ -52,23 +56,23 @@ public  class DBHelper extends SQLiteOpenHelper {
             Log.i("onUpgrade", "**********UPDATED DB version**************");
         }
 
-     // onCreate(db);
+        // onCreate(db);
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-       // db.setVersion(oldVersion);
-        Log.i("onDowngrade", "**********DOWNGRADE DB version nothing is DONE HERE**************"+db.getVersion());
+        // db.setVersion(oldVersion);
+        Log.i("onDowngrade", "**********DOWNGRADE DB version nothing is DONE HERE**************" + db.getVersion());
     }
 
-    public void insertValue (String name, String price, String date) {
-            //SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(PRICE_COLUMN_NAME, name);
-            contentValues.put(PRICE_COLUMN_PRICE, price);
-            contentValues.put(PRICE_COLUMN_DATE, date.toString());
-            long newRowId = writeable.insert(PRICE_TABLE, null, contentValues);
-            Log.i("insertUpdateDB", newRowId + "**** value: " + contentValues.toString());
+    public void insertValue(String name, String price, String date) {
+        //SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PRICE_COLUMN_NAME, name);
+        contentValues.put(PRICE_COLUMN_PRICE, price);
+        contentValues.put(PRICE_COLUMN_DATE, date);
+        long newRowId = writable.insert(PRICE_TABLE, null, contentValues);
+        Log.i("insertUpdateDB", newRowId + "**** value: " + contentValues.toString());
 
     }
 
@@ -76,25 +80,25 @@ public  class DBHelper extends SQLiteOpenHelper {
     public boolean isUpdateIsNeeded() {
         //int oldVersion = this.getReadableDatabase().getVersion();
         int oldVersion = readable.getVersion();
-        Log.i("isUpdateIsNeeded" ,"old: "+oldVersion+"  ,"+"json: "+jsonVersion);
-        if (4 > oldVersion) {
-            Log.i("isUpdateIsNeeded if" ,"++++++++++ YES ++++++++");
-            writeable.setVersion(4);
-            /*this.onUpgrade(this.getWritableDatabase(), oldVersion, jsonVersion);*/
-            Log.i("hehehhehe","after update : " + readable.getVersion());
+        Log.i("isUpdateIsNeeded", "old: " + oldVersion + "  ," + "json: " + jsonVersion);
+        if (jsonVersion > oldVersion) {
+            editor = MainActivity.sharedPref.edit();
+            editor.putInt(MainActivity.DB_VER_STORE, jsonVersion);
+            editor.apply();
+            writable.setVersion(jsonVersion);
+            Log.i("isUpdateIsNeeded if", "++++++++++ YES ++++++++" + readable.getVersion());
             return true;
         }
-        return false;
 
+        return false;
 
     }
 
-    public  Map<Date, Float> getAllPrices(String productName) {
+    public Map<Date, Float> getAllPrices(String productName) {
         Log.i("DB getAllPrices", "*** Enter ***");
-        String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='"+productName+"'" ;
+        String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='" + productName + "'";
         Map<Date, Float> datePrices = new HashMap<>();
         Cursor c = readable.rawQuery(query, null);
-        Log.i("NOE IT IS DONWGRADED:","--------------" + readable.getVersion());//this.getReadableDatabase().getVersion()
         if (c.moveToFirst()) {
             do {
                 Date date = null;

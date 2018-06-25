@@ -1,7 +1,9 @@
 package com.desislava.market.activities;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -50,6 +52,10 @@ public class MainActivity extends AppCompatActivity
     private CoordinatorLayout.LayoutParams params;
     public static DBHelper dbHelper;
     public static int categoryId = 0;
+    public static String DB_VER_STORE="db-store-";
+    public static int DB_LAST_VERSION=1;
+    public static SharedPreferences sharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,24 +63,19 @@ public class MainActivity extends AppCompatActivity
         initToolbar();
         String store = getIntent().getStringExtra(Constants.STORE);
         initStore(store);
+        DB_VER_STORE+=store;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         frameLayout = (FrameLayout) findViewById(R.id.menuListInfoProduct);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab.setOnClickListener((View view )-> {
                 Intent intent = new Intent(MainActivity
                         .this, ShoppingCartActivity.class);
                 startActivity(intent);
-            }
         });
 
         MenuListProductFragment menuFragment = MenuListProductFragment.newInstance(1);
         getSupportFragmentManager().beginTransaction().replace(R.id.menuListInfoProduct, menuFragment, "menulist").commit();
-
-       /* params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
-        params.setMargins(0, 300, 0, 0);*/
-        //frameLayout.setLayoutParams(params);
+        sharedPref=this.getPreferences(Context.MODE_PRIVATE);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     private void initStore(String store) {
         Log.d("MainActivity initStore ","Enter");
         try {
@@ -172,10 +175,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-/*    @Override
-    public void onFragmentInteraction(Product product) {
-        Log.i(getLocalClassName() + "onFragmentInteraction", "ENTER");
-    }*/
 
     public void updateFragment(int categoryId){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -193,10 +192,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean insertUpdateDB() {
+        DB_LAST_VERSION = sharedPref.getInt(DB_VER_STORE, 1);
+        Log.i("insertUpdateDB", "++++++++++++++++++++++++++++" + DB_LAST_VERSION);
 
-        dbHelper = new DBHelper(getBaseContext(),4);
+        dbHelper = new DBHelper(getBaseContext(), DB_LAST_VERSION);
         if (dbHelper.isUpdateIsNeeded()) {
-            Log.i("insertUpdateDB","***DB is updated ***");
+            Log.i("insertUpdateDB", "***DB is updated ***");
             Date now = new Date();
             int size = storeList.get(0).getAllCategory().size();
             List<Category> allCategories = storeList.get(0).getAllCategory();
@@ -211,9 +212,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         } else {
-            Log.e("insertUpdateDB", "DB is **NOT** updated");
+            Log.e("insertUpdateDB", "DB is *** NOT *** updated");
         }
-       // dbHelper.close();
         return true;
     }
 
