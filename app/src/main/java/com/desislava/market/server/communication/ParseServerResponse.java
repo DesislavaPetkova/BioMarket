@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Parse incoming json response from server
+ * Parse incoming json response from server and google place JSON received
  */
 
 public class ParseServerResponse {
@@ -60,7 +60,18 @@ public class ParseServerResponse {
         Log.i("List after parsing info", storeList.toString());
     }
 
-    public List<Store> getStoreList() {
-        return storeList;
-    } //TODO useless !!!!!!!!!!!! remove
+    public static void parseGooglePlaceResponse(String object) throws JSONException {
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 }

@@ -21,7 +21,9 @@ import android.view.ViewGroup;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.UserInfo;
+import com.desislava.market.server.communication.GooglePlaceAsynchTask;
 import com.desislava.market.server.communication.ParseServerResponse;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,6 +34,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -51,6 +58,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String CHECKED = "checked";
     private static final String USER_INFO = "userInfo";
+    private static final String API_KEY = "AIzaSyAUSiW2rGjmWNcZBT-a7YLd8KJ5KtY4L8Q";
+    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+    private ArrayList<Place> places;
+    private int radius = 1000;
 
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -144,6 +155,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.i("onMapReady","Enter");
         MapsInitializer.initialize(getContext());
         Criteria criteria = new Criteria();
         criteria.setPowerRequirement(Criteria.POWER_LOW);
@@ -151,12 +163,13 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         double latitude = 0;
         double longitude = 0;
         if (isChecked) {
+            Log.i("onMapReady","isChecked-TRUE");
             getCurrentLocation();
             LocationManager locationManager = (LocationManager)
                     getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, 2);
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED /*&& ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED*/) {
+                requestPermissions(new String[]{ACCESS_FINE_LOCATION /*ACCESS_COARSE_LOCATION*/}, 2);
             }
             Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
             if (location != null) {
@@ -165,7 +178,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             }
 
         } else {
-            String chosenLocation = "Fantastiko";//"Bulgaria,"+ userInfo.getCity()+","+userInfo.getDistrict()+","+userInfo.getAddress();
+            Log.i("onMapReady","User address");
+            String chosenLocation = "Bulgaria," + userInfo.getCity() + "," + userInfo.getDistrict() + "," + userInfo.getAddress();
             Geocoder geocoder = new Geocoder(getContext());
             try {
                 List<Address> list = geocoder.getFromLocationName(chosenLocation, 3);
@@ -178,7 +192,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
-        storeSearch();
+        storeSearch(latitude, longitude);
 
         LatLng loc = new LatLng(latitude, longitude);
         CameraPosition camera = CameraPosition.builder().target(loc).zoom(14).build();
@@ -188,13 +202,40 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void storeSearch() {
-        Geocoder parameters = new Geocoder(getContext());
+    private void storeSearch(double latitude, double longitude) {
+        Log.i("storeSearch","Enter");
+        StringBuilder request = new StringBuilder(PLACES_API_BASE);
+        request.append("location=" + latitude + "," + longitude).append("&rankby=distance&").append("name=" + store).append("&key=" + API_KEY);
+        Log.i("GOOGLE KEY GENERATED: ", request.toString());
+        GooglePlaceAsynchTask search=new GooglePlaceAsynchTask();
+        search.execute(request.toString());
 
-       // parameters.
 
 
 
+        places = new ArrayList<>();
+        HttpURLConnection http = null;
+        StringBuilder jsonResults = new StringBuilder();
+
+        try {
+            URL url = new URL(request.toString());
+            http = (HttpURLConnection) url.openConnection();
+            InputStreamReader in = new InputStreamReader(http.getInputStream());
+            int read;
+            char[] buff = new char[1024];
+            while ((read = in.read(buff)) != -1) {
+                jsonResults.append(buff, 0, read);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (http != null) {
+                http.disconnect();
+            }
+        }
+        Log.i("FInally", "" + jsonResults.toString());
+
+        // parameters.
 
 
     }
@@ -223,10 +264,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
 
     }*/
 
-    private void getCurrentLocation(){
+    private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-            requestPermissions(new String[]{ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION},1);
-        }else{
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, 1);
+        } else {
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
