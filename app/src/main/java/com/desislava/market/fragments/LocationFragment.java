@@ -10,8 +10,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,25 +18,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.desislava.market.R;
+import com.desislava.market.beans.GooglePlace;
 import com.desislava.market.beans.UserInfo;
-import com.desislava.market.server.communication.GooglePlaceAsynchTask;
+import com.desislava.market.server.communication.GooglePlaceAsyncTask;
+import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.server.communication.ParseServerResponse;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -46,23 +42,13 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LocationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LocationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class LocationFragment extends Fragment implements OnMapReadyCallback {
+public class LocationFragment extends Fragment implements OnMapReadyCallback, GooglePlaceAsyncTask.GooglePlace {
 
     private static final String CHECKED = "checked";
     private static final String USER_INFO = "userInfo";
-    private static final String API_KEY = "AIzaSyAUSiW2rGjmWNcZBT-a7YLd8KJ5KtY4L8Q";
+    private static final String API_KEY = "AIzaSyCM8c1DKFJygv1Jl1czSVf6PdowVXL6AMY";//AIzaSyAUSiW2rGjmWNcZBT-a7YLd8KJ5KtY4L8Q;  //AIzaSyCM8c1DKFJygv1Jl1czSVf6PdowVXL6AMY
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-    private ArrayList<Place> places;
-    private int radius = 1000;
-
+    private LatLngBounds.Builder builder = new LatLngBounds.Builder();
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -82,15 +68,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param isChecked Parameter 1.
-     * @param user      Parameter 2.
-     * @return A new instance of fragment LocationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static LocationFragment newInstance(boolean isChecked, UserInfo user) {
         LocationFragment fragment = new LocationFragment();
         Bundle args = new Bundle();
@@ -178,7 +155,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
             }
 
         } else {
-            Log.i("onMapReady","User address");
+            Log.i("onMapReady", "User address");
             String chosenLocation = "Bulgaria," + userInfo.getCity() + "," + userInfo.getDistrict() + "," + userInfo.getAddress();
             Geocoder geocoder = new Geocoder(getContext());
             try {
@@ -195,61 +172,42 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback {
         storeSearch(latitude, longitude);
 
         LatLng loc = new LatLng(latitude, longitude);
-        CameraPosition camera = CameraPosition.builder().target(loc).zoom(14).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
+        // CameraPosition camera = CameraPosition.builder().target(loc).zoom(10).build();
+        //googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
         googleMap.addMarker(new MarkerOptions().position(loc).title("Address"));
-
+        updateCamera(loc);
 
     }
 
     private void storeSearch(double latitude, double longitude) {
-        Log.i("storeSearch","Enter");
+        Log.i("storeSearch", "Enter");
         StringBuilder request = new StringBuilder(PLACES_API_BASE);
-        request.append("location=" + latitude + "," + longitude).append("&rankby=distance&").append("name=" + store).append("&key=" + API_KEY);
+        request.append("location=" + latitude + "," + longitude).append("&language=en&rankby=distance&").append("name=" + store).append("&key=" + API_KEY);
         Log.i("GOOGLE KEY GENERATED: ", request.toString());
-        GooglePlaceAsynchTask search=new GooglePlaceAsynchTask();
+        GooglePlaceAsyncTask search = new GooglePlaceAsyncTask(this);
         search.execute(request.toString());
-
-
-
-
-        places = new ArrayList<>();
-        HttpURLConnection http = null;
-        StringBuilder jsonResults = new StringBuilder();
-
-        try {
-            URL url = new URL(request.toString());
-            http = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(http.getInputStream());
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (http != null) {
-                http.disconnect();
-            }
-        }
-        Log.i("FInally", "" + jsonResults.toString());
-
-        // parameters.
-
-
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void placeReady() {
+        Log.i("placeReady", "LIST IS AVAILABLE ");
+        GooglePlace place = ParseServerResponse.places.get(0);
+        LatLng loc = new LatLng(place.getLat(), place.getLng());
+        googleMap.addMarker(new MarkerOptions().position(loc).title(place.getVicinity()));
+        updateCamera(loc);
+    }
+
+
+    private void updateCamera(LatLng loc) {
+
+        builder.include(loc);
+        LatLngBounds bounds = builder.build();
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+        googleMap.moveCamera(cu);
+        googleMap.animateCamera(cu);
+    }
+
+
     public interface OnFragmentInteractionListener {
         void locationInteraction(Uri uri);
     }

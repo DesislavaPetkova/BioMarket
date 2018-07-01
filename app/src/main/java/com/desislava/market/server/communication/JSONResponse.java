@@ -51,7 +51,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... strings) {
 //TODO Update service response depending on store request
         String url = "http://192.168.0.101:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         URL obj;
         try {
             obj = new URL(url);
@@ -70,7 +70,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
                 }
                 in.close();
             }else{
-                ex = new IOException();
+                ex = new Exception();
             }
         } catch (Exception e) {
             Log.e("doInBackground ", "" +e);

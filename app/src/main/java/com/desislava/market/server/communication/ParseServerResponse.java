@@ -3,9 +3,11 @@ package com.desislava.market.server.communication;
 import android.util.Log;
 
 import com.desislava.market.beans.Category;
+import com.desislava.market.beans.GooglePlace;
 import com.desislava.market.beans.Product;
 import com.desislava.market.beans.Store;
 import com.desislava.market.utils.Constants;
+import com.google.android.gms.location.places.Places;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +28,8 @@ public class ParseServerResponse {
 
     List<Category> categories;
     public static List<Store> storeList = new ArrayList<>();
+
+    public static List<GooglePlace> places = new ArrayList<>();
 
     public void allStoresParseResponse(String object) throws JSONException {
 
@@ -61,14 +65,26 @@ public class ParseServerResponse {
     }
 
     public static void parseGooglePlaceResponse(String object) throws JSONException {
+        JSONObject json= new JSONObject(object);
 
+        JSONArray results = json.getJSONArray(Constants.RESULTS);
+        Log.i("parseGooglePlResponse", "JSONArray size:" + results.length());
+        for (int i = 0; i < results.length(); i++) {
+            GooglePlace place = new GooglePlace();
+            JSONObject obj = results.getJSONObject(i);
+            JSONObject loc = obj.getJSONObject(Constants.GEOMETRY).getJSONObject(Constants.LOCATION);
+            place.setLat((Double) loc.get(Constants.LATITUDE));
+            place.setLng((Double) loc.get(Constants.LONGITUDE));
 
+            //Get is open now
+            place.setOpenNow((Boolean) obj.getJSONObject(Constants.OPEN_HOURS).get(Constants.OPEN_NOW));
 
+            place.setVicinity((String) obj.get(Constants.VICINITY));
+            places.add(place);
+            Log.i("SINGLE PLACE:" ,""+place.toString());
+        }
 
-
-
-
-
+        //Log.i("parseGooglePlaceRep", " END " + Arrays.asList(places));
 
 
     }

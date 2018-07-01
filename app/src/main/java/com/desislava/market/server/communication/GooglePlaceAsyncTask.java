@@ -3,15 +3,28 @@ package com.desislava.market.server.communication;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.desislava.market.fragments.LocationFragment;
+
 import org.json.JSONException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-public class GooglePlaceAsynchTask  extends AsyncTask<String, Integer, String> {
+public class GooglePlaceAsyncTask  extends AsyncTask<String, Integer, String> {
+
+    public interface GooglePlace {
+        void placeReady();
+    }
+
+    GooglePlace place;
+
+    public GooglePlaceAsyncTask(final LocationFragment locationFragment) {
+        this.place = locationFragment;
+    }
 
     private Exception ex = null;
 
@@ -24,11 +37,15 @@ public class GooglePlaceAsynchTask  extends AsyncTask<String, Integer, String> {
             http = (HttpURLConnection) url.openConnection();
             int code=http.getResponseCode();
             Log.i("BACKGROUND CODE: ",""+code);
-            InputStreamReader in = new InputStreamReader(http.getInputStream());
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
+            if(code==HttpURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(http.getInputStream()),8192*2);
+                while ((line = reader.readLine()) != null) {
+                    jsonResults.append(line);
+                }
+                reader.close();
+            }else{
+                ex=new Exception();
             }
         } catch (IOException e) {
             ex=e;
@@ -38,7 +55,6 @@ public class GooglePlaceAsynchTask  extends AsyncTask<String, Integer, String> {
                 http.disconnect();
             }
         }
-        Log.i("FInally", "" + jsonResults.toString());
 
         return jsonResults.toString();
     }
@@ -53,11 +69,11 @@ public class GooglePlaceAsynchTask  extends AsyncTask<String, Integer, String> {
            } catch (JSONException e) {
                e.printStackTrace();
            }
+           place.placeReady();
+
+       }else{
+           Log.e("Exception",ex.toString());
        }
-
-
-
-
 
     }
 }
