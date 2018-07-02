@@ -1,17 +1,14 @@
 package com.desislava.market.activities;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +39,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.desislava.market.server.communication.ParseServerResponse.jsonVersion;
 import static com.desislava.market.server.communication.ParseServerResponse.storeList;
 
 public class MainActivity extends AppCompatActivity
@@ -223,10 +219,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         Window w = getWindow();
-        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
+        w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(Constants.MARKET);
-        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
+        toolbar.setBackgroundColor(Constants.GREEN_COLOR);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

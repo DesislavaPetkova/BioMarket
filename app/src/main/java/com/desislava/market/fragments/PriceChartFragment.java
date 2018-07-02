@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 
 import com.desislava.market.R;
 import com.desislava.market.activities.MainActivity;
+import com.desislava.market.utils.Constants;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -75,6 +77,9 @@ public class PriceChartFragment extends Fragment {
 
         values.forEach((key, tab) -> wrap.add(new Entry(((Long) key).floatValue(), (Float) tab)));
         Log.i("onCreateView", "wrap list size: " + wrap.size());
+        for (Entry e :wrap) {
+            Log.i("Entry",""+e.toString());
+        }
 
         LineDataSet dataSet = new LineDataSet(wrap, "Price chart");
         initChartView(dataSet, wrap.size());
@@ -85,7 +90,6 @@ public class PriceChartFragment extends Fragment {
 
     private void initChartView(@NonNull LineDataSet set, int size) {
         set.setColor(Color.RED);
-        set.setDrawCircles(true);
         set.setDrawValues(false);
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         chart.getLegend().setEnabled(false);
@@ -95,14 +99,15 @@ public class PriceChartFragment extends Fragment {
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         rightAxis.setAxisMinimum(0f);
-        rightAxis.setLabelCount(4);
-        rightAxis.setAxisMaximum(30f);
+        rightAxis.setLabelCount(6);
+      /*  rightAxis.setAxisMaximum(30f);*/
 
         YAxis leftAxis = chart.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         leftAxis.setAxisMinimum(0f);
-        leftAxis.setLabelCount(4);
-        leftAxis.setAxisMaximum(30f);
+        leftAxis.setLabelCount(6);
+        //leftAxis.setAxisMaximum(30f);
+
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.TOP);
@@ -114,7 +119,11 @@ public class PriceChartFragment extends Fragment {
             Date d = new Date(Float.valueOf(value).longValue());
             return new SimpleDateFormat("dd-MM", Locale.ITALY).format(d);
         });
-
+        Description d = new Description();
+        d.setText(prName + " price chart");
+        d.setTextColor(Constants.GREEN_COLOR);
+        chart.setDescription(d);
+        chart.setBackgroundColor(Constants.YELLOW_COLOR);
         chart.invalidate();
 
     }
