@@ -1,7 +1,6 @@
 package com.desislava.market.fragments;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.desislava.market.R;
 import com.desislava.market.activities.MainActivity;
-import com.desislava.market.database.helper.DBHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -22,7 +20,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,15 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PriceChartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PriceChartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PriceChartFragment extends Fragment /*implements IAxisValueFormatter*/ {
+public class PriceChartFragment extends Fragment {
 
     private static final String PRODUCT_NAME = "prName";
     private String prName;
@@ -81,33 +70,27 @@ public class PriceChartFragment extends Fragment /*implements IAxisValueFormatte
 
         View view = inflater.inflate(R.layout.fragment_price_chart, container, false);
         chart = view.findViewById(R.id.chart);
-        //DBHelper dbHelper = new DBHelper(getActivity());
         Map values = MainActivity.dbHelper.getAllPrices(prName.toLowerCase());
         List<Entry> wrap = new ArrayList<>();
 
-        values.forEach((key,tab)->wrap.add(new Entry(Long.valueOf(((Date)key).getTime()).floatValue(),(Float)tab)));
-        Log.i("WRAP > ZISEEEE","size; "+wrap.size());
-        for (Entry e:wrap) {
-          Log.e("f u",""+e.toString());
-        }
+        values.forEach((key, tab) -> wrap.add(new Entry(((Long) key).floatValue(), (Float) tab)));
+        Log.i("onCreateView", "wrap list size: " + wrap.size());
 
         LineDataSet dataSet = new LineDataSet(wrap, "Price chart");
-        initChartView(dataSet);
+        initChartView(dataSet, wrap.size());
 
         return view;
     }
 
 
-    private void initChartView(@NonNull LineDataSet set) {
-        set.setColor(Color.RED);
-
-
+    private void initChartView(@NonNull LineDataSet set, int size) {
         set.setColor(Color.RED);
         set.setDrawCircles(true);
         set.setDrawValues(false);
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         chart.getLegend().setEnabled(false);
-
+        LineData lineData = new LineData(set);
+        chart.setData(lineData);
 
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
@@ -122,27 +105,17 @@ public class PriceChartFragment extends Fragment /*implements IAxisValueFormatte
         leftAxis.setAxisMaximum(30f);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.mEntries=new float[]{0,1};
         xAxis.setPosition(XAxis.XAxisPosition.TOP);
         xAxis.setDrawGridLines(false);
-        xAxis.setAxisMinimum(0f);
-        xAxis.setLabelCount(5);
-        xAxis.setAxisMaximum(400f);
+        xAxis.setLabelCount(size);
         xAxis.setGranularity(1f);
-        //xAxis.setGranularityEnabled(true);
 
         xAxis.setValueFormatter((float value, AxisBase axis) -> {
             Date d = new Date(Float.valueOf(value).longValue());
-            String correct = new SimpleDateFormat("dd-MM", Locale.ITALY).format(d);
-            Log.e("Correect","    ");
-           // new Exception().printStackTrace();
-            return correct;
+            return new SimpleDateFormat("dd-MM", Locale.ITALY).format(d);
         });
-        LineData lineData = new LineData(set);
-        chart.setData(lineData);
+
         chart.invalidate();
-
-
 
     }
 

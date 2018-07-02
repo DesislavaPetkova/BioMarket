@@ -94,20 +94,20 @@ public  class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public Map<Date, Float> getAllPrices(String productName) {
+    public Map<Long, Float> getAllPrices(String productName) {
         Log.i("DB getAllPrices", "*** Enter ***");
         String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='" + productName + "'";
-        Map<Date, Float> datePrices = new HashMap<>();
+        Map<Long, Float> datePrices = new HashMap<>();
         Cursor c = readable.rawQuery(query, null);
         if (c.moveToFirst()) {
             do {
-                Date date = null;
+                Long time = null;
                 try {
-                    date = new SimpleDateFormat("dd-MM", Locale.ITALY).parse(c.getString(1));
+                    time = new SimpleDateFormat("dd-MM", Locale.ITALY).parse(c.getString(1)).getTime();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                datePrices.put(date, c.getFloat(0));
+                datePrices.put(time, c.getFloat(0));
 
             } while (c.moveToNext());
         }
