@@ -1,11 +1,13 @@
 package com.desislava.market.beans;
 
+import java.io.Serializable;
+
 /**
  * Represent a single user that will be stored in Database, to be able to load data on given username.
  * !! MIGHT ALSO BE useful to store order for given user....
  */
 
-public class UserInfo  {
+public class UserInfo implements Serializable {
 
     String email;
     String name;

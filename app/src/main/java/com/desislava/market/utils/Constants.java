@@ -21,6 +21,21 @@ public static final String ORIGIN="origin";
 public static final String IMAGE_URL="image";
 
 
+// Google place api Json constants
+
+    public static final String RESULTS="results";
+    public static final String GEOMETRY="geometry";
+    public static final String LOCATION="location";
+    public static final String LATITUDE="lat";
+    public static final String LONGITUDE="lng";
+
+    public static final String OPEN_HOURS="opening_hours";
+    public static final String OPEN_NOW="open_now";
+    public static final String VICINITY="vicinity";
+
+
+
+
 // Set store in intent
 
     public static final String STORE="store";
