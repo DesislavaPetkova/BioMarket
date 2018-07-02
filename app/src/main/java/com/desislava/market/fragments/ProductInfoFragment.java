@@ -29,8 +29,6 @@ import com.desislava.market.utils.Util;
  * create an instance of this fragment.
  */
 public class ProductInfoFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String PRODUCT = "product";
     private static final String CATEGORY = "category";
 
@@ -99,26 +97,19 @@ public class ProductInfoFragment extends Fragment {
         quantity = view.findViewById(R.id.incdec);
         product_weight = view.findViewById(R.id.productWeight);
         bnt_price = view.findViewById(R.id.bnt_price);
-        bnt_price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // PriceChartFragment price = PriceChartFragment.newInstance("", "");//todo
-                if (mListener != null) {
-                    mListener.bntPriceClicked(infoProduct.getName());
-                }
-
+        bnt_price.setOnClickListener((View v) -> {
+            // PriceChartFragment price = PriceChartFragment.newInstance("", "");//todo
+            if (mListener != null) {
+                mListener.bntPriceClicked(infoProduct.getName());
             }
         });
         add_cart = view.findViewById(R.id.add_cart);
-        add_cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Cart newItem = new Cart(infoProduct, quantity.getNumber(), Util.getCategoryById(categoryId));
-                ShoppingCartActivity.shoppingList.add(newItem);
-                Toast.makeText(v.getContext(), "Added to cart. " + categoryId, Toast.LENGTH_SHORT).show();
-                Log.i("Cart product object:", newItem.toString());
+        add_cart.setOnClickListener((View v) -> {
+            Cart newItem = new Cart(infoProduct, quantity.getNumber(), Util.getCategoryById(categoryId));
+            ShoppingCartActivity.shoppingList.add(newItem);
+            Toast.makeText(v.getContext(), "Added to cart. " + categoryId, Toast.LENGTH_SHORT).show();
+            Log.i("Cart product object:", newItem.toString());
 
-            }
         });
 
         //set fields with values

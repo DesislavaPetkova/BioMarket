@@ -16,6 +16,7 @@ import com.desislava.market.beans.UserInfo;
 import com.desislava.market.fragments.AddressUserFragment;
 import com.desislava.market.fragments.LocationFragment;
 import com.desislava.market.fragments.ShopperInfoFragment;
+import com.desislava.market.utils.Constants;
 
 public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFragment.OnFragmentInteractionListener,
         AddressUserFragment.OnFragmentInteractionListener, LocationFragment.OnFragmentInteractionListener {
@@ -24,7 +25,6 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
     private StepsView stepsView;
     UserInfo info = new UserInfo();
     private boolean isLocaionChecked;
-    //private int mState;
     private static  int position = 0;
 
 
@@ -75,7 +75,6 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
         LocationFragment location = LocationFragment.newInstance(isLocaionChecked, info);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_info, location, "location").commit();
         stepsView.setCompletedPosition(position).drawView();
-        Log.e("FINALY .........", info.toString());
 
     }
 
@@ -94,9 +93,9 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
     private void initToolbar(){
         setContentView(R.layout.activity_user_info);
         Window w=getWindow();
-        w.setStatusBarColor(Color.parseColor("#689B00"));
+        w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor("#689B00"));
+        toolbar.setBackgroundColor(Constants.GREEN_COLOR);
         toolbar.setTitle("User info");
         setSupportActionBar(toolbar);
 

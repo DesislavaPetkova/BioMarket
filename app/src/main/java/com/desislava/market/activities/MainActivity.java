@@ -189,11 +189,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean insertUpdateDB() {
         DB_LAST_VERSION = sharedPref.getInt(DB_VER_STORE, 1);
-        Log.i("insertUpdateDB", "++++++++++++++++++++++++++++" + DB_LAST_VERSION);
+        Log.i("insertUpdateDB", "*** DB_LAST_VERSION ***" + DB_LAST_VERSION);
 
         dbHelper = new DBHelper(getBaseContext(), DB_LAST_VERSION);
         if (dbHelper.isUpdateIsNeeded()) {
-            Log.i("insertUpdateDB", "***DB is updated ***");
+            Log.i("insertUpdateDB", "*** DB is updated ***");
             Date now = new Date();
             int size = storeList.get(0).getAllCategory().size();
             List<Category> allCategories = storeList.get(0).getAllCategory();

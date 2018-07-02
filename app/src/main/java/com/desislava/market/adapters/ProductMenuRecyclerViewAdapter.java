@@ -60,13 +60,10 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
         holder.pr_name.setText(holder.product.getName());
         holder.imageView.setImageBitmap(holder.product.getImage());
 
-        holder.cart_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Cart singleProduct = new Cart(holder.product, "1", Util.getCategoryById(categoryId + 1));
-                ShoppingCartActivity.shoppingList.add(singleProduct);
-                Toast.makeText(v.getContext(), "Added to cart.Default quantity: 1", Toast.LENGTH_LONG).show();
-            }
+        holder.cart_button.setOnClickListener((View v) -> {
+            Cart singleProduct = new Cart(holder.product, "1", Util.getCategoryById(categoryId + 1));
+            ShoppingCartActivity.shoppingList.add(singleProduct);
+            Toast.makeText(v.getContext(), "Added to cart.Default quantity: 1", Toast.LENGTH_LONG).show();
         });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

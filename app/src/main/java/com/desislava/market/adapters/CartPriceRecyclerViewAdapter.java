@@ -43,15 +43,13 @@ public class CartPriceRecyclerViewAdapter extends RecyclerView.Adapter<CartPrice
         float productPrice = Float.parseFloat(current.getPrice());
         holder.pr_price.setText(String.valueOf(productPrice * (Float.parseFloat(current.getQuantity()))));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(shopList.get(position));
-                }
+        holder.mView.setOnClickListener((View v) -> {
+            if (null != mListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onListFragmentInteraction(shopList.get(position));
             }
+
         });
     }
 

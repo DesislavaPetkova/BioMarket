@@ -51,19 +51,16 @@ public class ShopperInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_shopper_info, container, false);
         next = view.findViewById(R.id.bnt_next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView email=view.findViewById(R.id.txtMail);
-                TextView full=view.findViewById(R.id.shopperName);
-                TextView username=view.findViewById(R.id.txtUsername);
-                TextView pass=view.findViewById(R.id.txtPassword);
-                TextView phone=view.findViewById(R.id.txtPhone);
-                //TODO check if null !!!!!!!
+        next.setOnClickListener((View v) -> {
+            TextView email = view.findViewById(R.id.txtMail);
+            TextView full = view.findViewById(R.id.shopperName);
+            TextView username = view.findViewById(R.id.txtUsername);
+            TextView pass = view.findViewById(R.id.txtPassword);
+            TextView phone = view.findViewById(R.id.txtPhone);
+            //TODO check if null !!!!!!!
 
-                if (mListener != null) {
-                    mListener.userInfoInteraction(email.getText(),full.getText(),username.getText(),pass.getText(),phone.getText());  //TODO can pass the entire bean ot fields to the activity
-                }
+            if (mListener != null) {
+                mListener.userInfoInteraction(email.getText(), full.getText(), username.getText(), pass.getText(), phone.getText());  //TODO can pass the entire bean ot fields to the activity
             }
         });
         return view;

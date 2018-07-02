@@ -23,7 +23,7 @@ import com.desislava.market.cart.helper.ShoppingCartHelper;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class PriceCartFragment extends Fragment /*implements ShoppingCartHelper.RecyclerItemTouchHelperListener*/ {
+public class PriceCartFragment extends Fragment  {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -98,10 +98,6 @@ public class PriceCartFragment extends Fragment /*implements ShoppingCartHelper.
         mListener = null;
     }
 
- /*   @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        System.out.println("HEREEEEEEEEEEEEEEEEEEEEE ###################################################");
-    }*/
 
     public void adapterPriceRemove() {
         if (adapter != null) {

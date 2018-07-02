@@ -11,13 +11,12 @@ public class Cart {
     private String price;
     private String category;
 
-    public Cart(Product product, String quantity,String category) {
+    public Cart(Product product, String quantity, String category) {
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice();
-        this.category=category;
+        this.category = category;
     }
-
 
 
     public Product getProduct() {
@@ -27,7 +26,8 @@ public class Cart {
     public String getQuantity() {
         return quantity;
     }
-    public int getQuantityInt(){
+
+    public int getQuantityInt() {
 
         return Integer.parseInt(quantity);
     }
@@ -35,7 +35,8 @@ public class Cart {
     public String getPrice() {
         return price;
     }
-    public float getPriceAsInt(){
+
+    public float getPriceAsInt() {
         return Float.parseFloat(price);
     }
 

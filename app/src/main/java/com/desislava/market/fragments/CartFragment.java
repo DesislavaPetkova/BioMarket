@@ -102,14 +102,6 @@ public class CartFragment extends Fragment {
         swiperListener=null;
     }
 
-/*    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (adapter != null) {
-            adapter.removeItem(viewHolder.getAdapterPosition());
-        }
-        System.out.println("HEREEEEEEEE WE ARE ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    }*/
-
     public void adapterRemove(RecyclerView.ViewHolder viewHolder) {
         if (adapter != null) {
             adapter.removeItem(viewHolder.getAdapterPosition());

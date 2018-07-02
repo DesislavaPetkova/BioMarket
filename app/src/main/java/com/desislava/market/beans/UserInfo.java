@@ -9,20 +9,20 @@ import java.io.Serializable;
 
 public class UserInfo implements Serializable {
 
-    String email;
-    String name;
-    String username;
-    String password;
-    String phone;
+    private String email;
+    private String name;
+    private String username;
+    private String password;
+    private String phone;
 
     //Ship address
 
     //TODO missing field
-    String address;
-    String district;
-    String city;
+    private String address;
+    private String district;
+    private String city;
 
-    public UserInfo(){
+    public UserInfo() {
 
     }
 
