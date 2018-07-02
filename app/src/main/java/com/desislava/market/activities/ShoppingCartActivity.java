@@ -20,14 +20,11 @@ import android.widget.TextView;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
-import com.desislava.market.beans.Product;
 import com.desislava.market.cart.helper.ShoppingCartHelper;
 import com.desislava.market.fragments.CartFragment;
-import com.desislava.market.fragments.MenuListProductFragment;
 import com.desislava.market.fragments.PriceCartFragment;
 import com.desislava.market.utils.Constants;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,9 +64,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     private void initToolbar() {
         Window w = getWindow();
-        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
+        w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCart);
-        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
+        toolbar.setBackgroundColor(Constants.GREEN_COLOR);
         toolbar.setTitle("Shopping cart"); //TODo constant
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

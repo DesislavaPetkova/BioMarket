@@ -26,11 +26,12 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     private AlertDialog.Builder alertDialogBuilder;
     private Exception ex = null;
 
-    public interface Response {
+    public interface UpdateAndInsert {
         void updateAdapter();
+        boolean insertUpdateDB();
     }
 
-    public Response response;
+    public UpdateAndInsert response;
 
 
     public JSONResponse(final MainActivity mainActivity, String store) {
@@ -50,8 +51,10 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... strings) {
 //TODO Update service response depending on store request
+
         String url = "http://192.168.0.101:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
         StringBuilder response = new StringBuilder();
+
         URL obj;
         try {
             obj = new URL(url);
@@ -91,6 +94,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
                 e.printStackTrace();
             }
             dialog.dismiss();
+            response.insertUpdateDB();
             response.updateAdapter();
         } else {
             dialog.cancel();

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -24,9 +25,9 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         Window w=getWindow();
-        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
+        w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
+        toolbar.setBackgroundColor(Constants.GREEN_COLOR);
         toolbar.setTitle("Choose market");
         setSupportActionBar(toolbar);
 /*
