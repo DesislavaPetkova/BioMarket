@@ -42,8 +42,8 @@ public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        Cart cart=shoppingList.get(position);//TODO DO I NEED IT ?
-        holder.pr_cart= cart;
+        Cart cart = shoppingList.get(position);//TODO DO I NEED IT ?
+        holder.pr_cart = cart;
         holder.imageView.setImageBitmap(cart.getProduct().getImage());
         holder.cartCategory.setText(cart.getCategory());
         holder.productName.setText(cart.getProduct().getName());
@@ -51,15 +51,13 @@ public class MyCartRecyclerViewAdapter extends RecyclerView.Adapter<MyCartRecycl
 
         //holder.cartCategory;
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(shoppingList.get(position));
-                }
+        holder.mView.setOnClickListener((View v) -> {
+            if (null != mListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onListFragmentInteraction(shoppingList.get(position));
             }
+
         });
     }
 

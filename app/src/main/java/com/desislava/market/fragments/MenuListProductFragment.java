@@ -15,8 +15,6 @@ import com.desislava.market.adapters.ProductMenuRecyclerViewAdapter;
 import com.desislava.market.R;
 import com.desislava.market.beans.Product;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -25,8 +23,7 @@ import static android.webkit.ConsoleMessage.MessageLevel.LOG;
  */
 public class MenuListProductFragment extends Fragment {
 
-    //private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String PRODUCT_ID = "single_product_info-id";
+    private static final String PRODUCT_ID = "infoProductId";
     private int mColumnCount = 2;
     private int categoryId = 1;
     private OnListFragmentInteractionListener mListener;
@@ -60,7 +57,7 @@ public class MenuListProductFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("ON CREATE Fragment","FRAGMENT");
+        Log.i("MenuListProductFragment","onCreateView - Enter ");
         View view = inflater.inflate(R.layout.fragment_product_menu_list, container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -104,18 +101,8 @@ public class MenuListProductFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Product product,int categoryId); //,int category
     }
 

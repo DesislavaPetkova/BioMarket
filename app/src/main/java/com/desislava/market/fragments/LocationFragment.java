@@ -46,7 +46,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
 
     private static final String CHECKED = "checked";
     private static final String USER_INFO = "userInfo";
-    private static final String API_KEY = "AIzaSyCM8c1DKFJygv1Jl1czSVf6PdowVXL6AMY";//AIzaSyAUSiW2rGjmWNcZBT-a7YLd8KJ5KtY4L8Q;  //AIzaSyCM8c1DKFJygv1Jl1czSVf6PdowVXL6AMY
+    private static final String API_KEY = "";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private LatLngBounds.Builder builder = new LatLngBounds.Builder();
     private static final String[] LOCATION_PERMS = {

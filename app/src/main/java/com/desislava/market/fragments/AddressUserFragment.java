@@ -84,13 +84,10 @@ public class AddressUserFragment extends Fragment {
         final EditText addressShip = view.findViewById(R.id.txtAddress);
         final Spinner district = view.findViewById(R.id.spinnerDistrict);
         final Spinner city = view.findViewById(R.id.spinnerCity);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        next.setOnClickListener((View v)-> {
                 if (mListener != null) {
                     mListener.addressInteraction(name.getText(), addressShip.getText(), district.getSelectedItem(), city.getSelectedItem());// TODO handle on city change -> district change also relocate them
                 }
-            }
         });
 
         current = view.findViewById(R.id.isCurrent);

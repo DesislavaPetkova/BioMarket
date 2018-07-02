@@ -9,9 +9,9 @@ import java.util.List;
 
 public class Category {
 
-    String name;
+    private String name;
 
-    List<Product> allProducts=new ArrayList<>();
+    private List<Product> allProducts;
 
     public Category(String name, List<Product> allProducts) {
         this.name = name;

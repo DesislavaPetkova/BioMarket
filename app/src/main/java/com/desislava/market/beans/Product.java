@@ -14,12 +14,12 @@ import java.util.List;
 
 public class Product implements Serializable {
 
-    String name;
-    String price;
-    String info;
-    String origin;
-    String imageURL;
-    Bitmap image;
+    private String name;
+    private String price;
+    private String info;
+    private String origin;
+    private String imageURL;
+    private Bitmap image;
     public byte[] imageByteArray;
 
     public Product(String name, String price, String info, String origin, String imageURL) {
@@ -27,40 +27,40 @@ public class Product implements Serializable {
         this.price = price;
         this.info = info;
         this.origin = origin;
-        this.imageURL=imageURL;
+        this.imageURL = imageURL;
     }
 
     public String getName() {
-         return name;
-     }
+        return name;
+    }
 
-     public void setName(String name) {
-         this.name = name;
-     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-     public String getPrice() {
-         return price;
-     }
+    public String getPrice() {
+        return price;
+    }
 
-     public void setPrice(String price) {
-         this.price = price;
-     }
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-     public String getInfo() {
-         return info;
-     }
+    public String getInfo() {
+        return info;
+    }
 
-     public void setInfo(String info) {
-         this.info = info;
-     }
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
-     public String getOrigin() {
-         return origin;
-     }
+    public String getOrigin() {
+        return origin;
+    }
 
-     public void setOrigin(String origin) {
-         this.origin = origin;
-     }
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
 
     public String getImageURL() {
         return imageURL;

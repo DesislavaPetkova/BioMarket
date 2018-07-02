@@ -86,7 +86,6 @@ public  class DBHelper extends SQLiteOpenHelper {
             editor.putInt(MainActivity.DB_VER_STORE, jsonVersion);
             editor.apply();
             writable.setVersion(jsonVersion);
-            Log.i("isUpdateIsNeeded if", "++++++++++ YES ++++++++" + readable.getVersion());
             return true;
         }
 

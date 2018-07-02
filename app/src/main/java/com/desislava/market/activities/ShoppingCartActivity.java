@@ -46,14 +46,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_cart);
         navigationView.setNavigationItemSelectedListener(this);
         Button placeOrder = (Button) findViewById(R.id.place_order);
-        placeOrder.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //TODO check if cart is empty and if os return back to store !!
-                        Intent placeOrder = new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
-                        startActivity(placeOrder);
-                    }
+        placeOrder.setOnClickListener((View v) -> {
+                    //TODO check if cart is empty and if os return back to store !!
+                    Intent plOrder = new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
+                    startActivity(plOrder);
+
                 }
         );
 
@@ -133,7 +130,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     private void initFragmentManagers() {
         List<Fragment> mng = getSupportFragmentManager().getFragments();
-        //Log.i("Fragments size :  ", ""+mng.size());
+        Log.i("initFragmentManagers ", "Fragments size: " + mng.size());
         cartFragment = (CartFragment) mng.get(0);
         priceCartFragment = (PriceCartFragment) mng.get(1);
         if (cartFragment == null || priceCartFragment == null) {
