@@ -1,12 +1,14 @@
 package com.desislava.market.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -23,18 +25,33 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.desislava.market.R;
+import com.desislava.market.beans.Category;
 import com.desislava.market.beans.Product;
+import com.desislava.market.database.helper.DBHelper;
 import com.desislava.market.fragments.MenuListProductFragment;
+import com.desislava.market.fragments.PriceChartFragment;
 import com.desislava.market.fragments.ProductInfoFragment;
 import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.utils.Constants;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import static com.desislava.market.server.communication.ParseServerResponse.storeList;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.OnFragmentInteractionListener,JSONResponse.Response {
+        implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.ProductInfoListener,JSONResponse.UpdateAndInsert ,PriceChartFragment.OnFragmentInteractionListener{
 
     private FrameLayout frameLayout;
     private CoordinatorLayout.LayoutParams params;
+    public static DBHelper dbHelper;
     public static int categoryId = 0;
+    public static String DB_VER_STORE="db-store-";
+    public static int DB_LAST_VERSION=1;
+    public static SharedPreferences sharedPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +59,19 @@ public class MainActivity extends AppCompatActivity
         initToolbar();
         String store = getIntent().getStringExtra(Constants.STORE);
         initStore(store);
+        DB_VER_STORE+=store;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         frameLayout = (FrameLayout) findViewById(R.id.menuListInfoProduct);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fab.setOnClickListener((View view )-> {
                 Intent intent = new Intent(MainActivity
                         .this, ShoppingCartActivity.class);
                 startActivity(intent);
-            }
         });
 
         MenuListProductFragment menuFragment = MenuListProductFragment.newInstance(1);
         getSupportFragmentManager().beginTransaction().replace(R.id.menuListInfoProduct, menuFragment, "menulist").commit();
-
-       /* params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
-        params.setMargins(0, 300, 0, 0);*/
-        //frameLayout.setLayoutParams(params);
+        sharedPref=this.getPreferences(Context.MODE_PRIVATE);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
@@ -68,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -146,6 +159,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     private void initStore(String store) {
         Log.d("MainActivity initStore ","Enter");
         try {
@@ -157,10 +171,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onFragmentInteraction(Product product) {
-        Log.i(getLocalClassName() + "onFragmentInteraction", "ENTER");
-    }
 
     public void updateFragment(int categoryId){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -173,8 +183,34 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void updateAdapter() {
-        Log.e("MainActivity","updateAdapter - Enter categoryId: " + categoryId);
         updateFragment(1);
+    }
+
+    @Override
+    public boolean insertUpdateDB() {
+        DB_LAST_VERSION = sharedPref.getInt(DB_VER_STORE, 1);
+        Log.i("insertUpdateDB", "++++++++++++++++++++++++++++" + DB_LAST_VERSION);
+
+        dbHelper = new DBHelper(getBaseContext(), DB_LAST_VERSION);
+        if (dbHelper.isUpdateIsNeeded()) {
+            Log.i("insertUpdateDB", "***DB is updated ***");
+            Date now = new Date();
+            int size = storeList.get(0).getAllCategory().size();
+            List<Category> allCategories = storeList.get(0).getAllCategory();
+            List<Product> allProducts;
+            if (size > 0) {
+                for (Category cat : allCategories) {
+                    allProducts = cat.getAllProducts();
+                    for (Product pr : allProducts) {
+                        dbHelper.insertValue(pr.getName().toLowerCase(), pr.getPrice(), new SimpleDateFormat("dd-MM", Locale.ITALY).format(now));
+                    }
+
+                }
+            }
+        } else {
+            Log.e("insertUpdateDB", "DB is *** NOT *** updated");
+        }
+        return true;
     }
 
 
@@ -183,10 +219,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         Window w = getWindow();
-        w.setStatusBarColor(Color.parseColor(Constants.COLOR));
+        w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(Constants.MARKET);
-        toolbar.setBackgroundColor(Color.parseColor(Constants.COLOR));
+        toolbar.setBackgroundColor(Constants.GREEN_COLOR);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -195,4 +231,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void bntPriceClicked(String name) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        PriceChartFragment chart = PriceChartFragment.newInstance(name);
+        if (fragmentManager != null) {
+            fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, chart).addToBackStack(null).commit();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

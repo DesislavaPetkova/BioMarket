@@ -26,6 +26,7 @@ public class ParseServerResponse {
 
     List<Category> categories;
     public static List<Store> storeList = new ArrayList<>();
+    public static int jsonVersion;
 
     public void allStoresParseResponse(String object) throws JSONException {
 
@@ -35,6 +36,12 @@ public class ParseServerResponse {
             categories = new ArrayList<>();
             String storeName = itrStoreName.next(); //Name  of the Store
             JSONArray productsArray = stores.getJSONArray(storeName);
+            if (storeName.equals("Version")) {
+                jsonVersion = Integer.parseInt(productsArray.get(0).toString());
+                Log.e("allStoresParseResponse ", "------------JSON version----------------- " + jsonVersion);
+                continue;
+            }
+
             for (int i = 0; i < productsArray.length(); i++) {   // 2 categories
                 products = new ArrayList<>();
                 JSONObject obj = productsArray.getJSONObject(i);
@@ -60,7 +67,4 @@ public class ParseServerResponse {
         Log.i("List after parsing info", storeList.toString());
     }
 
-    public List<Store> getStoreList() {
-        return storeList;
-    } //TODO useless !!!!!!!!!!!! remove
 }

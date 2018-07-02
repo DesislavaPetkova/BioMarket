@@ -23,7 +23,7 @@ import com.desislava.market.utils.Util;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProductInfoFragment.OnFragmentInteractionListener} interface
+ * {@link ProductInfoFragment.ProductInfoListener} interface
  * to handle interaction events.
  * Use the {@link ProductInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -36,11 +36,11 @@ public class ProductInfoFragment extends Fragment {
 
     private Product infoProduct;
 
-    private OnFragmentInteractionListener mListener;
+    private ProductInfoListener mListener;
 
     private ImageView single_img;
 
-    private TextView  productName;
+    private TextView productName;
 
     private TextView prInfo;
 
@@ -52,11 +52,9 @@ public class ProductInfoFragment extends Fragment {
 
     private Button bnt_price;
 
-    private int categoryId=0;
+    private int categoryId = 0;
 
     private ImageView coverImage;
-
-
 
 
     public ProductInfoFragment() {
@@ -69,11 +67,11 @@ public class ProductInfoFragment extends Fragment {
      *
      * @return A new instance of fragment ProductInfoFragment.
      */
-    public static ProductInfoFragment newInstance(Product product,int category) {
+    public static ProductInfoFragment newInstance(Product product, int category) {
         ProductInfoFragment fragment = new ProductInfoFragment();
         Bundle args = new Bundle();
         args.putSerializable(PRODUCT, product);
-        args.putInt(CATEGORY,category);
+        args.putInt(CATEGORY, category);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,7 +91,7 @@ public class ProductInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product_info, container, false);
         //init fields
-        coverImage=getActivity().findViewById(R.id.coverImage);
+        coverImage = getActivity().findViewById(R.id.coverImage);
 
         //ingle_img = view.findViewById(R.id.single_product_info_img);
         productName = view.findViewById(R.id.lbl_product);
@@ -101,13 +99,23 @@ public class ProductInfoFragment extends Fragment {
         quantity = view.findViewById(R.id.incdec);
         product_weight = view.findViewById(R.id.productWeight);
         bnt_price = view.findViewById(R.id.bnt_price);
+        bnt_price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // PriceChartFragment price = PriceChartFragment.newInstance("", "");//todo
+                if (mListener != null) {
+                    mListener.bntPriceClicked(infoProduct.getName());
+                }
+
+            }
+        });
         add_cart = view.findViewById(R.id.add_cart);
         add_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cart newItem = new Cart(infoProduct,quantity.getNumber(), Util.getCategoryById(categoryId));
+                Cart newItem = new Cart(infoProduct, quantity.getNumber(), Util.getCategoryById(categoryId));
                 ShoppingCartActivity.shoppingList.add(newItem);
-                Toast.makeText(v.getContext(), "Added to cart. "+categoryId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Added to cart. " + categoryId, Toast.LENGTH_SHORT).show();
                 Log.i("Cart product object:", newItem.toString());
 
             }
@@ -116,11 +124,11 @@ public class ProductInfoFragment extends Fragment {
         //set fields with values
         coverImage.setImageBitmap(infoProduct.getImage());
         productName.setText(infoProduct.getName());
-        quantity.setRange(1,1000);
+        quantity.setRange(1, 1000);
         prInfo.setText(infoProduct.getInfo());
-        bnt_price.setText((infoProduct.getPrice()+" lv"));
+        bnt_price.setText((infoProduct.getPrice() + " lv"));
 
-        return view ;
+        return view;
     }
 
 /*    // TODO: Rename method, update argument and hook method into UI event
@@ -133,8 +141,8 @@ public class ProductInfoFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof ProductInfoListener) {
+            mListener = (ProductInfoListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -157,7 +165,7 @@ public class ProductInfoFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Product product);
+    public interface ProductInfoListener {
+        void bntPriceClicked(String prName);
     }
 }

@@ -1,10 +1,12 @@
 package com.desislava.market.utils;
 
 
+import android.graphics.Color;
 
 public class Constants {
 
-public static final String COLOR="#689B00";
+public static final int GREEN_COLOR = Color.parseColor("#689B00");
+public static final int YELLOW_COLOR = Color.parseColor("#ffffb3");
 public static final String MARKET="Market";
 public static final String LIDL="lidl";
 public static final String KAUFLAND="kaufland";
