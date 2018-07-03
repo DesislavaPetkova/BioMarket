@@ -32,11 +32,10 @@
             android:id="@+id/coverImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/app_name"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            android:contentDescription="@string/app_name" />
 
     </LinearLayout>
+    <!--android:layout_weight="1"-->
 
     <FrameLayout
         android:id="@+id/menuListInfoProduct"
@@ -44,7 +43,8 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:visibility="visible"
-        android:layout_marginTop="163dp">
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="150dp">
 
         <!-- <fragment
         android:id="@+id/menu_list_fragment"

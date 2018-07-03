@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.GooglePlace;
@@ -53,6 +54,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
+
+    private Button finish;
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -92,6 +95,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
+        finish= mMapView.findViewById(R.id.bnt_finish);
+        finish.setOnClickListener((View view)-> Log.i("finish clicked","cclick"));
         return mview;
     }
 
