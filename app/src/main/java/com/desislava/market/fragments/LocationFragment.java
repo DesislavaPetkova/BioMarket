@@ -3,6 +3,7 @@ package com.desislava.market.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -21,10 +22,9 @@ import android.widget.Button;
 import com.desislava.market.R;
 import com.desislava.market.beans.GooglePlace;
 import com.desislava.market.beans.UserInfo;
+import com.desislava.market.server.communication.DirectionsAsyncTask;
 import com.desislava.market.server.communication.GooglePlaceAsyncTask;
-import com.desislava.market.server.communication.JSONResponse;
 import com.desislava.market.server.communication.ParseServerResponse;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +34,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,11 +45,11 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 
-public class LocationFragment extends Fragment implements OnMapReadyCallback, GooglePlaceAsyncTask.GooglePlace {
+public class LocationFragment extends Fragment implements OnMapReadyCallback, GooglePlaceAsyncTask.GooglePlace, DirectionsAsyncTask.DirectionsReady {
 
     private static final String CHECKED = "checked";
     private static final String USER_INFO = "userInfo";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private LatLngBounds.Builder builder = new LatLngBounds.Builder();
     private static final String[] LOCATION_PERMS = {
@@ -63,6 +65,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
 
     private boolean isChecked;
     private UserInfo userInfo;
+    private LatLng loc;
+    private LatLng dest;
     String store;
 
     private OnFragmentInteractionListener mListener;
@@ -95,8 +99,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
-        finish= mMapView.findViewById(R.id.bnt_finish);
-        finish.setOnClickListener((View view)-> Log.i("finish clicked","cclick"));
+        finish = mview.findViewById(R.id.bnt_finish);
+        finish.setOnClickListener((View view) -> Log.i("finish clicked", "cclick"));
         return mview;
     }
 
@@ -137,7 +141,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.i("onMapReady","Enter");
+        Log.i("onMapReady", "Enter");
         MapsInitializer.initialize(getContext());
         Criteria criteria = new Criteria();
         criteria.setPowerRequirement(Criteria.POWER_LOW);
@@ -145,18 +149,19 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         double latitude = 0;
         double longitude = 0;
         if (isChecked) {
-            Log.i("onMapReady","isChecked-TRUE");
+            Log.i("onMapReady", "isChecked-TRUE");
             getCurrentLocation();
             LocationManager locationManager = (LocationManager)
                     getActivity().getSystemService(Context.LOCATION_SERVICE);
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED /*&& ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED*/) {
                 requestPermissions(new String[]{ACCESS_FINE_LOCATION /*ACCESS_COARSE_LOCATION*/}, 2);
-            }
-            Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-            if (location != null) {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+            } else {
+                Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
             }
 
         } else {
@@ -174,9 +179,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
             }
         }
 
+        loc = new LatLng(latitude, longitude);
         storeSearch(latitude, longitude);
-
-        LatLng loc = new LatLng(latitude, longitude);
         // CameraPosition camera = CameraPosition.builder().target(loc).zoom(10).build();
         //googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
         googleMap.addMarker(new MarkerOptions().position(loc).title("Address"));
@@ -197,19 +201,45 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     public void placeReady() {
         Log.i("placeReady", "LIST IS AVAILABLE ");
         GooglePlace place = ParseServerResponse.places.get(0);
-        LatLng loc = new LatLng(place.getLat(), place.getLng());
-        googleMap.addMarker(new MarkerOptions().position(loc).title(place.getVicinity()));
-        updateCamera(loc);
+        dest = new LatLng(place.getLat(), place.getLng());
+        googleMap.addMarker(new MarkerOptions().position(dest).title(place.getVicinity()));
+        updateCamera(dest);
+        Log.i("placeReady", "Before - DirectionsAsyncTask execute");
+        DirectionsAsyncTask async = new DirectionsAsyncTask(this);
+        async.execute(getDirectionsUrl());
     }
 
+    private String getDirectionsUrl() {
+        StringBuilder googleDirectionsUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
+        googleDirectionsUrl.append("origin=" + loc.latitude + "," + loc.longitude);
+        googleDirectionsUrl.append("&destination=" + dest.latitude + "," + dest.longitude);
+        googleDirectionsUrl.append("&key=" + "AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE"); //TODO update key
+        Log.i("getDirectionsUrl  ", googleDirectionsUrl.toString());
+        return googleDirectionsUrl.toString();
+    }
 
-    private void updateCamera(LatLng loc) {
+    private void updateCamera(LatLng loc) { //todo input parameter  might be removed !!
 
         builder.include(loc);
         LatLngBounds bounds = builder.build();
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
         googleMap.moveCamera(cu);
         googleMap.animateCamera(cu);
+    }
+
+    @Override
+    public void directionReady(String[] directionsList) {
+        Log.i("directionReady", "Enter");
+        int count = directionsList.length;
+        for(int i = 0;i<count;i++)
+        {
+            PolylineOptions options = new PolylineOptions();
+            options.color(Color.RED);
+            options.width(10);
+            options.addAll(PolyUtil.decode(directionsList[i]));
+
+            googleMap.addPolyline(options);
+        }
     }
 
 
