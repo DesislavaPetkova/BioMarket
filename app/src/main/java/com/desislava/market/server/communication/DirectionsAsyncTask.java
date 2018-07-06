@@ -39,7 +39,7 @@ public class DirectionsAsyncTask extends AsyncTask<String, Integer, String> {
                 Log.i("doInBackground", "Response Code : " + responseCode);
 
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(con.getInputStream()));
+                        new InputStreamReader(con.getInputStream()),8192*2);
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
@@ -57,10 +57,10 @@ public class DirectionsAsyncTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        Log.i("Directions onPostExecute", "Enter");
-        //TODO Interface to show directions
+        Log.e("Directions onPostExecute", "Enter "+s);
+
         DirectionsDataParser parse = new DirectionsDataParser();
-       String[] result= parse.parseDirections(s);
+        String[] result = parse.parseDirections(s);
         dir.directionReady(result);
     }
 }

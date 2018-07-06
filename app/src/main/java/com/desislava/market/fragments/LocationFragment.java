@@ -52,12 +52,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     private static final String API_KEY = "AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private LatLngBounds.Builder builder = new LatLngBounds.Builder();
-    private static final String[] LOCATION_PERMS = {
+   /* private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
-
-    private Button finish;
+*/
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -99,7 +98,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
-        finish = mview.findViewById(R.id.bnt_finish);
+       Button finish = mview.findViewById(R.id.bnt_finish);
         finish.setOnClickListener((View view) -> Log.i("finish clicked", "cclick"));
         return mview;
     }
@@ -180,11 +179,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         }
 
         loc = new LatLng(latitude, longitude);
+        builder.include(loc);
         storeSearch(latitude, longitude);
-        // CameraPosition camera = CameraPosition.builder().target(loc).zoom(10).build();
-        //googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(camera));
         googleMap.addMarker(new MarkerOptions().position(loc).title("Address"));
-        updateCamera(loc);
+        updateCamera();
 
     }
 
@@ -202,8 +200,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         Log.i("placeReady", "LIST IS AVAILABLE ");
         GooglePlace place = ParseServerResponse.places.get(0);
         dest = new LatLng(place.getLat(), place.getLng());
+        builder.include(dest);
         googleMap.addMarker(new MarkerOptions().position(dest).title(place.getVicinity()));
-        updateCamera(dest);
+        updateCamera();
         Log.i("placeReady", "Before - DirectionsAsyncTask execute");
         DirectionsAsyncTask async = new DirectionsAsyncTask(this);
         async.execute(getDirectionsUrl());
@@ -213,16 +212,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         StringBuilder googleDirectionsUrl = new StringBuilder("https://maps.googleapis.com/maps/api/directions/json?");
         googleDirectionsUrl.append("origin=" + loc.latitude + "," + loc.longitude);
         googleDirectionsUrl.append("&destination=" + dest.latitude + "," + dest.longitude);
-        googleDirectionsUrl.append("&key=" + "AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE"); //TODO update key
+        googleDirectionsUrl.append("&key=" + API_KEY);
         Log.i("getDirectionsUrl  ", googleDirectionsUrl.toString());
         return googleDirectionsUrl.toString();
     }
 
-    private void updateCamera(LatLng loc) { //todo input parameter  might be removed !!
-
-        builder.include(loc);
+    private void updateCamera() {
         LatLngBounds bounds = builder.build();
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 5);
         googleMap.moveCamera(cu);
         googleMap.animateCamera(cu);
     }
@@ -237,7 +234,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
             options.color(Color.RED);
             options.width(10);
             options.addAll(PolyUtil.decode(directionsList[i]));
-
             googleMap.addPolyline(options);
         }
     }
@@ -246,16 +242,6 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     public interface OnFragmentInteractionListener {
         void locationInteraction(Uri uri);
     }
-
- /*   @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==1 &&grantResults[0]==PERMISSION_GRANTED){
-            //googleMap.setMyLocationEnabled(true);
-            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        }
-
-    }*/
 
     private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
