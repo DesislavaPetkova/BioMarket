@@ -33,6 +33,10 @@ public static final String IMAGE_URL="image";
     public static final String OPEN_NOW="open_now";
     public static final String VICINITY="vicinity";
 
+    //Google place api Json directions constants
+    public static final String DURATION="duration";
+    public static final String DISTANCE="distance";
+    public static final String DELIVERY="delivery";
 
 
 

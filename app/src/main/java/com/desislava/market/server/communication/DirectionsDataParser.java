@@ -2,6 +2,8 @@ package com.desislava.market.server.communication;
 
 import android.util.Log;
 
+import com.desislava.market.utils.Constants;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,28 +11,51 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class DirectionsDataParser {
+    private HashMap<String, String> directionsMap ;
+    private String[] addr;
 
-    //Todo not called check it
+    public String[] getAddr() {
+        return addr;
+    }
+
+    public HashMap<String, String> getGoogleDirectionsMap() {
+        return directionsMap;
+    }
+
     private HashMap<String, String> getDuration(JSONArray googleDirectionsJson) {
-        HashMap<String, String> googleDirectionsMap = new HashMap<>();
+        directionsMap = new HashMap<>();
         String duration;
         String distance;
 
-
         try {
 
-            duration = googleDirectionsJson.getJSONObject(0).getJSONObject("duration").getString("text");
-            distance = googleDirectionsJson.getJSONObject(0).getJSONObject("distance").getString("text");
+            duration = googleDirectionsJson.getJSONObject(0).getJSONObject(Constants.DURATION).getString("text");
+            distance = googleDirectionsJson.getJSONObject(0).getJSONObject(Constants.DISTANCE).getString("text");
 
-            googleDirectionsMap.put("duration", duration);
-            googleDirectionsMap.put("distance", distance);
+            directionsMap.put("duration", duration);
+            directionsMap.put("distance", distance);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        return directionsMap;
+    }
 
-        return googleDirectionsMap;
+
+    //TODO view start .. address
+    public String[] addresses(JSONArray legs) {
+
+        addr = new String[2];
+        try {
+            addr[0] = legs.getJSONObject(0).getString("start_address");
+            addr[1] = legs.getJSONObject(0).getString("end_address");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return addr;
+
     }
 
 
@@ -41,7 +66,10 @@ public class DirectionsDataParser {
 
         try {
             jsonObject = new JSONObject(jsonData);
-            jsonArray = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONArray("steps");
+            JSONArray legs = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+            getDuration(legs);
+            addresses(legs);
+            jsonArray = legs.getJSONObject(0).getJSONArray("steps");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -65,7 +93,6 @@ public class DirectionsDataParser {
     }
 
     public String getPath(JSONObject googlePathJson) {
-        Log.i("Single path ", "Enter");
         String polyline = "";
         try {
             polyline = googlePathJson.getJSONObject("polyline").getString("points");
@@ -74,7 +101,6 @@ public class DirectionsDataParser {
         }
         return polyline;
     }
-
 
 
 }

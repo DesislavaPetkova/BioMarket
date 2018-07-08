@@ -17,7 +17,7 @@ public class DirectionsAsyncTask extends AsyncTask<String, Integer, String> {
     private DirectionsReady dir;
 
     public interface DirectionsReady {
-        void directionReady(String[] directionsList);
+        void directionReady(String directionsList);
     }
 
     public DirectionsAsyncTask(LocationFragment locationFragment) {
@@ -59,8 +59,6 @@ public class DirectionsAsyncTask extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String s) {
         Log.e("Directions onPostExecute", "Enter "+s);
 
-        DirectionsDataParser parse = new DirectionsDataParser();
-        String[] result = parse.parseDirections(s);
-        dir.directionReady(result);
+        dir.directionReady(s);
     }
 }

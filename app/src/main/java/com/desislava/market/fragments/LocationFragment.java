@@ -18,13 +18,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.GooglePlace;
 import com.desislava.market.beans.UserInfo;
 import com.desislava.market.server.communication.DirectionsAsyncTask;
+import com.desislava.market.server.communication.DirectionsDataParser;
 import com.desislava.market.server.communication.GooglePlaceAsyncTask;
 import com.desislava.market.server.communication.ParseServerResponse;
+import com.desislava.market.utils.Constants;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -66,6 +69,10 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     private UserInfo userInfo;
     private LatLng loc;
     private LatLng dest;
+    private TextView distance;
+    private TextView duration;
+    private TextView delivery;
+
     String store;
 
     private OnFragmentInteractionListener mListener;
@@ -98,8 +105,11 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
-       Button finish = mview.findViewById(R.id.bnt_finish);
-        finish.setOnClickListener((View view) -> Log.i("finish clicked", "cclick"));
+        Button finish = mview.findViewById(R.id.bnt_finish);
+        finish.setOnClickListener((View view) -> Log.i("finish clicked", "click"));
+        distance = mview.findViewById(R.id.txtDistance);
+        duration = mview.findViewById(R.id.txtDuration);
+        delivery = mview.findViewById(R.id.txtDelivery);
         return mview;
     }
 
@@ -225,17 +235,22 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     }
 
     @Override
-    public void directionReady(String[] directionsList) {
+    public void directionReady(String str) {
         Log.i("directionReady", "Enter");
-        int count = directionsList.length;
-        for(int i = 0;i<count;i++)
-        {
+
+        DirectionsDataParser parse = new DirectionsDataParser();
+        String[] directionsList = parse.parseDirections(str);
+
+        for (String s : directionsList) {
             PolylineOptions options = new PolylineOptions();
             options.color(Color.RED);
             options.width(10);
-            options.addAll(PolyUtil.decode(directionsList[i]));
+            options.addAll(PolyUtil.decode(s));
             googleMap.addPolyline(options);
         }
+        distance.setText(parse.getGoogleDirectionsMap().get(Constants.DISTANCE));
+        duration.setText(parse.getGoogleDirectionsMap().get(Constants.DURATION));
+
     }
 
 
