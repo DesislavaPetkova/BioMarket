@@ -1,14 +1,10 @@
 package com.desislava.market.activities;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 
 import com.anton46.stepsview.StepsView;
 import com.desislava.market.R;
@@ -25,7 +21,7 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
     private StepsView stepsView;
     UserInfo info = new UserInfo();
     private boolean isLocaionChecked;
-    private static  int position = 0;
+    private  int position = 0;
 
 
     @Override
@@ -43,6 +39,7 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
                 .setLabelColorIndicator(getResources().getColor(R.color.orange))
                 .setCompletedPosition(position)
                 .drawView();
+
         if (savedInstanceState == null) {
             ShopperInfoFragment shopperInfoFragment = ShopperInfoFragment.newInstance("", "");
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_info, shopperInfoFragment, "shopper Info").commit();
@@ -51,7 +48,7 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
 
     @Override
     public void userInfoInteraction(CharSequence email, CharSequence name, CharSequence user, CharSequence pass, CharSequence phone) {
-        //TODO might create a bean for this  option not to enter this every time
+        //TODO might create a bean for this  option not to enter this every time (DB existing users)
         info.setEmail("" + email);
         info.setName("" + name);
         info.setUsername("" + user);
@@ -98,8 +95,6 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
         toolbar.setBackgroundColor(Constants.GREEN_COLOR);
         toolbar.setTitle("User info");
         setSupportActionBar(toolbar);
-
-
 
     }
 }

@@ -21,13 +21,13 @@ import java.net.URL;
 public class JSONResponse extends AsyncTask<String, Integer, String> {
 
     private String store;
-    //private MainActivity activity;
     private ProgressDialog dialog;
     private AlertDialog.Builder alertDialogBuilder;
     private Exception ex = null;
 
     public interface UpdateAndInsert {
         void updateAdapter();
+
         boolean insertUpdateDB();
     }
 
@@ -41,10 +41,9 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
         alertDialogBuilder = new AlertDialog.Builder(mainActivity);
         alertDialogBuilder.setMessage("ERROR getting info from server !")
                 .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mainActivity.finish();
-                    }
+                .setPositiveButton("OK", (DialogInterface dialog, int id) -> {
+                    mainActivity.finish();
+
                 });
     }
 
@@ -52,7 +51,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... strings) {
 //TODO Update service response depending on store request
 
-        String url = "http://192.168.0.101:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
+        String url = "http://172.22.106.13:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
         StringBuilder response = new StringBuilder();
 
         URL obj;
