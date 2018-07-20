@@ -28,10 +28,9 @@ public class StartActivity extends AppCompatActivity {
         w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Constants.GREEN_COLOR);
-        toolbar.setTitle("Choose market");
+        toolbar.setTitle(Constants.CHOOSE_MARKET);
         setSupportActionBar(toolbar);
-/*
-        ImageButton img = findViewById(R.id.kauflandImgBnt);*/
+
     }
 
 

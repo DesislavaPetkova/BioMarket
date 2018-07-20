@@ -27,7 +27,6 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
 
     public interface UpdateAndInsert {
         void updateAdapter();
-
         boolean insertUpdateDB();
     }
 
@@ -51,7 +50,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... strings) {
 //TODO Update service response depending on store request
 
-        String url = "http://172.22.106.13:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
+        String url = "http://192.168.0.106:8080/" + store;  //  home:192.168.0.103  work:172.22.173.133
         StringBuilder response = new StringBuilder();
 
         URL obj;
@@ -60,7 +59,7 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             int responseCode = con.getResponseCode();
-            if(responseCode==HttpURLConnection.HTTP_OK) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 Log.i("doInBackground", "Sending GET request to URL: " + url);
                 Log.i("doInBackground", "Response Code : " + responseCode);
 
@@ -71,11 +70,11 @@ public class JSONResponse extends AsyncTask<String, Integer, String> {
                     response.append(inputLine);
                 }
                 in.close();
-            }else{
+            } else {
                 ex = new Exception();
             }
         } catch (Exception e) {
-            Log.e("doInBackground ", "" +e);
+            Log.e("doInBackground ", "" + e);
             ex = e;
         }
         return response.toString();

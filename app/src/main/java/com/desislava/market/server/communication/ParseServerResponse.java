@@ -27,13 +27,13 @@ public class ParseServerResponse {
     List<Product> products;
 
     List<Category> categories;
-    public static List<Store> storeList = new ArrayList<>();
+    public static List<Store> storeList ;
     public static int jsonVersion;
 
     public static List<GooglePlace> places = new ArrayList<>();
 
     public void allStoresParseResponse(String object) throws JSONException {
-
+        storeList = new ArrayList<>();
         JSONObject stores = new JSONObject(object);
         Iterator<String> itrStoreName = stores.keys();
         while (itrStoreName.hasNext()) {
@@ -92,7 +92,6 @@ public class ParseServerResponse {
         }
 
         //Log.i("parseGooglePlaceRep", " END " + Arrays.asList(places));
-
 
     }
 

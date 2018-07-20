@@ -1,7 +1,6 @@
 package com.desislava.market.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.desislava.market.R;
 import com.desislava.market.beans.Cart;
@@ -29,34 +29,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-                                                                       CartFragment.OnListFragmentInteractionListener,
-                                                                        PriceCartFragment.OnListFragmentInteractionListener ,
-                                                                         ShoppingCartHelper.RecyclerItemTouchHelperListener {
+        CartFragment.OnListFragmentInteractionListener,
+        PriceCartFragment.OnListFragmentInteractionListener,
+        ShoppingCartHelper.RecyclerItemTouchHelperListener {
 
-    public static ArrayList<Cart> shoppingList=new ArrayList<>();
+    public static ArrayList<Cart> shoppingList = new ArrayList<>();
     private CartFragment cartFragment;
     private PriceCartFragment priceCartFragment;
-    private  TextView total ;
+    private TextView total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
         initToolbar();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_cart);
+        NavigationView navigationView = findViewById(R.id.nav_view_cart);
         navigationView.setNavigationItemSelectedListener(this);
-        Button placeOrder = (Button) findViewById(R.id.place_order);
+        Button placeOrder = findViewById(R.id.place_order);
         placeOrder.setOnClickListener((View v) -> {
-                    //TODO check if cart is empty and if os return back to store !!
-                    Intent plOrder = new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
-                    startActivity(plOrder);
+                    if (!shoppingList.isEmpty()) {
+                        Intent plOrder = new Intent(ShoppingCartActivity.this, UserInfoActivity.class);
+                        startActivity(plOrder);
+                    } else {
+                        Toast.makeText(this, "Empty cart.. Back !", Toast.LENGTH_SHORT).show(); //Todo rename stores
+                        onBackPressed();
+                    }
 
                 }
         );
 
-        //initFragmentManagers();
-       total = findViewById(R.id.total);
-       total.setText(("" + getTotalPrice()));
+        total = findViewById(R.id.total);
+        total.setText(("" + getTotalPrice()));
     }
 
     private void initToolbar() {
@@ -64,7 +67,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
         w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCart);
         toolbar.setBackgroundColor(Constants.GREEN_COLOR);
-        toolbar.setTitle("Shopping cart"); //TODo constant
+        toolbar.setTitle(Constants.SHOPPINGCART);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.shopping_layout);
@@ -107,6 +110,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
             case R.id.fruits:
                 MainActivity.categoryId = 1;
                 break;
+            case R.id.orders:
+                MainActivity.categoryId = 6;
+                Intent in = new Intent(this, SummaryActivity.class);
+                startActivity(in);
+                return true;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -116,10 +124,10 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
 
     @Override
     public void onListFragmentInteraction(Cart cart) {
-        Log.i("ShoppingCartActivity","onListFragmentInteraction====  clicked PRICE product"); //TOdo check if 1 it should be only 1 interface handling 2 actions
+        Log.i("ShoppingCartActivity", "onListFragmentInteraction====  clicked PRICE product"); //TOdo check if 1 it should be only 1 interface handling 2 actions
     }
 
-    private float getTotalPrice() {
+    public static float getTotalPrice() {
         float total = 0;
         for (Cart pr : shoppingList) {
             total += pr.getQuantityInt() * pr.getPriceAsInt();
@@ -139,10 +147,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
     }
 
 
-
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        Log.i("On Swipe - UPDATE","Item removed  update adapters total price updated");
+        Log.i("On Swipe - UPDATE", "Item removed  update adapters total price updated");
         initFragmentManagers();
         cartFragment.adapterRemove(viewHolder);
         priceCartFragment.adapterPriceRemove();

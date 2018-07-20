@@ -3,10 +3,9 @@
     package="com.desislava.market">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,11 +18,14 @@
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-           <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".activities.ShoppingCartActivity"
@@ -49,9 +51,14 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE"/>
+        <activity
+            android:name=".activities.SummaryActivity"
+            android:label="@string/title_activity_summary"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

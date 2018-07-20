@@ -106,7 +106,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
         Button finish = mview.findViewById(R.id.bnt_finish);
-        finish.setOnClickListener((View view) -> Log.i("finish clicked", "click"));
+        finish.setOnClickListener((View view) -> mListener.locationInteraction());
         distance = mview.findViewById(R.id.txtDistance);
         duration = mview.findViewById(R.id.txtDuration);
         delivery = mview.findViewById(R.id.txtDelivery);
@@ -116,7 +116,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.locationInteraction(uri);
+            mListener.locationInteraction();
         }
     }
 
@@ -160,17 +160,19 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         if (isChecked) {
             Log.i("onMapReady", "isChecked-TRUE");
             getCurrentLocation();
-            LocationManager locationManager = (LocationManager)
-                    getActivity().getSystemService(Context.LOCATION_SERVICE);
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED /*&& ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED*/) {
+               Log.e("REQUESTING","LOCATION &&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^");
                 requestPermissions(new String[]{ACCESS_FINE_LOCATION /*ACCESS_COARSE_LOCATION*/}, 2);
             } else {
+                LocationManager locationManager = (LocationManager)
+                        getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
                 }
+                //TODO check take lat and lang i get address as string and set it in user info
             }
 
         } else {
@@ -255,12 +257,12 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
 
 
     public interface OnFragmentInteractionListener {
-        void locationInteraction(Uri uri);
+        void locationInteraction();
     }
 
     private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-            requestPermissions(new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, 1);
+        if (ActivityCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED /*&& ActivityCompat.checkSelfPermission(getContext(), ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED*/) {
+            requestPermissions(new String[]{ACCESS_FINE_LOCATION/*, ACCESS_COARSE_LOCATION*/}, 1);
         } else {
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);

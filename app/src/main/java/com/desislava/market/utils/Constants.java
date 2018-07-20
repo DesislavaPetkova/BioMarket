@@ -7,7 +7,14 @@ public class Constants {
 
 public static final int GREEN_COLOR = Color.parseColor("#689B00");
 public static final int YELLOW_COLOR = Color.parseColor("#ffffb3");
+//activity titles
 public static final String MARKET="Market";
+public static final String SHOPPINGCART="Shopping cart";
+public static final String CHOOSE_MARKET="Choose market";
+public static final String PLACED="Placed orders";
+public static final String USERINFO="User info";
+//
+
 public static final String LIDL="lidl";
 public static final String KAUFLAND="kaufland";
 
