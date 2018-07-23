@@ -90,7 +90,6 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_info, location, "location").commit();
         stepsView.setCompletedPosition(position).drawView();
         add.show();
-
     }
 
 
