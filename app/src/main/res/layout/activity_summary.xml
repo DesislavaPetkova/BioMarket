@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.desislava.market.activities.UserInfoActivity">
+    tools:context="com.desislava.market.activities.SummaryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -20,16 +20,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/activity_user_info_content" />
-
+    <include layout="@layout/summary_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_new"
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/shopping_cart" />
-
-
+        app:srcCompat="@android:drawable/ic_dialog_email" />
+<!-- layout="@layout/summary_fragment_list"-->
 </android.support.design.widget.CoordinatorLayout>

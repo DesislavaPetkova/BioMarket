@@ -40,8 +40,6 @@ public class CartFragment extends Fragment {
     public CartFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static CartFragment newInstance(int columnCount) {
         CartFragment fragment = new CartFragment();
         Bundle args = new Bundle();

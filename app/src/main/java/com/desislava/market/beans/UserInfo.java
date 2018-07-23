@@ -106,6 +106,9 @@ public class UserInfo implements Serializable {
         this.city = city;
     }
 
+    public String getFullAddress(){
+        return city+" ,"+address;
+    }
 
 
     @Override

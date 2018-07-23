@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MenuListProductFragment.OnListFragmentInteractionListener, ProductInfoFragment.ProductInfoListener,JSONResponse.UpdateAndInsert ,PriceChartFragment.OnFragmentInteractionListener{
 
     private FrameLayout frameLayout;
-    private CoordinatorLayout.LayoutParams params;
     public static DBHelper dbHelper;
     public static int categoryId = 0;
     public static String DB_VER_STORE="db-store-";
@@ -61,8 +60,8 @@ public class MainActivity extends AppCompatActivity
         initStore(store);
         DB_VER_STORE+=store;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        frameLayout = (FrameLayout) findViewById(R.id.menuListInfoProduct);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        frameLayout = findViewById(R.id.menuListInfoProduct);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener((View view )-> {
                 Intent intent = new Intent(MainActivity
                         .this, ShoppingCartActivity.class);
@@ -88,8 +87,6 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-          /*  params.setMargins(0, 300, 0, 0);
-            frameLayout.setLayoutParams(params);*/
             super.onBackPressed();
         }
     }
@@ -139,6 +136,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.fruits:
                 categoryId = 1;
                 break;
+            case R.id.orders:
+                categoryId=6;
+                Intent in=new Intent(this, SummaryActivity.class);
+                startActivity(in);
+                return true;
         }
 
         updateFragment(categoryId);
@@ -153,8 +155,6 @@ public class MainActivity extends AppCompatActivity
 
         if (fragmentManager != null) {
             fragmentManager.beginTransaction().replace(R.id.menuListInfoProduct, productInfoFragment).addToBackStack(null).commit();
-           /* params.setMargins(0, 200, 0, 0);
-            frameLayout.setLayoutParams(params);*/
         }
 
     }
@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+        Log.i("Price chart","Fragment clicked");
 
     }
 }

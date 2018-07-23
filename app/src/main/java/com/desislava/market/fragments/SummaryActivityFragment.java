@@ -1,39 +1,32 @@
 package com.desislava.market.fragments;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.desislava.market.activities.ShoppingCartActivity;
-import com.desislava.market.adapters.CartPriceRecyclerViewAdapter;
 import com.desislava.market.R;
-import com.desislava.market.beans.Cart;
-import com.desislava.market.cart.helper.ShoppingCartHelper;
+import com.desislava.market.adapters.SummaryOrderViewAdapter;
 
-
-public class PriceCartFragment extends Fragment  {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class SummaryActivityFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-    private CartPriceRecyclerViewAdapter adapter = null;
+    private SummaryFragmentListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public PriceCartFragment() {
+    public SummaryActivityFragment() {
     }
 
-    public static PriceCartFragment newInstance(int columnCount) {
-        PriceCartFragment fragment = new PriceCartFragment();
+    public static SummaryActivityFragment newInstance(int columnCount) {
+        SummaryActivityFragment fragment = new SummaryActivityFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -52,7 +45,7 @@ public class PriceCartFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.cart_price_fragment_list, container, false);
+        View view = inflater.inflate(R.layout.summary_fragment_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -63,9 +56,7 @@ public class PriceCartFragment extends Fragment  {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = new CartPriceRecyclerViewAdapter(ShoppingCartActivity.shoppingList, mListener);
-            recyclerView.setAdapter(adapter);
-
+            recyclerView.setAdapter(new SummaryOrderViewAdapter(mListener));
         }
         return view;
     }
@@ -74,11 +65,11 @@ public class PriceCartFragment extends Fragment  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof SummaryFragmentListener) {
+            mListener = (SummaryFragmentListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement SummaryFragmentListener");
         }
     }
 
@@ -86,13 +77,6 @@ public class PriceCartFragment extends Fragment  {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-
-    public void adapterPriceRemove() {
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
     }
 
     /**
@@ -105,7 +89,8 @@ public class PriceCartFragment extends Fragment  {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Cart cart);
+    public interface SummaryFragmentListener {
+        // TODO: Update argument type and name
+        void summaryFragment(String item);
     }
 }

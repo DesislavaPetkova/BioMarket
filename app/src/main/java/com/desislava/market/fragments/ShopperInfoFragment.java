@@ -1,10 +1,8 @@
 package com.desislava.market.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.desislava.market.R;
-import com.desislava.market.beans.UserInfo;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ShopperInfoFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
 public class ShopperInfoFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -30,19 +21,21 @@ public class ShopperInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static ShopperInfoFragment newInstance(String param1, String param2) {
+    public static ShopperInfoFragment newInstance() {
         ShopperInfoFragment fragment = new ShopperInfoFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+       // Bundle args = new Bundle();
+        //fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+/*
         if (getArguments() != null) {
             //TODO get argument from bundle
         }
+*/
     }
 
     @Override
@@ -66,10 +59,10 @@ public class ShopperInfoFragment extends Fragment {
         return view;
     }
 
-   /* // TODO: Rename method, update argument and hook method into UI event
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.userInfoInteraction(uri);
         }
     }*/
 

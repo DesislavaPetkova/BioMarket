@@ -41,4 +41,5 @@
         <item>Gram/s</item>
         <item>Piece</item>
     </string-array>
+    <string name="title_activity_summary">SummaryActivity</string>
 </resources>

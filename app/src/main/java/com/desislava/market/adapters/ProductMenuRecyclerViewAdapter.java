@@ -82,10 +82,10 @@ public class ProductMenuRecyclerViewAdapter extends RecyclerView.Adapter<Product
 
     @Override
     public int getItemCount() {
-        if (storeContent.size() > 0) {
+        if (storeContent!=null && storeContent.size() > 0) {
             return storeContent.get(0).getAllCategory().get(categoryId).getAllProducts().size();
         }
-        return storeContent.size();
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

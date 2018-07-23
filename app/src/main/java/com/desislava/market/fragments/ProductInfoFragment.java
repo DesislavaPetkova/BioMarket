@@ -115,6 +115,7 @@ public class ProductInfoFragment extends Fragment {
         //set fields with values
         coverImage.setImageBitmap(infoProduct.getImage());
         productName.setText(infoProduct.getName());
+        quantity.setNumber("1");
         quantity.setRange(1, 1000);
         prInfo.setText(infoProduct.getInfo());
         bnt_price.setText((infoProduct.getPrice() + " lv"));

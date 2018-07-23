@@ -18,7 +18,7 @@ import static com.desislava.market.utils.Constants.LIDL;
 import static com.desislava.market.utils.Constants.STORE;
 
 public class StartActivity extends AppCompatActivity {
-
+    static String store ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,28 +28,37 @@ public class StartActivity extends AppCompatActivity {
         w.setStatusBarColor(Constants.GREEN_COLOR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(Constants.GREEN_COLOR);
-        toolbar.setTitle("Choose market");
+        toolbar.setTitle(Constants.CHOOSE_MARKET);
         setSupportActionBar(toolbar);
-/*
-        ImageButton img = findViewById(R.id.kauflandImgBnt);*/
+
     }
 
 
     public void onClick(View view) {
-        String store = LIDL;
-        //TODO might add all stores products show
+        String temp;
+        //TODO might ask before empty the cart if ok/not
         if (view.getId() == R.id.kauflandImgBnt) {
-            store = KAUFLAND;
+            temp=KAUFLAND;
+            checkStore(temp);
             Toast.makeText(this, "Kaufland store", Toast.LENGTH_SHORT).show(); //Todo rename stores
 
         } else {
+            temp=LIDL;
+            checkStore(temp);
             Toast.makeText(this, "Lidl store", Toast.LENGTH_SHORT).show(); //Todo rename stores
         }
+        store = temp;
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         intent.putExtra(STORE, store);
         startActivity(intent);
     }
 
+    private void checkStore(String temp) {
+        if(!ShoppingCartActivity.shoppingList.isEmpty() && !store.equals(temp)){
+            ShoppingCartActivity.shoppingList.clear();
+        }
+
+    }
 
 }
 
