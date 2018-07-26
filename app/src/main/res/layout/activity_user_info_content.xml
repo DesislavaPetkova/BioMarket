@@ -26,7 +26,7 @@
             <FrameLayout
                 android:id="@+id/fragment_info"
                 android:layout_width="match_parent"
-                android:layout_height="420dp">
+                android:layout_height="450dp">
 
             </FrameLayout>
 

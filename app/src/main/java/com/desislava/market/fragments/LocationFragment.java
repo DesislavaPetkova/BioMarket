@@ -55,11 +55,9 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     private static final String API_KEY = "AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     private LatLngBounds.Builder builder = new LatLngBounds.Builder();
-   /* private static final String[] LOCATION_PERMS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
-*/
+    private String startAddr;
+    private String endAddr;
+
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -72,6 +70,8 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     private TextView distance;
     private TextView duration;
     private TextView delivery;
+    private TextView start;
+    private TextView end;
 
     String store;
 
@@ -106,17 +106,19 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
         Button finish = mview.findViewById(R.id.bnt_finish);
-        finish.setOnClickListener((View view) -> mListener.locationInteraction());
+        finish.setOnClickListener((View view) -> mListener.locationInteraction(startAddr,endAddr));
         distance = mview.findViewById(R.id.txtDistance);
         duration = mview.findViewById(R.id.txtDuration);
         delivery = mview.findViewById(R.id.txtDelivery);
+        start = mview.findViewById(R.id.txtStart);
+        end = mview.findViewById(R.id.txtEnd);
         return mview;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.locationInteraction();
+            mListener.locationInteraction(startAddr,endAddr);
         }
     }
 
@@ -145,6 +147,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
             mMapView.onCreate(savedInstanceState);
             mMapView.onResume();
             mMapView.getMapAsync(this);
+
         }
     }
 
@@ -162,7 +165,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
             getCurrentLocation();
 
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED /*&& ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED*/) {
-               Log.e("REQUESTING","LOCATION &&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^");
+                Log.e("REQUESTING", "LOCATION &&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^");
                 requestPermissions(new String[]{ACCESS_FINE_LOCATION /*ACCESS_COARSE_LOCATION*/}, 2);
             } else {
                 LocationManager locationManager = (LocationManager)
@@ -171,6 +174,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+                    storeSearch(latitude, longitude);
                 }
                 //TODO check take lat and lang i get address as string and set it in user info
             }
@@ -184,22 +188,21 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
                 if (list.size() > 0) {
                     latitude = list.get(0).getLatitude();
                     longitude = list.get(0).getLongitude();
+                    storeSearch(latitude, longitude);
                 }
             } catch (IOException e) {
                 Log.e("PROBLEM", " if the network is unavailable or any other I/O problem occurs");
             }
         }
 
-        loc = new LatLng(latitude, longitude);
-        builder.include(loc);
-        storeSearch(latitude, longitude);
-        googleMap.addMarker(new MarkerOptions().position(loc).title("Address"));
-        updateCamera();
-
     }
 
     private void storeSearch(double latitude, double longitude) {
         Log.i("storeSearch", "Enter");
+        loc = new LatLng(latitude, longitude);
+        builder.include(loc);
+        googleMap.addMarker(new MarkerOptions().position(loc).title("Address"));
+        updateCamera();
         StringBuilder request = new StringBuilder(PLACES_API_BASE);
         request.append("location=" + latitude + "," + longitude).append("&language=en&rankby=distance&").append("name=" + store).append("&key=" + API_KEY);
         Log.i("GOOGLE KEY GENERATED: ", request.toString());
@@ -253,11 +256,16 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         distance.setText(parse.getGoogleDirectionsMap().get(Constants.DISTANCE));
         duration.setText(parse.getGoogleDirectionsMap().get(Constants.DURATION));
 
+        startAddr=parse.getAddr()[0];
+        endAddr=parse.getAddr()[1];
+        start.setText(startAddr);
+        end.setText(endAddr);
+
     }
 
 
     public interface OnFragmentInteractionListener {
-        void locationInteraction();
+        void locationInteraction(String startAddr, String endAddr);
     }
 
     private void getCurrentLocation() {

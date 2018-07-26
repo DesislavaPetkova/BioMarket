@@ -94,8 +94,9 @@ public class UserInfoActivity extends AppCompatActivity implements ShopperInfoFr
 
 
     @Override
-    public void locationInteraction() {
-        order.setInfo(info);
+    public void locationInteraction(String start,String end) { //TODO might not need store address since we dont` care
+        info.setSetFullAddress(start);
+        order.setInfo(info,StartActivity.store);
         orders.add(order);
         Intent intent = new Intent(UserInfoActivity
                 .this, SummaryActivity.class);

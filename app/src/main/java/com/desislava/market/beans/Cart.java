@@ -10,6 +10,7 @@ public class Cart {
     private String quantity;
     private String price;
     private String category;
+    private String store;
 
     public Cart(Product product, String quantity, String category) {
         this.product = product;

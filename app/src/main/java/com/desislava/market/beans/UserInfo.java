@@ -22,6 +22,8 @@ public class UserInfo implements Serializable {
     private String district;
     private String city;
 
+    private String setFullAddress; //When location is taken from current location
+
     public UserInfo() {
 
     }
@@ -106,10 +108,14 @@ public class UserInfo implements Serializable {
         this.city = city;
     }
 
+
     public String getFullAddress(){
-        return city+" ,"+address;
+        return setFullAddress;
     }
 
+    public void setSetFullAddress(String setFullAddress) {
+        this.setFullAddress = setFullAddress;
+    }
 
     @Override
     public String toString() {

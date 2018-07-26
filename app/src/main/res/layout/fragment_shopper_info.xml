@@ -91,10 +91,10 @@
             android:id="@+id/bnt_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next"
             android:background="@drawable/round_corners"
+            android:text="Next"
             android:textAlignment="center"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </FrameLayout>
