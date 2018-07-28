@@ -25,7 +25,7 @@
             android:id="@+id/isCurrent"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:text="Take current location"
             android:textSize="14sp" />
 
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Name" />
 
         <Space
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:inputType="textMultiLine"
-            android:text="Address" />
+            android:hint="Address" />
 
         <Space
             android:layout_width="match_parent"

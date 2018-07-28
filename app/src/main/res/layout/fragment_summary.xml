@@ -13,7 +13,8 @@
         android:dividerHeight="8dp"
         android:divider="@android:color/darker_gray"
         card_view:cardBackgroundColor="@color/yellowLightCustom"
-        card_view:cardElevation="10dp">
+        card_view:cardElevation="10dp"
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
