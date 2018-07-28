@@ -22,7 +22,7 @@ public class DirectionsDataParser {
         return directionsMap;
     }
 
-    private HashMap<String, String> getDuration(JSONArray googleDirectionsJson) {
+    private void getDuration(JSONArray googleDirectionsJson) {
         directionsMap = new HashMap<>();
         String duration;
         String distance;
@@ -38,13 +38,11 @@ public class DirectionsDataParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return directionsMap;
+       // return directionsMap;
     }
 
 
-    //TODO view start .. address
-    public String[] addresses(JSONArray legs) {
+    private void addresses(JSONArray legs) {
 
         addr = new String[2];
         try {
@@ -53,8 +51,6 @@ public class DirectionsDataParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return addr;
 
     }
 
@@ -76,7 +72,7 @@ public class DirectionsDataParser {
         return getPaths(jsonArray);
     }
 
-    public String[] getPaths(JSONArray googleStepsJson) {
+    private String[] getPaths(JSONArray googleStepsJson) {
         Log.i("getPaths", "Enter");
         int count = googleStepsJson.length();
         String[] polylines = new String[count];
@@ -92,7 +88,7 @@ public class DirectionsDataParser {
         return polylines;
     }
 
-    public String getPath(JSONObject googlePathJson) {
+    private String getPath(JSONObject googlePathJson) {
         String polyline = "";
         try {
             polyline = googlePathJson.getJSONObject("polyline").getString("points");

@@ -34,11 +34,11 @@ public class SummaryOrderViewAdapter extends RecyclerView.Adapter<SummaryOrderVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-       holder.storeName.setText("Lidl");
-       holder.status.setText("Placed");
-       holder.total.setText(holder.mItem.getTotal());
-       holder.delivery.setText("3lv"); //TODO delivery price based on distance
-       holder.address.setText(holder.mItem.getInfo().getFullAddress());
+        holder.storeName.setText(holder.mItem.getStoreName());
+        holder.status.setText("Placed");
+        holder.total.setText(holder.mItem.getTotal());
+        holder.delivery.setText("3lv"); //TODO delivery price based on distance
+        holder.address.setText(holder.mItem.getInfo().getFullAddress().toUpperCase());
 
         holder.mView.setOnClickListener((View v)-> {
                 if (null != mListener) {

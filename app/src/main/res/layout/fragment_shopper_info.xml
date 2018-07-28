@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.desislava.market.fragments.ShopperInfoFragment">
 
 
@@ -27,7 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="E-mail"
+            android:hint="Email"
             android:inputType="textEmailAddress" />
 
         <Space
@@ -41,7 +43,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Full name" />
+            android:hint="Full name" />
 
         <Space
             android:layout_width="match_parent"
@@ -54,7 +56,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Username" />
+            android:hint="Username" />
 
         <Space
             android:layout_width="match_parent"
@@ -66,8 +68,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Password" />
+            android:inputType="textPassword"
+            android:hint="Password" />
 
         <Space
             android:layout_width="match_parent"
@@ -79,8 +81,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Phone" />
+            android:inputType="phone"
+            android:hint="Phone" />
 
         <Space
             android:id="@+id/space"
@@ -91,10 +93,10 @@
             android:id="@+id/bnt_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next"
             android:background="@drawable/round_corners"
+            android:text="Next"
             android:textAlignment="center"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </FrameLayout>
