@@ -15,8 +15,9 @@ public static final String PLACED="Placed orders";
 public static final String USERINFO="User info";
 //
 
-public static final String LIDL="lidl";
-public static final String KAUFLAND="kaufland";
+    public static final String PEACHY="peachy";
+    public static final String MARKO="marko";
+public static final String DOGGY="doggy";
 
 
 public static final String FRIUTS="fruits";

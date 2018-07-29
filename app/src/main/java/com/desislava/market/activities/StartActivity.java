@@ -1,11 +1,9 @@
 package com.desislava.market.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -13,8 +11,9 @@ import android.widget.Toast;
 import com.desislava.market.R;
 import com.desislava.market.utils.Constants;
 
-import static com.desislava.market.utils.Constants.KAUFLAND;
-import static com.desislava.market.utils.Constants.LIDL;
+import static com.desislava.market.utils.Constants.DOGGY;
+import static com.desislava.market.utils.Constants.MARKO;
+import static com.desislava.market.utils.Constants.PEACHY;
 import static com.desislava.market.utils.Constants.STORE;
 
 public class StartActivity extends AppCompatActivity {
@@ -36,16 +35,21 @@ public class StartActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         String temp;
-        //TODO might ask before empty the cart if ok/not
-        if (view.getId() == R.id.kauflandImgBnt) {
-            temp=KAUFLAND;
+        if (view.getId() == R.id.peachyImgBnt) {
+            temp=PEACHY;
             checkStore(temp);
-            Toast.makeText(this, "Kaufland store", Toast.LENGTH_SHORT).show(); //Todo rename stores
+            Toast.makeText(this, "PEACHY store", Toast.LENGTH_SHORT).show();
 
-        } else {
-            temp=LIDL;
+        }else if (view.getId() == R.id.markoImgBnt) {
+            temp=MARKO;
             checkStore(temp);
-            Toast.makeText(this, "Lidl store", Toast.LENGTH_SHORT).show(); //Todo rename stores
+            Toast.makeText(this, "MARKO store", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            temp=DOGGY;
+            checkStore(temp);
+            Toast.makeText(this, "DOGGY store", Toast.LENGTH_SHORT).show();
         }
         store = temp;
         Intent intent = new Intent(StartActivity.this, MainActivity.class);

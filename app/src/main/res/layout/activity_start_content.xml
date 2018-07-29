@@ -19,18 +19,33 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/lidlImgBnt"
+                android:id="@+id/peachyImgBnt"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/lidl"
+                android:layout_height="150dp"
+                android:background="@drawable/peachy"
                 android:onClick="onClick" />
 
 
-            <ImageButton
-                android:id="@+id/kauflandImgBnt"
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/kaufland"
+                android:layout_height="10dp" />
+
+            <ImageButton
+                android:id="@+id/markoImgBnt"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/marko"
+                android:onClick="onClick" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <ImageButton
+                android:id="@+id/doggyBnt"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/doggy"
                 android:onClick="onClick" />
 
 

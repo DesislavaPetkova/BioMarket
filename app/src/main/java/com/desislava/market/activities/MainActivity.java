@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         ImageView navImage= hView.findViewById(R.id.imageView);
-        navImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kaufland)); //TODO might set the chosen  store or category as a image!!!
+        navImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.marko)); //TODO might set the chosen  store or category as a image!!!
 
         navigationView.setNavigationItemSelectedListener(this);
     }
