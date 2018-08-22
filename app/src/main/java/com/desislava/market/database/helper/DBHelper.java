@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static com.desislava.market.server.communication.ParseServerResponse.jsonVersion;
 
@@ -96,7 +97,7 @@ public  class DBHelper extends SQLiteOpenHelper {
     public Map<Long, Float> getAllPrices(String productName) {
         Log.i("DB getAllPrices", "*** Enter ***");
         String query = "SELECT " + PRICE_COLUMN_PRICE + " , " + PRICE_COLUMN_DATE + " FROM " + PRICE_TABLE + " where price_chart.name='" + productName + "'";
-        Map<Long, Float> datePrices = new HashMap<>();
+        Map<Long, Float> datePrices = new TreeMap<>();
         Cursor c = readable.rawQuery(query, null);
         if (c.moveToFirst()) {
             do {

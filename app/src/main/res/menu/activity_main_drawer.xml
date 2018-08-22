@@ -4,10 +4,10 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
+       <!-- <item
             android:id="@+id/allProducts"
             android:icon="@drawable/ic_menu_camera"
-            android:title="All products" />
+            android:title="All products" />-->
         <item
             android:id="@+id/drinks"
             android:icon="@drawable/ic_menu_camera"
@@ -28,6 +28,11 @@
             android:id="@+id/orders"
             android:icon="@drawable/ic_menu_camera"
             android:title="All orders" />
+        <item
+            android:id="@+id/choose_store"
+            android:icon="@drawable/home"
+            android:title="Stores" />
+
 
     </group>
 
