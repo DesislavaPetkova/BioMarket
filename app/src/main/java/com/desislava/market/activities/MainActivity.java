@@ -121,9 +121,6 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
         switch (id) {
-            case R.id.allProducts: //TODO no category  might not need it !!
-                categoryId = 5;
-                break;
             case R.id.drinks:
                 categoryId = 4;
                 break;
@@ -136,9 +133,14 @@ public class MainActivity extends AppCompatActivity
             case R.id.fruits:
                 categoryId = 1;
                 break;
+            case R.id.choose_store:
+                categoryId =7;
+                Intent store = new Intent(this, StartActivity.class);
+                startActivity(store);
+                return true;
             case R.id.orders:
-                categoryId=6;
-                Intent in=new Intent(this, SummaryActivity.class);
+                categoryId = 6;
+                Intent in = new Intent(this, SummaryActivity.class);
                 startActivity(in);
                 return true;
         }

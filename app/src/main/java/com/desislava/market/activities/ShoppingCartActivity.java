@@ -95,9 +95,9 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.shopping_layout);
         int id = item.getItemId();
         switch (id) {
-            case R.id.allProducts: //TODO no category  might not need it !!
+          /*  case R.id.allProducts: //TODO no category  might not need it !!
                 MainActivity.categoryId = 5;
-                break;
+                break;*/
             case R.id.drinks:
                 MainActivity.categoryId = 4;
                 break;
@@ -110,6 +110,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements Navigatio
             case R.id.fruits:
                 MainActivity.categoryId = 1;
                 break;
+            case R.id.choose_store:
+                MainActivity.categoryId = 7;
+                Intent store = new Intent(this, StartActivity.class);
+                startActivity(store);
+                return true;
             case R.id.orders:
                 MainActivity.categoryId = 6;
                 Intent in = new Intent(this, SummaryActivity.class);

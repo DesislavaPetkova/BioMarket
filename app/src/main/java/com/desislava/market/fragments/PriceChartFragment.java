@@ -72,10 +72,10 @@ public class PriceChartFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_price_chart, container, false);
         chart = view.findViewById(R.id.chart);
-        Map values = MainActivity.dbHelper.getAllPrices(prName.toLowerCase());
+        Map<Long, Float> values = MainActivity.dbHelper.getAllPrices(prName.toLowerCase());
         List<Entry> wrap = new ArrayList<>();
 
-        values.forEach((key, tab) -> wrap.add(new Entry(((Long) key).floatValue(), (Float) tab)));
+        values.forEach((key, tab) -> wrap.add(new Entry((key).floatValue(), tab)));
         Log.i("onCreateView", "wrap list size: " + wrap.size());
         for (Entry e :wrap) {
             Log.i("Entry",""+e.toString());
@@ -116,7 +116,7 @@ public class PriceChartFragment extends Fragment {
         xAxis.setGranularity(1f);
 
         xAxis.setValueFormatter((float value, AxisBase axis) -> {
-            Date d = new Date(Float.valueOf(value).longValue());
+            Date d = new Date((long) value);
             return new SimpleDateFormat("dd-MM", Locale.ITALY).format(d);
         });
         Description d = new Description();
