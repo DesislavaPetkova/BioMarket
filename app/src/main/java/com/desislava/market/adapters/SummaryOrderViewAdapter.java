@@ -1,6 +1,7 @@
 package com.desislava.market.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.desislava.market.activities.UserInfoActivity;
 import com.desislava.market.beans.SummaryOrder;
 
 import java.util.List;
+
+import static com.desislava.market.fragments.LocationFragment.KILOMETER;
 
 
 public class SummaryOrderViewAdapter extends RecyclerView.Adapter<SummaryOrderViewAdapter.ViewHolder> {
@@ -37,7 +40,7 @@ public class SummaryOrderViewAdapter extends RecyclerView.Adapter<SummaryOrderVi
         holder.storeName.setText(holder.mItem.getStoreName().toUpperCase());
         holder.status.setText("Placed");
         holder.total.setText(holder.mItem.getTotal());
-        holder.delivery.setText("3lv"); //TODO delivery price based on distance
+        holder.delivery.setText(holder.mItem.getDeliveryPrice()+"lv");
         holder.address.setText(holder.mItem.getInfo().getFullAddress().toUpperCase());
 
         holder.mView.setOnClickListener((View v)-> {

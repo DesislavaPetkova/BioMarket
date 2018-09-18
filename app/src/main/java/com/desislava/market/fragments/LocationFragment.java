@@ -51,6 +51,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class LocationFragment extends Fragment implements OnMapReadyCallback, GooglePlaceAsyncTask.GooglePlace, DirectionsAsyncTask.DirectionsReady {
 
     private static final String CHECKED = "checked";
+    public static final float KILOMETER = 0.40f;
+    public static final float INITIAL_PRICE_DELIVERY= 2f;
     private static final String USER_INFO = "userInfo";
     private static final String API_KEY = "AIzaSyC3jG3rvjsW7R2c2kP6l_AeJEoJOBiO7NE";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
@@ -72,7 +74,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     private TextView delivery;
     private TextView start;
     private TextView end;
-
+    float pr;
     String store;
 
     private OnFragmentInteractionListener mListener;
@@ -106,7 +108,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
         // Inflate the layout for this fragment
         mview = inflater.inflate(R.layout.fragment_location, container, false);
         Button finish = mview.findViewById(R.id.bnt_finish);
-        finish.setOnClickListener((View view) -> mListener.locationInteraction(startAddr,endAddr));
+        finish.setOnClickListener((View view) -> mListener.locationInteraction(startAddr, endAddr,pr));
         distance = mview.findViewById(R.id.txtDistance);
         duration = mview.findViewById(R.id.txtDuration);
         delivery = mview.findViewById(R.id.txtDelivery);
@@ -118,7 +120,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.locationInteraction(startAddr,endAddr);
+            mListener.locationInteraction(startAddr, endAddr,pr);
         }
     }
 
@@ -253,11 +255,14 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
             options.addAll(PolyUtil.decode(s));
             googleMap.addPolyline(options);
         }
+
         distance.setText(parse.getGoogleDirectionsMap().get(Constants.DISTANCE));
         duration.setText(parse.getGoogleDirectionsMap().get(Constants.DURATION));
+        pr=Float.parseFloat(parse.getGoogleDirectionsMap().get(Constants.DISTANCE).replace(" km",""));
+        delivery.setText(String.format("%.1f", (pr * KILOMETER+INITIAL_PRICE_DELIVERY))+"lv");
 
-        startAddr=parse.getAddr()[0];
-        endAddr=parse.getAddr()[1];
+        startAddr = parse.getAddr()[0];
+        endAddr = parse.getAddr()[1];
         start.setText(startAddr);
         end.setText(endAddr);
 
@@ -265,7 +270,7 @@ public class LocationFragment extends Fragment implements OnMapReadyCallback, Go
 
 
     public interface OnFragmentInteractionListener {
-        void locationInteraction(String startAddr, String endAddr);
+        void locationInteraction(String startAddr, String endAddr,float price);
     }
 
     private void getCurrentLocation() {

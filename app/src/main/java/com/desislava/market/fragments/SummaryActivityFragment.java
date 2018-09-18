@@ -28,8 +28,8 @@ public class SummaryActivityFragment extends Fragment {
     public static SummaryActivityFragment newInstance(int columnCount) {
         SummaryActivityFragment fragment = new SummaryActivityFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+       // args.putInt(ARG_COLUMN_COUNT, columnCount);
+        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -37,9 +37,9 @@ public class SummaryActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
+      /*  if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+        }*/
     }
 
     @Override
